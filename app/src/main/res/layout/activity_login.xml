@@ -1,11 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.Login.LoginActivity"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/bg_main"
-    tools:context=".ui.Login.LoginActivity">
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_main">
+    >
+
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
 
 
     <TextView
@@ -118,15 +127,18 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
         android:backgroundTint="@color/blue_fb"
+        android:drawableEnd="@drawable/fb_logo"
         android:fontFamily="@font/poppins_bold"
         android:paddingVertical="16dp"
         android:text="@string/facebook"
         android:textSize="20sp"
         app:cornerRadius="12dp"
+        android:layout_marginBottom="54dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        android:drawableEnd="@drawable/fb_logo"
         app:layout_constraintTop_toBottomOf="@+id/btn_google" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
