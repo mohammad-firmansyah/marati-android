@@ -3,4 +3,9 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="main_">#FFFFFFFF</color>
+    <color name="main">#5D49E2</color>
+    <color name="secondary">#C64C3C</color>
+    <color name="black_google">#1A1B24</color>
+    <color name="blue_fb">#3A589B</color>
+
 </resources>
