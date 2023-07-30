@@ -7,5 +7,7 @@
     <color name="secondary">#C64C3C</color>
     <color name="black_google">#1A1B24</color>
     <color name="blue_fb">#3A589B</color>
+    <color name="status_bar_onboarding">#E2E5FD</color>
+    <color name="status_bar_default">#C8C1F5</color>
 
 </resources>

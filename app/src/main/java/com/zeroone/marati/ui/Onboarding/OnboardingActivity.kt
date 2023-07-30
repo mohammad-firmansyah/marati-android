@@ -2,13 +2,16 @@ package com.zeroone.marati.ui.Onboarding
 
 import android.animation.ObjectAnimator
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.view.View
-import com.zeroone.marati.R
+import android.view.WindowManager
+import androidx.appcompat.app.AppCompatActivity
 import com.zeroone.marati.databinding.ActivityOnboardingBinding
 import com.zeroone.marati.ui.Login.LoginActivity
 import com.zeroone.marati.ui.Register.RegisterActivity
+
 
 class OnboardingActivity : AppCompatActivity() {
 
@@ -23,6 +26,11 @@ class OnboardingActivity : AppCompatActivity() {
 
         playAnimation()
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            val window = window
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+            window.statusBarColor = Color.parseColor("#E2E5FD")
+        }
 
 
         binding.loginBtn.setOnClickListener {
