@@ -25,8 +25,107 @@
             app:layout_constraintTop_toTopOf="parent" />
 
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+android:orientation="vertical"
+            android:layout_marginTop="60dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView8">
 
 
+            <EditText
+                android:id="@+id/timeout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="44dp"
+                android:layout_marginTop="44dp"
+                android:layout_marginEnd="44dp"
+                android:background="@drawable/background_inp"
+                android:fontFamily="@font/poppins_reg"
+                android:hint="Email"
+                android:maxLines="1"
+                android:paddingStart="32dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/verif"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/background_inp"
+                android:fontFamily="@font/poppins_bold"
+                android:text="Verifikasi"
+                android:layout_marginTop="32dp"
+                android:textSize="20sp" />
+
+            <EditText
+                android:id="@+id/name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="44dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="44dp"
+                android:background="@drawable/background_inp"
+                android:fontFamily="@font/poppins_reg"
+                android:hint="Nama"
+                android:maxLines="1"
+                android:paddingStart="32dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                />
+
+
+
+
+            <EditText
+                android:id="@+id/password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="44dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="44dp"
+                android:background="@drawable/background_inp"
+                android:fontFamily="@font/poppins_reg"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:maxLines="1"
+                android:paddingStart="32dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                />
+
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="100dp"
+                android:background="@drawable/background_inp"
+                android:fontFamily="@font/poppins_bold"
+                android:text="Reset Password"
+                android:layout_marginVertical="32dp"
+                android:textSize="20sp" />
+
+            <Button
+                android:id="@+id/logout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/background_inp_secondary"
+                android:fontFamily="@font/poppins_bold"
+                android:text="Logout"
+                android:textSize="20sp" />
+
+
+        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>
