@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+ <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -24,16 +24,17 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+
         <TextView
             android:id="@+id/textView9"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="44dp"
-            android:layout_marginTop="74dp"
+            android:layout_marginTop="52dp"
             android:fontFamily="@font/poppins_bold"
             android:text="Notification"
             android:textColor="@color/black"
-            android:textSize="18sp"
+            android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
@@ -41,8 +42,8 @@
             android:id="@+id/switch1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="112dp"
-            android:layout_marginTop="64dp"
+            android:layout_marginStart="108dp"
+            android:layout_marginTop="40dp"
             android:fontFamily="@font/poppins_bold"
             android:textOff="OFF"
             android:textOn="ON"
@@ -54,6 +55,114 @@
             app:thumbTint="@color/white"
             app:track="@drawable/track"
             app:trackTint="@color/main" />
+
+        <TextView
+            android:id="@+id/textView10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="44dp"
+            android:layout_marginTop="132dp"
+            android:fontFamily="@font/poppins_bold"
+            android:text="Night Theme"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/switch2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="108dp"
+            android:layout_marginTop="120dp"
+            android:fontFamily="@font/poppins_bold"
+            android:textOff="OFF"
+            android:textOn="ON"
+            android:textStyle="bold"
+            android:thumb="@drawable/thumb"
+            app:layout_constraintStart_toEndOf="@+id/textView9"
+            app:layout_constraintTop_toBottomOf="@+id/textView8"
+            app:showText="true"
+            app:thumbTint="@color/white"
+            app:track="@drawable/track"
+            app:trackTint="@color/main" />
+
+        <EditText
+            android:id="@+id/timeout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="44dp"
+            android:layout_marginTop="60dp"
+            android:layout_marginEnd="44dp"
+            android:background="@drawable/background_inp"
+            android:fontFamily="@font/poppins_reg"
+            android:hint="Timeout Interval"
+            android:maxLines="1"
+            android:paddingStart="32dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView10" />
+
+        <EditText
+            android:id="@+id/username_global"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="44dp"
+            android:layout_marginTop="36dp"
+            android:layout_marginEnd="44dp"
+            android:background="@drawable/background_inp"
+            android:fontFamily="@font/poppins_reg"
+            android:hint="Username"
+            android:maxLines="1"
+            android:paddingStart="32dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/timeout" />
+
+        <EditText
+            android:id="@+id/password_global"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="44dp"
+            android:layout_marginTop="36dp"
+            android:layout_marginEnd="44dp"
+            android:background="@drawable/background_inp"
+            android:fontFamily="@font/poppins_reg"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:paddingStart="32dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/username_global" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:text="Save"
+            android:textSize="20sp"
+            android:fontFamily="@font/poppins_bold"
+            android:background="@drawable/background_inp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

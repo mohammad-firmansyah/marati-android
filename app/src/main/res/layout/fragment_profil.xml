@@ -18,24 +18,13 @@
             android:layout_marginStart="32dp"
             android:layout_marginTop="32dp"
             android:fontFamily="@font/poppins_bold"
-            android:text="Settings"
+            android:text="Profil"
             android:textColor="@color/black"
             android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/textView9"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="44dp"
-            android:layout_marginTop="40dp"
-            android:fontFamily="@font/poppins_bold"
-            android:text="Notification"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
