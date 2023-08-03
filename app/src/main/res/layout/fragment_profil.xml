@@ -116,13 +116,14 @@ android:orientation="vertical"
 
             <Button
                 android:id="@+id/logout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="318dp"
+                android:layout_height="62dp"
                 android:layout_gravity="center"
-                android:background="@drawable/background_inp_secondary"
+                android:backgroundTint="@color/secondary"
                 android:fontFamily="@font/poppins_bold"
                 android:text="Logout"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                app:cornerRadius="12dp" />
 
 
         </LinearLayout>
