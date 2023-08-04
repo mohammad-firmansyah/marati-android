@@ -6,6 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".ui.Home.Fragments.ProfilFragment">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="120dp"
+        >
+
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -28,19 +35,20 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-android:orientation="vertical"
-            android:layout_marginTop="60dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="32dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView8">
 
 
             <EditText
-                android:id="@+id/timeout"
+                android:id="@+id/email_profil"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="44dp"
-                android:layout_marginTop="44dp"
-                android:layout_marginEnd="44dp"
                 android:background="@drawable/background_inp"
                 android:fontFamily="@font/poppins_reg"
                 android:hint="Email"
@@ -53,22 +61,22 @@ android:orientation="vertical"
 
             <Button
                 android:id="@+id/verif"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginTop="32dp"
                 android:background="@drawable/background_inp"
                 android:fontFamily="@font/poppins_bold"
                 android:text="Verifikasi"
-                android:layout_marginTop="32dp"
                 android:textSize="20sp" />
 
             <EditText
                 android:id="@+id/name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="44dp"
+                android:layout_marginStart="0dp"
                 android:layout_marginTop="32dp"
-                android:layout_marginEnd="44dp"
+                android:layout_marginEnd="0dp"
                 android:background="@drawable/background_inp"
                 android:fontFamily="@font/poppins_reg"
                 android:hint="Nama"
@@ -77,19 +85,16 @@ android:orientation="vertical"
                 android:textColor="@color/black"
                 android:textColorHint="@color/black"
                 android:textSize="17sp"
-                android:textStyle="bold"
-                />
-
-
+                android:textStyle="bold" />
 
 
             <EditText
                 android:id="@+id/password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="44dp"
+                android:layout_marginStart="0dp"
                 android:layout_marginTop="32dp"
-                android:layout_marginEnd="44dp"
+                android:layout_marginEnd="0dp"
                 android:background="@drawable/background_inp"
                 android:fontFamily="@font/poppins_reg"
                 android:hint="Password"
@@ -99,24 +104,23 @@ android:orientation="vertical"
                 android:textColor="@color/black"
                 android:textColorHint="@color/black"
                 android:textSize="17sp"
-                android:textStyle="bold"
-                />
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/button2"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginVertical="32dp"
                 android:layout_marginBottom="100dp"
                 android:background="@drawable/background_inp"
                 android:fontFamily="@font/poppins_bold"
                 android:text="Reset Password"
-                android:layout_marginVertical="32dp"
                 android:textSize="20sp" />
 
             <Button
                 android:id="@+id/logout"
-                android:layout_width="318dp"
+                android:layout_width="match_parent"
                 android:layout_height="62dp"
                 android:layout_gravity="center"
                 android:backgroundTint="@color/secondary"
@@ -128,5 +132,5 @@ android:orientation="vertical"
 
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
-
+    </ScrollView>
 </FrameLayout>

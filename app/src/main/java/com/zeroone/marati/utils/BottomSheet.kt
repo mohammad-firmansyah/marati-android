@@ -1,4 +1,4 @@
-package com.zeroone.marati.ui.Home
+package com.zeroone.marati.utils
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
