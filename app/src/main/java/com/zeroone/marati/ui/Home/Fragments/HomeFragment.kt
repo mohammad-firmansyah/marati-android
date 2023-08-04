@@ -1,11 +1,13 @@
 package com.zeroone.marati.ui.Home.Fragments
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.zeroone.marati.databinding.FragmentHomeBinding
+import com.zeroone.marati.ui.Edit.EditActivity
 import com.zeroone.marati.utils.BottomSheet
 
 // TODO: Rename parameter arguments, choose names that match
@@ -52,6 +54,8 @@ class HomeFragment : Fragment() {
 
             showBottomSheet()
         }
+
+
     }
 
 

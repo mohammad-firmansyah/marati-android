@@ -1,17 +1,20 @@
 package com.zeroone.marati.utils
 
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.LinearLayout
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.zeroone.marati.R
 import com.zeroone.marati.databinding.FragmentHomeBinding
+import com.zeroone.marati.ui.Edit.EditActivity
 
 class BottomSheet : BottomSheetDialogFragment() {
 
@@ -47,6 +50,10 @@ class BottomSheet : BottomSheetDialogFragment() {
                 view.findViewById<EditText>(R.id.username).visibility = View.GONE
                 view.findViewById<EditText>(R.id.password).visibility = View.GONE
             }
+        }
+
+        view.findViewById<Button>(R.id.addNewProject).setOnClickListener {
+            startActivity(Intent(view.context, EditActivity::class.java))
         }
     }
 }
