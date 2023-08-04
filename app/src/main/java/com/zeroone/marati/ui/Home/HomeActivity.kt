@@ -17,7 +17,7 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        supportActionBar?.hide()
+//        supportActionBar?.hide()
         replaceFragment(HomeFragment())
 
         binding.bottomBar.setOnItemSelectedListener {

@@ -6,11 +6,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
+import android.widget.EditText
 import android.widget.LinearLayout
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.zeroone.marati.R
+import com.zeroone.marati.databinding.FragmentHomeBinding
 
 class BottomSheet : BottomSheetDialogFragment() {
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -35,5 +39,14 @@ class BottomSheet : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        view.findViewById<CheckBox>(R.id.cred_button).setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                view.findViewById<EditText>(R.id.username).visibility = View.VISIBLE
+                view.findViewById<EditText>(R.id.password).visibility = View.VISIBLE
+            } else {
+                view.findViewById<EditText>(R.id.username).visibility = View.GONE
+                view.findViewById<EditText>(R.id.password).visibility = View.GONE
+            }
+        }
     }
 }
