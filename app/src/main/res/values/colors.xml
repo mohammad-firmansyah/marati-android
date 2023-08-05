@@ -9,5 +9,6 @@
     <color name="blue_fb">#3A589B</color>
     <color name="status_bar_onboarding">#E2E5FD</color>
     <color name="status_bar_default">#C8C1F5</color>
+    <color name="nav_drawer_default">#F0F2FD</color>
 
 </resources>
