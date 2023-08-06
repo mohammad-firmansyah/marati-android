@@ -8,39 +8,46 @@
             android:background="@drawable/bg_nav_drawer"
             android:orientation="vertical"
             >
+        <ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        >
-        <ImageButton
-            android:id="@+id/close"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="32dp"
-            android:background="@drawable/baseline_close_24"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
+                    <ImageButton
+                        android:id="@+id/close"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginTop="32dp"
+                        android:background="@drawable/baseline_close_24"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
 
-        </ImageButton>
-
-
-        <TextView
-            android:id="@+id/textView11"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="44dp"
-            android:layout_marginTop="32dp"
-            android:fontFamily="@font/poppins_bold"
-            android:text="Pick Component"
-            android:textColor="@color/black"
-            app:layout_constraintStart_toEndOf="@+id/close"
-            app:layout_constraintTop_toTopOf="parent" />
-    </LinearLayout>
+                    </ImageButton>
 
 
+                    <TextView
+                        android:id="@+id/textView11"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="44dp"
+                        android:layout_marginTop="32dp"
+                        android:fontFamily="@font/poppins_bold"
+                        android:text="Pick Component"
+                        android:textColor="@color/black"
+                        app:layout_constraintStart_toEndOf="@+id/close"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/first"
@@ -54,22 +61,22 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView11">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/poppins_bold"
-                            android:text="Switch"
-                            android:textColor="@color/black"
-                            android:textSize="24sp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_bold"
+                        android:text="Switch"
+                        android:textColor="@color/black"
+                        android:textSize="24sp" />
 
-                        <ImageView
-                            android:id="@+id/imageView"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:src="@drawable/switch_main"
+                    <ImageView
+                        android:id="@+id/imageView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:src="@drawable/switch_main"
 
-                            />
+                        />
                 </LinearLayout>
 
                 <LinearLayout
@@ -88,12 +95,12 @@
                     app:layout_constraintTop_toBottomOf="@+id/first">
 
 
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:src="@drawable/gauge"
-                            />
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:src="@drawable/gauge"
+                        />
 
                 </LinearLayout>
 
@@ -113,22 +120,22 @@
                     app:layout_constraintTop_toBottomOf="@+id/second">
 
 
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:src="@drawable/line_graph"
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:src="@drawable/line_graph"
 
-                            />
+                        />
 
-                        <TextView
-                            android:layout_marginTop="10dp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/poppins_bold"
-                            android:text="Line Graph"
-                            android:textColor="@color/black"
-                            android:textSize="24sp" />
+                    <TextView
+                        android:layout_marginTop="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_bold"
+                        android:text="Line Graph"
+                        android:textColor="@color/black"
+                        android:textSize="24sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -143,23 +150,27 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/third">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/poppins_bold"
-                            android:text="Text"
-                            android:textColor="@color/black"
-                            android:textSize="24sp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_bold"
+                        android:text="Text"
+                        android:textColor="@color/black"
+                        android:textSize="24sp" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/poppins_bold"
-                            android:text="Just Plain Text..."
-                            android:layout_marginStart="10dp"
-                            android:textColor="@color/black"
-                            android:textSize="20sp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_bold"
+                        android:text="Just Plain Text..."
+                        android:layout_marginStart="10dp"
+                        android:textColor="@color/black"
+                        android:textSize="20sp" />
 
                 </LinearLayout>
+            </LinearLayout>
 
+
+
+</ScrollView>
         </LinearLayout>
