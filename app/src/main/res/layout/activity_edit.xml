@@ -13,8 +13,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
+        android:backgroundTint="@color/main"
+        app:tint="@color/white"
+        app:srcCompat="@drawable/baseline_menu_24"
         android:clickable="true"
-        android:src="@drawable/baseline_menu_24"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:targetApi="o" />
 </androidx.constraintlayout.widget.ConstraintLayout>
