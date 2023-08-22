@@ -1,4 +1,4 @@
-package com.zeroone.marati.utils
+package com.zeroone.marati.ui.Home
 
 import android.content.Intent
 import android.graphics.Color
@@ -13,10 +13,9 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.zeroone.marati.R
-import com.zeroone.marati.databinding.FragmentHomeBinding
 import com.zeroone.marati.ui.Edit.EditActivity
 
-class BottomSheet : BottomSheetDialogFragment() {
+class BottomSheetAddNewProject : BottomSheetDialogFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,

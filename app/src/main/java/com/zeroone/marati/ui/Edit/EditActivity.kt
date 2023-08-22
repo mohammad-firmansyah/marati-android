@@ -39,7 +39,7 @@ class EditActivity : AppCompatActivity() {
             style = Paint.Style.FILL
         }
 
-        val circle = Circle(200f, 200f, 100f, paint)
+        val circle = Circle(300f, 400f, 100f, paint)
 
         dialogView.findViewById<ImageButton>(R.id.close).setOnClickListener {
             isDialog.dismiss()
