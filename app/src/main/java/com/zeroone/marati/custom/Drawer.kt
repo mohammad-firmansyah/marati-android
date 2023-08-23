@@ -13,6 +13,8 @@ import android.view.View
 import androidx.core.graphics.toRect
 import com.zeroone.marati.R
 import com.zeroone.marati.utils.DrawableObject
+import java.lang.Math.sqrt
+import kotlin.math.sqrt
 
 class Drawer(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
@@ -21,9 +23,9 @@ class Drawer(context: Context, attrs: AttributeSet) : View(context, attrs) {
     private var isDragging: Boolean = false
     private var touchOffsetX: Float = 0f
     private var touchOffsetY: Float = 0f
-
 //transformer
     private var activeHandle: Handle? = null
+
     private var previousX: Float = 0f
     private var previousY: Float = 0f
     private val handleSize: Float = 50f
@@ -32,6 +34,7 @@ class Drawer(context: Context, attrs: AttributeSet) : View(context, attrs) {
         style = Paint.Style.STROKE
         strokeWidth = 5f
     }
+    private var objActiveForTransfomer : String = ""
     var transformerStatus = false
 
     private val transformerDrawable: Drawable = context.getDrawable(R.drawable.baseline_rectangle_24)!!
@@ -42,36 +45,48 @@ class Drawer(context: Context, attrs: AttributeSet) : View(context, attrs) {
     override fun onTouchEvent(event: MotionEvent): Boolean {
         val touchX = event.x
         val touchY = event.y
+        var activeObj = getObjTouched(touchX, touchY)
 
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
                 val obj = getObjTouched(touchX, touchY)
+                activeHandle = getTouchedHandle( touchX, touchY)
                 if (obj != null) {
-                    activeHandle = getTouchedHandle(obj, touchX, touchY)
-                    transformerStatus = true
-                    invalidate()
-                    if (activeHandle != null) {
-                        isDragging = true
-                        previousX = touchX
-                        previousY = touchY
-                        touchOffsetX = touchX - obj.getX()
-                        touchOffsetY = touchY - obj.getY()
-                        return true
-                    } else {
-                        return false
+                    activeObj = obj
+                    if(isTouchInsideObj(obj,touchX, touchY)){
+                        objActiveForTransfomer = obj.getId()
+                        transformerStatus = true
+                        invalidate()
                     }
-                }else {
+                    else {
+                        transformerStatus = false
+                        invalidate()
+                    }
+                }
+                else if (activeHandle != null) {
+                    isDragging = true
+                    previousX = touchX
+                    previousY = touchY
+//                    touchOffsetX = touchX - obj.getX()
+//                    touchOffsetY = touchY - obj.getY()
+                }
+                else {
+
                     transformerStatus = false
                     invalidate()
                 }
+
+                return activeHandle != null
             }
             MotionEvent.ACTION_MOVE -> {
                 if (isDragging && activeHandle != null) {
-                    val activeObj = getObjTouched(touchX, touchY)
-                    if (activeObj != null) {
+
+                    val obj = getActiveObjectByHandle(touchX,touchY)
+                    Log.d("obj",obj.toString())
+                    if (obj != null) {
                         val deltaX = touchX - previousX
                         val deltaY = touchY - previousY
-                        updateRectangle(activeObj, activeHandle!!, deltaX, deltaY)
+                        updateRectangle(obj, activeHandle!!, deltaX, deltaY)
                         previousX = touchX
                         previousY = touchY
                         invalidate()
@@ -86,12 +101,34 @@ class Drawer(context: Context, attrs: AttributeSet) : View(context, attrs) {
         return true
     }
 
+    private fun getActiveObjectByHandle(x: Float, y: Float): DrawableObject? {
+        for (obj in objectsToDraw) {
+
+            val activeHandle = getTouchedHandle(x, y)
+
+            if (activeHandle != null) {
+                if(isTouchInsideRect(obj.getX(),obj.getY())){
+                    return obj
+                }
+            }
+        }
+        return null
+    }
+
+
 
     private fun isTouchInsideBar(touchX: Float, touchY: Float): Boolean {
         val distanceX = touchX - barRect.centerX()
         val distanceY = touchY - barRect.centerY()
         val distanceSquared = distanceX * distanceX + distanceY * distanceY
         return distanceSquared <= (barRect.width() / 2f) * (barRect.width() / 2f)
+    }
+
+    private fun isTouchInsideRect(touchX: Float, touchY: Float): Boolean {
+        val distanceX = touchX - rect.centerX()
+        val distanceY = touchY - rect.centerY()
+        val distanceSquared = distanceX * distanceX + distanceY * distanceY
+        return distanceSquared <= (rect.width() / 2f) * (rect.width() / 2f)
     }
 
     private fun isTouchInsideObj(obj : DrawableObject,touchX: Float, touchY: Float): Boolean {
@@ -111,11 +148,11 @@ class Drawer(context: Context, attrs: AttributeSet) : View(context, attrs) {
         return null
     }
 
-    private fun drawHandles(obj:DrawableObject,canvas: Canvas) {
+    private fun drawHandles(canvas: Canvas) {
         val handles = getHandles()
 
         handles.forEach { handle ->
-            val handleBounds = getHandleBounds(obj,handle)
+            val handleBounds = getHandleBounds(handle)
             transformerDrawable.bounds = handleBounds.toRect()
             transformerDrawable.draw(canvas)
         }
@@ -131,11 +168,7 @@ class Drawer(context: Context, attrs: AttributeSet) : View(context, attrs) {
 //        changeColorDrawable.draw(canvas)
 //    }
 
-    private fun getHandleBounds(obj: DrawableObject,handle: Handle): RectF {
-        rect.left = obj.getX() - obj.radius()
-        rect.right = obj.getX() + obj.radius()
-        rect.top = obj.getY() - obj.radius()
-        rect.bottom = obj.getY() + obj.radius()
+    private fun getHandleBounds(handle: Handle): RectF {
 
         val handleX = when (handle) {
             Handle.TopCenter -> rect.centerX() - handleSize/2
@@ -151,51 +184,63 @@ class Drawer(context: Context, attrs: AttributeSet) : View(context, attrs) {
     }
 
 
-    private fun getTouchedHandle(obj:DrawableObject,x: Float, y: Float): Handle? {
+    private fun getTouchedHandle(x: Float, y: Float): Handle? {
         val handles = getHandles()
         handles.forEach { handle ->
-            val handleBounds = getHandleBounds(obj,handle)
+            val handleBounds = getHandleBounds(handle)
             if (handleBounds.contains(x, y)) {
                 return handle
             }
         }
         return null
     }
-
     private fun updateRectangle(obj: DrawableObject, handle: Handle, deltaX: Float, deltaY: Float) {
+        val centerX = obj.getX()
+        val centerY = obj.getY()
+
         when (handle) {
             Handle.TopLeft -> {
-                rect.left += deltaX
-                rect.top += deltaY
-                obj.setRadius(obj.radius() + deltaX)
+                val newRadius = calculateNewRadius(obj.radius(), centerX + deltaX, centerY + deltaY, centerX, centerY)
+                obj.setRadius(newRadius)
+                obj.setX(centerX + deltaX)
+                obj.setY(centerY + deltaY)
             }
             Handle.TopRight -> {
-                rect.right += deltaX
-                rect.top += deltaY
-                obj.setX(deltaX)
-                obj.setY(deltaY)
+                val newRadius = calculateNewRadius(obj.radius(), centerX, centerY + deltaY, centerX + deltaX, centerY)
+                obj.setRadius(newRadius)
+                obj.setY(centerY + deltaY)
             }
             Handle.BottomRight -> {
-                rect.right += deltaX
-                rect.bottom += deltaY
-                obj.setX(deltaX)
-                obj.setY(deltaY)
+                val newRadius = calculateNewRadius(obj.radius(), centerX, centerY, centerX + deltaX, centerY + deltaY)
+                obj.setRadius(newRadius)
             }
             Handle.BottomLeft -> {
-                rect.left += deltaX
-                rect.bottom += deltaY
-                obj.setX(deltaX)
-                obj.setY(deltaY)
+                val newRadius = calculateNewRadius(obj.radius(), centerX + deltaX, centerY, centerX, centerY + deltaY)
+                obj.setRadius(newRadius)
+                obj.setX(centerX + deltaX)
             }
             Handle.TopCenter -> {
-                // Updating the rect here is causing issues with the movement
-                // Update obj's position instead
-                obj.setX(obj.getX() + deltaX)
-                obj.setY(obj.getY() + deltaY)
+                rect.left += deltaX
+                rect.right += deltaX
+                rect.top += deltaY
+                rect.bottom += deltaY
+                obj.setX( deltaX)
+                obj.setY( deltaY)
             }
         }
     }
 
+    private fun calculateNewRadius(currentRadius: Float, newX: Float, newY: Float, oldX: Float, oldY: Float): Float {
+        val originalDistance = calculateDistance(oldX, oldY, newX, newY)
+        val scalingFactor = originalDistance / currentRadius
+        return currentRadius * scalingFactor
+    }
+
+    private fun calculateDistance(x1: Float, y1: Float, x2: Float, y2: Float): Float {
+        val dx = x2 - x1
+        val dy = y2 - y1
+        return sqrt(dx * dx + dy * dy)
+    }
 
     private fun getHandles(): List<Handle> {
         return listOf(
@@ -214,15 +259,16 @@ class Drawer(context: Context, attrs: AttributeSet) : View(context, attrs) {
             obj.draw(canvas)
 
             if(transformerStatus){
+                if(obj.getId() == objActiveForTransfomer){
+                    rect.left = obj.getX() - obj.radius()
+                    rect.right = obj.getX() + obj.radius()
+                    rect.top = obj.getY() - obj.radius()
+                    rect.bottom = obj.getY() + obj.radius()
 
-                rect.left = obj.getX() - obj.radius()
-                rect.right = obj.getX() + obj.radius()
-                rect.top = obj.getY() - obj.radius()
-                rect.bottom = obj.getY() + obj.radius()
 
-
-                canvas.drawRect(rect, handlePaint)
-                drawHandles(obj,canvas)
+                    canvas.drawRect(rect, handlePaint)
+                    drawHandles(canvas)
+                }
             }
 //            canvas.drawRect(barRect,barPaint)
 //            drawBar(canvas)
