@@ -201,9 +201,20 @@ class Drawer(context: Context, attrs: AttributeSet) : View(context, attrs) {
         when (handle) {
             Handle.TopLeft -> {
                 val newRadius = calculateNewRadius(obj.radius(), centerX + deltaX, centerY + deltaY, centerX, centerY)
-                obj.setRadius(newRadius)
-                obj.setX(centerX + deltaX)
-                obj.setY(centerY + deltaY)
+
+                Log.d("circle","delta y ${deltaY.toString()}")
+                Log.d("circle","delta x ${deltaX.toString()}")
+
+                if (deltaX <= 0){
+                    Log.d("circle","nambah")
+                    obj.decRadius(deltaX)
+                } else if(deltaX > 0) {
+                    Log.d("circle","ngurang")
+                    obj.decRadius(deltaX)
+                }
+
+//                obj.setX(obj.getX() + deltaX/2)
+//                obj.setY(obj.getY() + deltaY/2)
             }
             Handle.TopRight -> {
                 val newRadius = calculateNewRadius(obj.radius(), centerX, centerY + deltaY, centerX + deltaX, centerY)

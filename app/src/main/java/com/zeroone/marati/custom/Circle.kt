@@ -46,14 +46,12 @@ class Circle(private var centerX: Float, private var centerY: Float, private var
         return radius
     }
 
-    override fun getStatus(): Boolean {
-        return status
+     override fun decRadius(r : Float): Float {
+        radius -= r
+        return radius
     }
 
-    override fun setStatus(bool: Boolean):Boolean {
-        status = bool
-        return status
-    }
+
 
     override fun getId():String{
 

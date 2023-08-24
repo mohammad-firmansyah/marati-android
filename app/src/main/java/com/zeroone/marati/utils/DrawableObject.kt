@@ -11,8 +11,7 @@ interface DrawableObject {
     fun width() : Float
     fun radius() : Float
     fun setRadius(r : Float) : Float
+    fun decRadius(r : Float) : Float
     fun draw(canvas: Canvas)
-    fun getStatus():Boolean
-    fun setStatus(status:Boolean):Boolean
     fun getId():String
 }
