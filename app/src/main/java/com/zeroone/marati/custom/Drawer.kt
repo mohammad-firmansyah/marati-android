@@ -1,6 +1,7 @@
 package com.zeroone.marati.custom
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
@@ -12,18 +13,20 @@ import android.view.MotionEvent
 import android.view.View
 import androidx.core.graphics.toRect
 import com.zeroone.marati.R
-import com.zeroone.marati.utils.DrawableObject
-import java.lang.Math.sqrt
+import com.zeroone.marati.utils.ObjectInterface
+import com.zeroone.marati.utils.SwitchInterface
 import kotlin.math.sqrt
+
 
 class Drawer(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
-    private val objectsToDraw = mutableListOf<DrawableObject>()
 
+    //    drawer
+    private val objectsToDraw = mutableListOf<com.zeroone.marati.utils.ObjectInterface>()
     private var isDragging: Boolean = false
-    private var touchOffsetX: Float = 0f
-    private var touchOffsetY: Float = 0f
-//transformer
+    private var mode : Boolean = false
+
+    //transformer
     private var activeHandle: Handle? = null
 
     private var previousX: Float = 0f
@@ -33,6 +36,9 @@ class Drawer(context: Context, attrs: AttributeSet) : View(context, attrs) {
         color = Color.BLUE
         style = Paint.Style.STROKE
         strokeWidth = 5f
+    }
+    private val mPaint: Paint = Paint().apply {
+        color = Color.BLUE
     }
     private var objActiveForTransfomer : String = ""
     var transformerStatus = false
@@ -54,9 +60,17 @@ class Drawer(context: Context, attrs: AttributeSet) : View(context, attrs) {
                 if (obj != null) {
                     activeObj = obj
                     if(isTouchInsideObj(obj,touchX, touchY)){
-                        objActiveForTransfomer = obj.getId()
-                        transformerStatus = true
-                        invalidate()
+                        if(mode){
+
+                            objActiveForTransfomer = obj.getObjId()
+                            transformerStatus = true
+                            invalidate()
+                        } else {
+                            if (obj is SwitchInterface){
+                                obj.swipeStatus(!obj.status)
+                                invalidate()
+                            }
+                        }
                     }
                     else {
                         transformerStatus = false
@@ -67,8 +81,8 @@ class Drawer(context: Context, attrs: AttributeSet) : View(context, attrs) {
                     isDragging = true
                     previousX = touchX
                     previousY = touchY
-//                    touchOffsetX = touchX - obj.getX()
-//                    touchOffsetY = touchY - obj.getY()
+//                    touchOffsetX = touchX - obj.getObjX()
+//                    touchOffsetY = touchY - obj.getObjY()
                 }
                 else {
 
@@ -101,13 +115,13 @@ class Drawer(context: Context, attrs: AttributeSet) : View(context, attrs) {
         return true
     }
 
-    private fun getActiveObjectByHandle(x: Float, y: Float): DrawableObject? {
+    private fun getActiveObjectByHandle(x: Float, y: Float): com.zeroone.marati.utils.ObjectInterface? {
         for (obj in objectsToDraw) {
 
             val activeHandle = getTouchedHandle(x, y)
 
             if (activeHandle != null) {
-                if(isTouchInsideRect(obj.getX(),obj.getY())){
+                if(isTouchInsideRect(obj.getObjX(),obj.getObjY())){
                     return obj
                 }
             }
@@ -116,14 +130,6 @@ class Drawer(context: Context, attrs: AttributeSet) : View(context, attrs) {
     }
 
 
-
-    private fun isTouchInsideBar(touchX: Float, touchY: Float): Boolean {
-        val distanceX = touchX - barRect.centerX()
-        val distanceY = touchY - barRect.centerY()
-        val distanceSquared = distanceX * distanceX + distanceY * distanceY
-        return distanceSquared <= (barRect.width() / 2f) * (barRect.width() / 2f)
-    }
-
     private fun isTouchInsideRect(touchX: Float, touchY: Float): Boolean {
         val distanceX = touchX - rect.centerX()
         val distanceY = touchY - rect.centerY()
@@ -131,14 +137,14 @@ class Drawer(context: Context, attrs: AttributeSet) : View(context, attrs) {
         return distanceSquared <= (rect.width() / 2f) * (rect.width() / 2f)
     }
 
-    private fun isTouchInsideObj(obj : DrawableObject,touchX: Float, touchY: Float): Boolean {
-            val distanceX = touchX - obj.getX()
-            val distanceY = touchY - obj.getY()
+    private fun isTouchInsideObj(obj : com.zeroone.marati.utils.ObjectInterface, touchX: Float, touchY: Float): Boolean {
+            val distanceX = touchX - ((obj.width()/2) + (obj.getObjX()-(obj.height()/2)))
+            val distanceY = touchY - ((obj.height()/2) + (obj.getObjY()-(obj.height()/2)))
             val distanceSquared = distanceX * distanceX + distanceY * distanceY
             return distanceSquared <= (obj.width() / 2f) * (obj.width() / 2f)
     }
 
-    private fun getObjTouched(touchX: Float, touchY: Float): DrawableObject? {
+    private fun getObjTouched(touchX: Float, touchY: Float): com.zeroone.marati.utils.ObjectInterface? {
         for (obj in objectsToDraw){
             if (isTouchInsideObj(obj,touchX,touchY)){
                 return obj
@@ -194,49 +200,49 @@ class Drawer(context: Context, attrs: AttributeSet) : View(context, attrs) {
         }
         return null
     }
-    private fun updateRectangle(obj: DrawableObject, handle: Handle, deltaX: Float, deltaY: Float) {
-        val centerX = obj.getX()
-        val centerY = obj.getY()
+    private fun updateRectangle(obj: com.zeroone.marati.utils.ObjectInterface, handle: Handle, deltaX: Float, deltaY: Float) {
+        val centerX = obj.getObjX()
+        val centerY = obj.getObjY()
 
         when (handle) {
             Handle.TopLeft -> {
-                val newRadius = calculateNewRadius(obj.radius(), centerX + deltaX, centerY + deltaY, centerX, centerY)
+                val newRadius = calculateNewRadius(obj.width(), centerX + deltaX, centerY + deltaY, centerX, centerY)
 
                 Log.d("circle","delta y ${deltaY.toString()}")
                 Log.d("circle","delta x ${deltaX.toString()}")
 
                 if (deltaX <= 0){
                     Log.d("circle","nambah")
-                    obj.decRadius(deltaX)
+                    obj.setWidth(obj.width() - deltaX)
                 } else if(deltaX > 0) {
                     Log.d("circle","ngurang")
-                    obj.decRadius(deltaX)
+                    obj.setWidth(obj.width() - deltaX)
                 }
 
-//                obj.setX(obj.getX() + deltaX/2)
-//                obj.setY(obj.getY() + deltaY/2)
+//                obj.setX(obj.getObjX() + deltaX/2)
+//                obj.setY(obj.getObjY() + deltaY/2)
             }
             Handle.TopRight -> {
-                val newRadius = calculateNewRadius(obj.radius(), centerX, centerY + deltaY, centerX + deltaX, centerY)
-                obj.setRadius(newRadius)
-                obj.setY(centerY + deltaY)
+//                val newRadius = calculateNewRadius(obj.widthObj(), centerX, centerY + deltaY, centerX + deltaX, centerY)
+//                obj.setWidthObj(newRadius)
+//                obj.setObjY(centerY + deltaY)
             }
             Handle.BottomRight -> {
-                val newRadius = calculateNewRadius(obj.radius(), centerX, centerY, centerX + deltaX, centerY + deltaY)
-                obj.setRadius(newRadius)
+//                val newRadius = calculateNewRadius(obj.widthObj(), centerX, centerY, centerX + deltaX, centerY + deltaY)
+//                obj.setWidthObj(newRadius)
             }
             Handle.BottomLeft -> {
-                val newRadius = calculateNewRadius(obj.radius(), centerX + deltaX, centerY, centerX, centerY + deltaY)
-                obj.setRadius(newRadius)
-                obj.setX(centerX + deltaX)
+//                val newRadius = calculateNewRadius(obj.widthObj(), centerX + deltaX, centerY, centerX, centerY + deltaY)
+//                obj.setWidthObj(newRadius)
+//                obj.setObjX(centerX + deltaX)
             }
             Handle.TopCenter -> {
                 rect.left += deltaX
                 rect.right += deltaX
                 rect.top += deltaY
                 rect.bottom += deltaY
-                obj.setX( deltaX)
-                obj.setY( deltaY)
+                obj.setObjX( deltaX)
+                obj.setObjY( deltaY)
             }
         }
     }
@@ -270,17 +276,21 @@ class Drawer(context: Context, attrs: AttributeSet) : View(context, attrs) {
             obj.draw(canvas)
 
             if(transformerStatus){
-                if(obj.getId() == objActiveForTransfomer){
-                    rect.left = obj.getX() - obj.radius()
-                    rect.right = obj.getX() + obj.radius()
-                    rect.top = obj.getY() - obj.radius()
-                    rect.bottom = obj.getY() + obj.radius()
+                if(obj.getObjId() == objActiveForTransfomer){
+                    rect.left = obj.getObjX() - obj.width()
+                    rect.right = obj.getObjX() + obj.width()
+                    rect.top = obj.getObjY() - obj.width()
+                    rect.bottom = obj.getObjY() + obj.width()
+
 
 
                     canvas.drawRect(rect, handlePaint)
                     drawHandles(canvas)
+
+
                 }
             }
+
 //            canvas.drawRect(barRect,barPaint)
 //            drawBar(canvas)
         }
@@ -296,7 +306,7 @@ class Drawer(context: Context, attrs: AttributeSet) : View(context, attrs) {
         object BottomLeft : Handle()
     }
 
-    fun addObject(obj: DrawableObject) {
+    fun addObject(obj: ObjectInterface) {
         objectsToDraw.add(obj)
         invalidate()
     }
@@ -304,4 +314,23 @@ class Drawer(context: Context, attrs: AttributeSet) : View(context, attrs) {
     companion object {
     }
 
+
+    private fun drawOval(canvas: Canvas, mX:Float, mY:Float, height:Float, width:Float, mPaint : Paint){
+        Log.d("canvas-1","canvas is drawn")
+
+
+
+
+        val radius = height
+        val oval = RectF(mX , mY  , mX + (width - radius), mY + radius*2)
+        canvas.drawRect(oval,mPaint)
+
+        canvas.drawCircle(mX, mY+radius, radius, mPaint)
+        canvas.drawCircle(mX + (width - radius), mY+radius, radius, mPaint)
+
+
+
+
+
+    }
 }

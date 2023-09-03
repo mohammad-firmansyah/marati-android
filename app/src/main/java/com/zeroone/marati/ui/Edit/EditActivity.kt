@@ -11,6 +11,7 @@ import android.view.Window
 import android.widget.ImageButton
 import com.zeroone.marati.R
 import com.zeroone.marati.custom.Circle
+import com.zeroone.marati.custom.Switch
 import com.zeroone.marati.databinding.ActivityEditDashboardBinding
 
 class EditActivity : AppCompatActivity() {
@@ -35,19 +36,22 @@ class EditActivity : AppCompatActivity() {
         val isDialog = Dialog(this)
 
         val paint = Paint().apply {
-            color = Color.BLUE
+            color = Color.RED
             style = Paint.Style.FILL
         }
 
         val circle = Circle(300f, 400f, 100f, paint)
+        val switch = Switch(this,300f,400f,200f,paint)
 
         dialogView.findViewById<ImageButton>(R.id.close).setOnClickListener {
             isDialog.dismiss()
         }
 
         dialogView.findViewById<ImageButton>(R.id.plus_siwtch).setOnClickListener {
-            binding.drawer.addObject(circle)
+//            binding.drawer.addObject(circle)
+            binding.drawer.addObject(switch)
         }
+
 
 
 
