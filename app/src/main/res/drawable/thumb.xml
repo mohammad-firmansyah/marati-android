@@ -26,8 +26,8 @@
                 android:radius="13dp"
                 />
             <stroke
-                android:width="3dp"
-                android:color="#000"
+                android:width="2dp"
+                android:color="#5D49E2"
                 />
 
             <size
