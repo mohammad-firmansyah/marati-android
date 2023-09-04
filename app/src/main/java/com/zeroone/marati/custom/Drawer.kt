@@ -310,27 +310,17 @@ class Drawer(context: Context, attrs: AttributeSet) : View(context, attrs) {
         objectsToDraw.add(obj)
         invalidate()
     }
+    fun setMode(input: Boolean) {
+        mode = input
+        invalidate()
+    }
+    fun getMode() : Boolean {
+        return mode
+    }
 
     companion object {
     }
 
 
-    private fun drawOval(canvas: Canvas, mX:Float, mY:Float, height:Float, width:Float, mPaint : Paint){
-        Log.d("canvas-1","canvas is drawn")
 
-
-
-
-        val radius = height
-        val oval = RectF(mX , mY  , mX + (width - radius), mY + radius*2)
-        canvas.drawRect(oval,mPaint)
-
-        canvas.drawCircle(mX, mY+radius, radius, mPaint)
-        canvas.drawCircle(mX + (width - radius), mY+radius, radius, mPaint)
-
-
-
-
-
-    }
 }
