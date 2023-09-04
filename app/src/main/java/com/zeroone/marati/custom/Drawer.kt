@@ -45,7 +45,7 @@ class Drawer(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
     private val transformerDrawable: Drawable = context.getDrawable(R.drawable.baseline_rectangle_24)!!
 
-    val rect: RectF = RectF(100f, 100f, 300f, 300f)
+    val rect: RectF = RectF(300f, 400f, 500f, 600f)
     val barRect: RectF = RectF(100f, 100f, 600f, 40f)
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
@@ -56,11 +56,13 @@ class Drawer(context: Context, attrs: AttributeSet) : View(context, attrs) {
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
                 val obj = getObjTouched(touchX, touchY)
+                Log.d("centerX-first", rect.centerX().toString())
                 activeHandle = getTouchedHandle( touchX, touchY)
                 if (obj != null) {
                     activeObj = obj
                     if(isTouchInsideObj(obj,touchX, touchY)){
                         if(mode){
+                            Log.d("centerX-touched", rect.centerX().toString())
 
                             objActiveForTransfomer = obj.getObjId()
                             transformerStatus = true
@@ -206,17 +208,11 @@ class Drawer(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
         when (handle) {
             Handle.TopLeft -> {
-                val newRadius = calculateNewRadius(obj.width(), centerX + deltaX, centerY + deltaY, centerX, centerY)
-
-                Log.d("circle","delta y ${deltaY.toString()}")
-                Log.d("circle","delta x ${deltaX.toString()}")
 
                 if (deltaX <= 0){
-                    Log.d("circle","nambah")
-                    obj.setWidth(obj.width() - deltaX)
+                    obj.setWidth(obj.width() - deltaX*2f)
                 } else if(deltaX > 0) {
-                    Log.d("circle","ngurang")
-                    obj.setWidth(obj.width() - deltaX)
+                    obj.setWidth(obj.width() - deltaX*2f)
                 }
 
 //                obj.setX(obj.getObjX() + deltaX/2)
@@ -241,8 +237,8 @@ class Drawer(context: Context, attrs: AttributeSet) : View(context, attrs) {
                 rect.right += deltaX
                 rect.top += deltaY
                 rect.bottom += deltaY
-                obj.setObjX( deltaX)
-                obj.setObjY( deltaY)
+                obj.setObjX(obj.getObjX() + deltaX*1.2f)
+                obj.setObjY(obj.getObjY() + deltaY*1.2f)
             }
         }
     }
@@ -277,12 +273,10 @@ class Drawer(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
             if(transformerStatus){
                 if(obj.getObjId() == objActiveForTransfomer){
-                    rect.left = obj.getObjX() - obj.width()
-                    rect.right = obj.getObjX() + obj.width()
-                    rect.top = obj.getObjY() - obj.width()
-                    rect.bottom = obj.getObjY() + obj.width()
-
-
+                    rect.left = obj.getObjX() - (obj.height() /2) - 70f
+                    rect.right = obj.getObjX() + obj.width() + 70f
+                    rect.top = obj.getObjY() - 70f
+                    rect.bottom = obj.getObjY() + obj.height()  +70f
 
                     canvas.drawRect(rect, handlePaint)
                     drawHandles(canvas)
