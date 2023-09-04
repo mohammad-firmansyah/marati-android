@@ -38,12 +38,12 @@ class Switch(private val context: Context, private var x: Float, private var y: 
     }
 
     override fun setObjX(input: Float): Float  {
-        x += input
+        x = input
         return x
     }
 
     override fun setObjY(input: Float): Float {
-        y += input
+        y = input
         return y
     }
 
@@ -57,7 +57,7 @@ class Switch(private val context: Context, private var x: Float, private var y: 
     }
 
     override fun height(): Float {
-        return width/4
+        return width/2
     }
 
 
