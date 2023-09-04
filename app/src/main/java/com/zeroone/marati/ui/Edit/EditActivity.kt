@@ -43,6 +43,10 @@ class EditActivity : AppCompatActivity() {
         val circle = Circle(300f, 400f, 100f, paint)
         val switch = Switch(this,300f,400f,200f,paint)
 
+        binding.mode.setOnClickListener {
+            binding.drawer.setMode(!binding.drawer.getMode())
+        }
+
         dialogView.findViewById<ImageButton>(R.id.close).setOnClickListener {
             isDialog.dismiss()
         }
