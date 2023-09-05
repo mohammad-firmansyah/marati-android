@@ -237,8 +237,8 @@ class Drawer(context: Context, attrs: AttributeSet) : View(context, attrs) {
                 rect.right += deltaX
                 rect.top += deltaY
                 rect.bottom += deltaY
-                obj.setObjX(obj.getObjX() + deltaX*1.2f)
-                obj.setObjY(obj.getObjY() + deltaY*1.2f)
+                obj.setObjX(obj.getObjX() + ((deltaX)*1.2f))
+                obj.setObjY(obj.getObjY() + ((deltaY)*1.2f))
             }
         }
     }
