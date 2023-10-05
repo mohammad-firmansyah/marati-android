@@ -214,31 +214,35 @@ class Drawer(context: Context, attrs: AttributeSet) : View(context, attrs) {
                 } else if(deltaX > 0) {
                     obj.setWidth(obj.width() - deltaX*2f)
                 }
-
-//                obj.setX(obj.getObjX() + deltaX/2)
-//                obj.setY(obj.getObjY() + deltaY/2)
             }
             Handle.TopRight -> {
-//                val newRadius = calculateNewRadius(obj.widthObj(), centerX, centerY + deltaY, centerX + deltaX, centerY)
-//                obj.setWidthObj(newRadius)
-//                obj.setObjY(centerY + deltaY)
+                if (deltaX <= 0){
+                    obj.setWidth(obj.width() + deltaX*2f)
+                } else if(deltaX > 0) {
+                    obj.setWidth(obj.width() + deltaX*2f)
+                }
             }
             Handle.BottomRight -> {
-//                val newRadius = calculateNewRadius(obj.widthObj(), centerX, centerY, centerX + deltaX, centerY + deltaY)
-//                obj.setWidthObj(newRadius)
+                if (deltaX <= 0){
+                    obj.setWidth(obj.width() + deltaX*2f)
+                } else if(deltaX > 0) {
+                    obj.setWidth(obj.width() + deltaX*2f)
+                }
             }
             Handle.BottomLeft -> {
-//                val newRadius = calculateNewRadius(obj.widthObj(), centerX + deltaX, centerY, centerX, centerY + deltaY)
-//                obj.setWidthObj(newRadius)
-//                obj.setObjX(centerX + deltaX)
+                if (deltaX <= 0){
+                    obj.setWidth(obj.width() - deltaX*2f)
+                } else if(deltaX > 0) {
+                    obj.setWidth(obj.width() - deltaX*2f)
+                }
             }
             Handle.TopCenter -> {
                 rect.left += deltaX
                 rect.right += deltaX
                 rect.top += deltaY
                 rect.bottom += deltaY
-                obj.setObjX(obj.getObjX() + ((deltaX)*1.2f))
-                obj.setObjY(obj.getObjY() + ((deltaY)*1.2f))
+                obj.setObjX(obj.getObjX() + ((deltaX)))
+                obj.setObjY(obj.getObjY() + ((deltaY)))
             }
         }
     }
@@ -273,10 +277,10 @@ class Drawer(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
             if(transformerStatus){
                 if(obj.getObjId() == objActiveForTransfomer){
-                    rect.left = obj.getObjX() - (obj.height() /2) - 70f
-                    rect.right = obj.getObjX() + obj.width() + 70f
-                    rect.top = obj.getObjY() - 70f
-                    rect.bottom = obj.getObjY() + obj.height()  +70f
+                    rect.left = obj.getObjX() - (obj.height() /2) - 20f
+                    rect.right = obj.getObjX() + obj.width() + 20f
+                    rect.top = obj.getObjY() - 20f
+                    rect.bottom = obj.getObjY() + obj.height()  +20f
 
                     canvas.drawRect(rect, handlePaint)
                     drawHandles(canvas)
