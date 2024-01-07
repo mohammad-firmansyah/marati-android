@@ -6,26 +6,80 @@ import android.graphics.Paint
 import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.Window
 import android.widget.ImageButton
+import com.example.anoopm.mqtt.manager.MqttHandler
 import com.zeroone.marati.R
 import com.zeroone.marati.custom.Circle
 import com.zeroone.marati.custom.Switch
 import com.zeroone.marati.databinding.ActivityEditDashboardBinding
+import com.zeroone.marati.utils.UIUpdaterInterface
+import com.zeroone.marati.utils.Utils
+import org.eclipse.paho.android.service.MqttAndroidClient
+import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken
+import org.eclipse.paho.client.mqttv3.MqttCallback
+import org.eclipse.paho.client.mqttv3.MqttMessage
 
-class EditActivity : AppCompatActivity() {
+class EditActivity : AppCompatActivity(), UIUpdaterInterface {
 
     private lateinit var binding : ActivityEditDashboardBinding
+    private lateinit var mqttAndroidClient : MqttAndroidClient
+    var mqttHandler:MqttHandler? = null
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityEditDashboardBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        mqttAndroidClient = MqttAndroidClient(this, "tcp://broker.hivemq.com:1883", "client-101010-id")
+
+        val list = listOf(
+            "test",
+            "test2",
+            "test3"
+        )
+
+        Utils.connect(mqttAndroidClient,list)
+        // Wait for the connection to be established before proceeding
+        mqttAndroidClient.setCallback(object : MqttCallback {
+            override fun connectionLost(cause: Throwable) {
+                // Handle connection loss if needed
+            }
+
+            override fun messageArrived(topic: String, message: MqttMessage) {
+                // Handle incoming messages if needed
+                try {
+                    // Extract data from the received message
+                    val data = String(message.payload, charset("UTF-8"))
+
+                    // Handle the received data as needed
+                    handleReceivedData(data)
+
+                } catch (e: Exception) {
+                    // Handle errors in extracting or processing the data
+                    e.printStackTrace()
+                }
+            }
+
+            override fun deliveryComplete(token: IMqttDeliveryToken) {
+                // Acknowledgement on delivery complete
+                if (mqttAndroidClient.isConnected) {
+                    // Connection is established, start EditActivity
+
+                } else {
+                    // Handle unsuccessful connection
+                }
+            }
+        })
+
         binding.show.setOnClickListener {
             showNavDrawer()
         }
+
 
     }
 
@@ -68,5 +122,42 @@ class EditActivity : AppCompatActivity() {
         isDialog.setContentView(dialogView)
         isDialog.setCancelable(true)
 
+    }
+
+    fun handleReceivedData(data: String) {
+        // Here, you can do something with the received data
+        // For example, update UI, store in a database, etc.
+        println("Received data: $data")
+    }
+
+    override fun resetUIWithConnection(status: Boolean) {
+//        ipAddressField.isEnabled  = !status
+//        topicField.isEnabled      = !status
+//        messageField.isEnabled    = status
+//        connectBtn.isEnabled      = !status
+//        sendBtn.isEnabled         = status
+
+        // Update the status label.
+        if (status){
+            updateStatusViewWith("Connected")
+        }else{
+            updateStatusViewWith("Disconnected")
+        }
+    }
+
+    override fun updateStatusViewWith(status: String) {
+//        binding.statusLabl.text = status
+    }
+
+    override fun update(message: String) {
+
+//        var text = messageHistoryView.text.toString()
+//        var newText = """
+//            $text
+//            $message
+//            """
+//        //var newText = text.toString() + "\n" + message +  "\n"
+//        messageHistoryView.setText(newText)
+//        messageHistoryView.setSelection(messageHistoryView.text.length)
     }
 }

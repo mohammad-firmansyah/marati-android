@@ -11,6 +11,12 @@ import com.zeroone.marati.R
 import com.zeroone.marati.utils.ObjectInterface
 import com.zeroone.marati.utils.SwitchInterface
 import com.zeroone.marati.utils.Utils
+import org.eclipse.paho.android.service.MqttAndroidClient
+import org.eclipse.paho.client.mqttv3.IMqttActionListener
+import org.eclipse.paho.client.mqttv3.IMqttToken
+import org.eclipse.paho.client.mqttv3.MqttException
+import org.eclipse.paho.client.mqttv3.MqttMessage
+import org.eclipse.paho.client.mqttv3.MqttPersistenceException
 
 
 class Switch(private val context: Context, private var x: Float, private var y: Float, private var width: Float, private var paint: Paint,
@@ -64,13 +70,67 @@ class Switch(private val context: Context, private var x: Float, private var y: 
     override fun draw(canvas: Canvas) {
 
         drawOval(canvas,x,y,width/4,width,paint)
+        val mqttAndroidClient = MqttAndroidClient(context, "tcp://broker.hivemq.com:1883", "client-101010-id")
+
+
+
+
         if(status){
+            try {
+                mqttAndroidClient.connect(null, object : IMqttActionListener {
+                    override fun onSuccess(mqttToken: IMqttToken) {
+                        Log.i("LOGTAG", "Client connected")
+                        Log.i("LOGTAG", "Topics=${mqttToken.topics}")
+
+                        try {
+
+                            Utils.publish(mqttAndroidClient,"test","on")
+
+                        } catch (e: MqttPersistenceException) {
+                            e.printStackTrace()
+                        } catch (e: MqttException) {
+                            e.printStackTrace()
+                        }
+                    }
+
+                    override fun onFailure(arg0: IMqttToken, arg1: Throwable) {
+                        Log.i("LOGTAG", "Client connection failed: ${arg1.message}")
+                    }
+                })
+            } catch (e: MqttException) {
+                e.printStackTrace()
+            }
+
             val text = "ON"
             drawThumb(canvas,x+width/2,y ,width/4,width/2,thumbPaint)
             canvas.drawText(text, (x+width/2) - 10, y + 65, textPaint)
 
         } else {
+            try {
+                mqttAndroidClient.connect(null, object : IMqttActionListener {
+                    override fun onSuccess(mqttToken: IMqttToken) {
+                        Log.i("LOGTAG", "Client connected")
+                        Log.i("LOGTAG", "Topics=${mqttToken.topics}")
 
+                        try {
+
+
+                            Utils.publish(mqttAndroidClient,"test","off")
+
+                        } catch (e: MqttPersistenceException) {
+                            e.printStackTrace()
+                        } catch (e: MqttException) {
+                            e.printStackTrace()
+                        }
+                    }
+
+                    override fun onFailure(arg0: IMqttToken, arg1: Throwable) {
+                        Log.i("LOGTAG", "Client connection failed: ${arg1.message}")
+                    }
+                })
+            } catch (e: MqttException) {
+                e.printStackTrace()
+            }
             val text = "OFF"
             drawThumb(canvas,x,y ,width/4,width/2,thumbPaint)
             canvas.drawText(text, x - 10, y + 65, textPaint)

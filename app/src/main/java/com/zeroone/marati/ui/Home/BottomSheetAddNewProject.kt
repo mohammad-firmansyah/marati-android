@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,8 +15,14 @@ import android.widget.LinearLayout
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.zeroone.marati.R
 import com.zeroone.marati.ui.Edit.EditActivity
+import com.zeroone.marati.utils.Utils
+import org.eclipse.paho.android.service.MqttAndroidClient
+import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken
+import org.eclipse.paho.client.mqttv3.MqttCallback
+import org.eclipse.paho.client.mqttv3.MqttMessage
 
 class BottomSheetAddNewProject : BottomSheetDialogFragment() {
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,6 +48,8 @@ class BottomSheetAddNewProject : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
+
         view.findViewById<CheckBox>(R.id.cred_button).setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
                 view.findViewById<EditText>(R.id.username).visibility = View.VISIBLE
@@ -54,5 +63,8 @@ class BottomSheetAddNewProject : BottomSheetDialogFragment() {
         view.findViewById<Button>(R.id.addNewProject).setOnClickListener {
             startActivity(Intent(view.context, EditActivity::class.java))
         }
+
     }
+
+
 }
