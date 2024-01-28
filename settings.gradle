@@ -14,9 +14,7 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         jcenter()
-        maven {
-            url "https://repo.eclipse.org/content/repositories/paho-releases/"
-        }
+        maven { url 'https://jitpack.io' }
     }
 }
 rootProject.name = "marati"

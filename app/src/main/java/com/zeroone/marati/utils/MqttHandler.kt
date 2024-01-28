@@ -3,7 +3,7 @@ package com.example.anoopm.mqtt.manager
 import android.content.Context
 import android.util.Log
 import com.zeroone.marati.utils.UIUpdaterInterface
-import org.eclipse.paho.android.service.MqttAndroidClient
+import info.mqtt.android.service.MqttAndroidClient
 import org.eclipse.paho.client.mqttv3.*
 import java.util.*
 

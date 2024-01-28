@@ -15,11 +15,6 @@ import android.widget.LinearLayout
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.zeroone.marati.R
 import com.zeroone.marati.ui.Edit.EditActivity
-import com.zeroone.marati.utils.Utils
-import org.eclipse.paho.android.service.MqttAndroidClient
-import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken
-import org.eclipse.paho.client.mqttv3.MqttCallback
-import org.eclipse.paho.client.mqttv3.MqttMessage
 
 class BottomSheetAddNewProject : BottomSheetDialogFragment() {
 
@@ -61,7 +56,7 @@ class BottomSheetAddNewProject : BottomSheetDialogFragment() {
         }
 
         view.findViewById<Button>(R.id.addNewProject).setOnClickListener {
-            startActivity(Intent(view.context, EditActivity::class.java))
+            startActivity(Intent(requireActivity(), EditActivity::class.java))
         }
 
     }

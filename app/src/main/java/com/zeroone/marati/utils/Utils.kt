@@ -1,8 +1,8 @@
 package com.zeroone.marati.utils
 
-import android.content.Context
 import android.util.Log
-import org.eclipse.paho.android.service.MqttAndroidClient
+import info.mqtt.android.service.BuildConfig
+import info.mqtt.android.service.MqttAndroidClient
 import org.eclipse.paho.client.mqttv3.IMqttActionListener
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken
 import org.eclipse.paho.client.mqttv3.IMqttToken
@@ -10,6 +10,8 @@ import org.eclipse.paho.client.mqttv3.MqttCallback
 import org.eclipse.paho.client.mqttv3.MqttException
 import org.eclipse.paho.client.mqttv3.MqttMessage
 import kotlin.random.Random
+
+
 
 class Utils {
 
@@ -22,9 +24,10 @@ class Utils {
                 .joinToString("")
         }
 
-        fun connect(mqttAndroidClient: MqttAndroidClient,topics:List<String>) {
+        fun connect(mqttAndroidClient: MqttAndroidClient, topics:List<String>) {
 
             try {
+
                 val token = mqttAndroidClient.connect()
                 token.actionCallback = object : IMqttActionListener {
                     override fun onSuccess(asyncActionToken: IMqttToken)                        {

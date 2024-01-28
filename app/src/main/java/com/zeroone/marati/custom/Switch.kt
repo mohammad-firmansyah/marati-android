@@ -11,7 +11,7 @@ import com.zeroone.marati.R
 import com.zeroone.marati.utils.ObjectInterface
 import com.zeroone.marati.utils.SwitchInterface
 import com.zeroone.marati.utils.Utils
-import org.eclipse.paho.android.service.MqttAndroidClient
+import info.mqtt.android.service.MqttAndroidClient
 import org.eclipse.paho.client.mqttv3.IMqttActionListener
 import org.eclipse.paho.client.mqttv3.IMqttToken
 import org.eclipse.paho.client.mqttv3.MqttException

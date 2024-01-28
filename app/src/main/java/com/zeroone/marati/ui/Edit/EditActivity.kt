@@ -1,32 +1,36 @@
 package com.zeroone.marati.ui.Edit
 
 import android.app.Dialog
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.drawable.ColorDrawable
-import androidx.appcompat.app.AppCompatActivity
+import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
 import android.view.Window
 import android.widget.ImageButton
-import com.example.anoopm.mqtt.manager.MqttHandler
+import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import com.zeroone.marati.R
 import com.zeroone.marati.custom.Circle
 import com.zeroone.marati.custom.Switch
 import com.zeroone.marati.databinding.ActivityEditDashboardBinding
 import com.zeroone.marati.utils.UIUpdaterInterface
 import com.zeroone.marati.utils.Utils
-import org.eclipse.paho.android.service.MqttAndroidClient
+import info.mqtt.android.service.MqttAndroidClient
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken
 import org.eclipse.paho.client.mqttv3.MqttCallback
 import org.eclipse.paho.client.mqttv3.MqttMessage
+
 
 class EditActivity : AppCompatActivity(), UIUpdaterInterface {
 
     private lateinit var binding : ActivityEditDashboardBinding
     private lateinit var mqttAndroidClient : MqttAndroidClient
-    var mqttHandler:MqttHandler? = null
 
 
 
@@ -35,7 +39,32 @@ class EditActivity : AppCompatActivity(), UIUpdaterInterface {
         binding = ActivityEditDashboardBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        mqttAndroidClient = MqttAndroidClient(this, "tcp://broker.hivemq.com:1883", "client-101010-id")
+
+
+        if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O){
+            val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            val channel = NotificationChannel(
+                "202",
+                "mqtt1",
+                NotificationManager.IMPORTANCE_HIGH
+            )
+
+            notificationManager.createNotificationChannel(channel)
+
+            val builder = Notification.Builder(this,"202")
+                .setContentTitle("Mqtt Foreground service")
+                .setContentText("Running")
+                .setSmallIcon(R.drawable.baseline_notifications_24)
+
+                .build()
+
+
+            mqttAndroidClient = MqttAndroidClient(this, "tcp://broker.hivemq.com:1883", "client-android-001").apply {
+                setForegroundService(builder)
+            }
+        } else{
+            mqttAndroidClient = MqttAndroidClient(this, "tcp://broker.hivemq.com:1883", "client-aaa-id")
+        }
 
         val list = listOf(
             "test",
