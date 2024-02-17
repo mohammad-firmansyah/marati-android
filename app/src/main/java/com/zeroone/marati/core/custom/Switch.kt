@@ -79,8 +79,6 @@ class Switch(private val context: Context, private var x: Float, private var y: 
             try {
                 mqttAndroidClient.connect(null, object : IMqttActionListener {
                     override fun onSuccess(mqttToken: IMqttToken) {
-                        Log.i("LOGTAG", "Client connected")
-                        Log.i("LOGTAG", "Topics=${mqttToken.topics}")
 
                         try {
 

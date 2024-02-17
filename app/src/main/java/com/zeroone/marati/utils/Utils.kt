@@ -122,10 +122,9 @@ class Utils {
             try {
                 encodedPayload = data.toByteArray(charset("UTF-8"))
                 val message = MqttMessage(encodedPayload)
-                message.qos = 2
+                message.qos = 0
                 message.isRetained = false
                 mqttAndroidClient.publish(topic, message)
-                Log.i("Publish","success")
             } catch (e: Exception) {
                 Log.e("Publish",e.message.toString())
             } catch (e: MqttException) {
