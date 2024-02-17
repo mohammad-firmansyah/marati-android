@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="12dp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:padding="25dp"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/textView12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/name"
+            android:fontFamily="@font/poppins_bold"
+            android:textSize="15sp"
+            style="@style/textColorDynamic"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/editTextText"
+            android:layout_width="289dp"
+            android:layout_height="47dp"
+            android:ems="10"
+            android:layout_marginTop="5dp"
+            android:paddingHorizontal="17dp"
+            android:background="@drawable/bg_border_black"
+            android:inputType="text"
+            android:hint="@string/name"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView12" />
+
+        <TextView
+            android:id="@+id/textView14"
+            style="@style/textColorDynamic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:fontFamily="@font/poppins_bold"
+            android:text="@string/model"
+            android:textSize="15sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextText" />
+
+        <TextView
+            android:id="@+id/textView13"
+            style="@style/textColorDynamic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="108dp"
+            android:layout_marginTop="32dp"
+            android:fontFamily="@font/poppins_light"
+            android:text="@string/nomodel"
+            android:textSize="15sp"
+            app:layout_constraintStart_toEndOf="@+id/textView14"
+            app:layout_constraintTop_toBottomOf="@+id/editTextText" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/filebtnmodel"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="@color/main"
+            android:src="@drawable/file_icon"
+            android:tintMode="@color/white"
+            app:layout_constraintStart_toEndOf="@+id/textView13"
+            app:layout_constraintTop_toBottomOf="@+id/editTextText" />
+
+        <TextView
+            android:id="@+id/textView15"
+            style="@style/textColorDynamic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_bold"
+            android:layout_marginTop="15dp"
+            android:text="@string/input"
+            android:textSize="15sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView14" />
+
+
+        <EditText
+            android:id="@+id/nama"
+            android:layout_width="99dp"
+            android:layout_height="47dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_border_black"
+            android:ems="10"
+            android:hint="@string/name"
+            android:inputType="text"
+            android:paddingHorizontal="17dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView15" />
+
+        <EditText
+            android:id="@+id/tipe"
+            android:layout_width="99dp"
+            android:layout_height="47dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_border_black"
+            android:ems="10"
+            android:hint="@string/tipe"
+            android:inputType="text"
+            android:paddingHorizontal="17dp"
+            app:layout_constraintStart_toEndOf="@+id/nama"
+            app:layout_constraintTop_toBottomOf="@+id/textView15" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/add"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:backgroundTint="@color/main"
+            android:src="@drawable/ic_plus"
+            android:tintMode="@color/white"
+            app:layout_constraintStart_toEndOf="@+id/tipe"
+            app:layout_constraintTop_toBottomOf="@+id/textView15" />
+
+        <TextView
+            android:id="@+id/textView16"
+            style="@style/textColorDynamic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/poppins_bold"
+            android:text="@string/output"
+            android:textSize="15sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/nama" />
+
+        <EditText
+            android:id="@+id/nama2"
+            android:layout_width="99dp"
+            android:layout_height="47dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_border_black"
+            android:ems="10"
+            android:hint="@string/name"
+            android:inputType="text"
+            android:paddingHorizontal="17dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView16" />
+
+        <EditText
+            android:id="@+id/tipe2"
+            android:layout_width="99dp"
+            android:layout_height="47dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_border_black"
+            android:ems="10"
+            android:hint="@string/tipe"
+            android:inputType="text"
+            android:paddingHorizontal="17dp"
+            app:layout_constraintStart_toEndOf="@+id/nama"
+            app:layout_constraintTop_toBottomOf="@+id/textView16" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/add2"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:backgroundTint="@color/main"
+            android:src="@drawable/ic_plus"
+            android:tintMode="@color/white"
+            app:layout_constraintStart_toEndOf="@+id/tipe"
+            app:layout_constraintTop_toBottomOf="@+id/textView16" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:text="@string/plusmodel"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tipe2" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

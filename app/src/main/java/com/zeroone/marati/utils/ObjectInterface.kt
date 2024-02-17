@@ -4,6 +4,7 @@ import android.graphics.Canvas
 
 interface ObjectInterface {
     val id : String;
+    val status : Boolean;
     fun getObjX() : Float
     fun getObjY() : Float
 

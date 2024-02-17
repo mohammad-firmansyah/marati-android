@@ -23,4 +23,8 @@
         <item name="android:windowEnterAnimation">@anim/slide_in</item>
         <item name="android:windowExitAnimation">@anim/slide_out</item>
     </style>
+
+    <style name="textColorDynamic">
+        <item name="android:textColor">@color/black</item>
+    </style>
 </resources>

@@ -10,14 +10,16 @@ import android.graphics.Paint
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.Window
 import android.widget.ImageButton
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.zeroone.marati.R
-import com.zeroone.marati.custom.Circle
-import com.zeroone.marati.custom.Switch
+import com.zeroone.marati.core.custom.Circle
+import com.zeroone.marati.core.custom.Switch
 import com.zeroone.marati.databinding.ActivityEditDashboardBinding
 import com.zeroone.marati.utils.UIUpdaterInterface
 import com.zeroone.marati.utils.Utils
@@ -32,6 +34,16 @@ class EditActivity : AppCompatActivity(), UIUpdaterInterface {
     private lateinit var binding : ActivityEditDashboardBinding
     private lateinit var mqttAndroidClient : MqttAndroidClient
 
+    private val requestPermissionLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ){ isGranted ->
+            if(isGranted) {
+                Log.d("EditActivity", "Notification Granted")
+            }else{
+                Log.d("EditActivity", "Notification Not Granted")
+            }
+        }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,22 +52,24 @@ class EditActivity : AppCompatActivity(), UIUpdaterInterface {
         setContentView(binding.root)
 
 
+        if(Build.VERSION.SDK_INT >= 33) {
+            requestPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
+        }
 
-        if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             val channel = NotificationChannel(
-                "202",
+                CHANNEL_ID,
                 "mqtt1",
                 NotificationManager.IMPORTANCE_HIGH
             )
 
             notificationManager.createNotificationChannel(channel)
 
-            val builder = Notification.Builder(this,"202")
+            val builder = Notification.Builder(this, CHANNEL_ID)
                 .setContentTitle("Mqtt Foreground service")
-                .setContentText("Running")
+                .setContentText("Anda sedang menjalankan dashboard Mqtt")
                 .setSmallIcon(R.drawable.baseline_notifications_24)
-
                 .build()
 
 
@@ -123,7 +137,7 @@ class EditActivity : AppCompatActivity(), UIUpdaterInterface {
             style = Paint.Style.FILL
         }
 
-        val circle = Circle(300f, 400f, 100f, paint)
+        val circle = Circle(300f, 400f, 100f, paint,false)
         val switch = Switch(this,300f,400f,200f,paint)
 
         binding.mode.setOnClickListener {
@@ -188,5 +202,9 @@ class EditActivity : AppCompatActivity(), UIUpdaterInterface {
 //        //var newText = text.toString() + "\n" + message +  "\n"
 //        messageHistoryView.setText(newText)
 //        messageHistoryView.setSelection(messageHistoryView.text.length)
+    }
+
+    companion object {
+        val CHANNEL_ID = "mqtt_dashboard"
     }
 }

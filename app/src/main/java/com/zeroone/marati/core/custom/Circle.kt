@@ -1,11 +1,13 @@
-package com.zeroone.marati.custom
+package com.zeroone.marati.core.custom
 
 import android.graphics.Canvas
 import android.graphics.Paint
 import com.zeroone.marati.utils.ObjectInterface
 import com.zeroone.marati.utils.Utils
 
-class Circle(private var centerX: Float, private var centerY: Float, private var radius: Float, private var paint: Paint) :
+class Circle(private var centerX: Float, private var centerY: Float, private var radius: Float, private var paint: Paint,
+             override val status: Boolean
+) :
     ObjectInterface {
     override var id : String = Utils.generateRandomString(5)
 

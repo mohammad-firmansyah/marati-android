@@ -1,4 +1,4 @@
-package com.zeroone.marati.custom
+package com.zeroone.marati.core.custom
 
 import android.content.Context
 import android.graphics.Canvas

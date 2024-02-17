@@ -28,7 +28,7 @@
         app:tint="@color/white"
         tools:targetApi="o" />
 
-    <com.zeroone.marati.custom.Drawer
+    <com.zeroone.marati.core.custom.Drawer
         android:id="@+id/drawer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
