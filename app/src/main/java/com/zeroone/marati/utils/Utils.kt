@@ -1,6 +1,9 @@
 package com.zeroone.marati.utils
 
 import android.util.Log
+import android.view.View
+import androidx.lifecycle.ViewModel
+import com.zeroone.marati.ui.Edit.EditViewModel
 import info.mqtt.android.service.BuildConfig
 import info.mqtt.android.service.MqttAndroidClient
 import org.eclipse.paho.client.mqttv3.IMqttActionListener
@@ -10,7 +13,7 @@ import org.eclipse.paho.client.mqttv3.MqttCallback
 import org.eclipse.paho.client.mqttv3.MqttException
 import org.eclipse.paho.client.mqttv3.MqttMessage
 import kotlin.random.Random
-
+import android.content.Context
 
 
 class Utils {
@@ -51,7 +54,7 @@ class Utils {
         }
 
         fun subscribe(topics: List<String>,mqttAndroidClient:MqttAndroidClient) {
-            val qos = 2 // Mention your qos value
+            val qos = 0 // Mention your qos value
 
                 for (topic in topics){
                     try {
@@ -87,6 +90,33 @@ class Utils {
                         // data is the desired received message
                         // Give your callback on message received here
                         Log.i("Message",data)
+                    } catch (e: Exception) {
+                        // Give your callback on error here
+                    }
+                }
+                override fun deliveryComplete(token: IMqttDeliveryToken) {
+                    // Acknowledgement on delivery complete
+                }
+            })
+        }
+
+        fun receiveMessagesByTopic(mqttAndroidClient: MqttAndroidClient,selectedTopic:String,vm:ViewModel) {
+            mqttAndroidClient.setCallback(object : MqttCallback {
+                override fun connectionLost(cause: Throwable) {
+                    //connectionStatus = false
+                    // Give your callback on failure here
+                }
+                override fun messageArrived(topic: String, message: MqttMessage) {
+                    try {
+                        if(topic == selectedTopic){
+                            val data = String(message.payload, charset("UTF-8"))
+                            // data is the desired received message
+                            // Give your callback on message received here
+                            val editViewModel = vm as EditViewModel
+                            editViewModel.setMessage(data)
+
+                            Log.i("Message",data)
+                        }
                     } catch (e: Exception) {
                         // Give your callback on error here
                     }

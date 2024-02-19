@@ -24,6 +24,8 @@ class Switch(private val context: Context, private var x: Float, private var y: 
              override val id: String =  Utils.generateRandomString(5)
 ) :
     ObjectInterface,SwitchInterface {
+
+    val mqttAndroidClient = MqttAndroidClient(context, "tcp://broker.hivemq.com:1883", "client-101010-id")
     private val thumbPaint: Paint = Paint().apply {
         color = Color.BLUE
         isFakeBoldText = true
@@ -35,6 +37,8 @@ class Switch(private val context: Context, private var x: Float, private var y: 
     }
     private lateinit var oval : RectF
     private lateinit var thumb : RectF
+    var statusPushSwitch = true
+
     override fun getObjX(): Float {
         return x
     }
@@ -67,13 +71,36 @@ class Switch(private val context: Context, private var x: Float, private var y: 
     }
 
 
-    override fun draw(canvas: Canvas) {
+    override fun drawCustom(canvas: Canvas,ci:String) {
 
         drawOval(canvas,x,y,width/4,width,paint)
-        val mqttAndroidClient = MqttAndroidClient(context, "tcp://broker.hivemq.com:1883", "client-101010-id")
+
+        if(status){
+
+            val text = "ON"
+            drawThumb(canvas,x+width/2,y ,width/4,width/2,thumbPaint)
+            canvas.drawText(text, (x+width/2) - 10, y + 65, textPaint)
+
+        } else {
+            val text = "OFF"
+            drawThumb(canvas,x,y ,width/4,width/2,thumbPaint)
+            canvas.drawText(text, x - 10, y + 65, textPaint)
+        }
 
 
+    }
 
+       override fun getObjId(): String {
+        return id
+    }
+
+    fun setStatusPush(status:Boolean){
+        this.statusPushSwitch = status
+
+
+    }
+
+    override fun pushData(){
 
         if(status){
             try {
@@ -82,7 +109,7 @@ class Switch(private val context: Context, private var x: Float, private var y: 
 
                         try {
 
-                            Utils.publish(mqttAndroidClient,"test","on")
+                            Utils.publish(mqttAndroidClient,"stry","on")
 
                         } catch (e: MqttPersistenceException) {
                             e.printStackTrace()
@@ -99,9 +126,6 @@ class Switch(private val context: Context, private var x: Float, private var y: 
                 e.printStackTrace()
             }
 
-            val text = "ON"
-            drawThumb(canvas,x+width/2,y ,width/4,width/2,thumbPaint)
-            canvas.drawText(text, (x+width/2) - 10, y + 65, textPaint)
 
         } else {
             try {
@@ -111,9 +135,7 @@ class Switch(private val context: Context, private var x: Float, private var y: 
                         Log.i("LOGTAG", "Topics=${mqttToken.topics}")
 
                         try {
-
-
-                            Utils.publish(mqttAndroidClient,"test","off")
+                            Utils.publish(mqttAndroidClient,"stry","off")
 
                         } catch (e: MqttPersistenceException) {
                             e.printStackTrace()
@@ -129,16 +151,12 @@ class Switch(private val context: Context, private var x: Float, private var y: 
             } catch (e: MqttException) {
                 e.printStackTrace()
             }
-            val text = "OFF"
-            drawThumb(canvas,x,y ,width/4,width/2,thumbPaint)
-            canvas.drawText(text, x - 10, y + 65, textPaint)
         }
     }
 
-       override fun getObjId(): String {
-        return id
-    }
+    override fun getData() {
 
+    }
 
     override fun insideObject(touchX: Float, touchY: Float): Boolean {
         val distanceX = touchX - oval.centerX()
@@ -188,11 +206,4 @@ class Switch(private val context: Context, private var x: Float, private var y: 
         canvas.drawCircle(mX + (width - radius), mY+radius, radius, mPaint)
     }
 
-    private fun animateThumb(){
-        for (i in 1..10) {
-            thumb.left += 10f
-            thumb.right += 10f
-            this.draw(canvas = Canvas())
-        }
-    }
 }

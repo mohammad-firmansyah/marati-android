@@ -10,29 +10,30 @@ import android.graphics.Paint
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
+import android.util.AttributeSet
 import android.util.Log
+import android.util.Xml
 import android.view.Gravity
 import android.view.Window
 import android.widget.ImageButton
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.zeroone.marati.R
-import com.zeroone.marati.core.custom.Circle
 import com.zeroone.marati.core.custom.Switch
+import com.zeroone.marati.core.custom.Text
 import com.zeroone.marati.databinding.ActivityEditDashboardBinding
 import com.zeroone.marati.utils.UIUpdaterInterface
 import com.zeroone.marati.utils.Utils
 import info.mqtt.android.service.MqttAndroidClient
-import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken
-import org.eclipse.paho.client.mqttv3.MqttCallback
-import org.eclipse.paho.client.mqttv3.MqttMessage
+import org.xmlpull.v1.XmlPullParser
 
 
 class EditActivity : AppCompatActivity(), UIUpdaterInterface {
 
     private lateinit var binding : ActivityEditDashboardBinding
     private lateinit var mqttAndroidClient : MqttAndroidClient
+    private val viewModel : EditViewModel by viewModels()
 
     private val requestPermissionLauncher =
         registerForActivityResult(
@@ -83,41 +84,13 @@ class EditActivity : AppCompatActivity(), UIUpdaterInterface {
         val list = listOf(
             "test",
             "test2",
-            "test3"
+            "test3",
+            "topik123"
         )
 
         Utils.connect(mqttAndroidClient,list)
-        // Wait for the connection to be established before proceeding
-        mqttAndroidClient.setCallback(object : MqttCallback {
-            override fun connectionLost(cause: Throwable) {
-                // Handle connection loss if needed
-            }
+//         Wait for the connection to be established before proceeding
 
-            override fun messageArrived(topic: String, message: MqttMessage) {
-                // Handle incoming messages if needed
-                try {
-                    // Extract data from the received message
-                    val data = String(message.payload, charset("UTF-8"))
-
-                    // Handle the received data as needed
-                    handleReceivedData(data)
-
-                } catch (e: Exception) {
-                    // Handle errors in extracting or processing the data
-                    e.printStackTrace()
-                }
-            }
-
-            override fun deliveryComplete(token: IMqttDeliveryToken) {
-                // Acknowledgement on delivery complete
-                if (mqttAndroidClient.isConnected) {
-                    // Connection is established, start EditActivity
-
-                } else {
-                    // Handle unsuccessful connection
-                }
-            }
-        })
 
         binding.show.setOnClickListener {
             showNavDrawer()
@@ -125,6 +98,8 @@ class EditActivity : AppCompatActivity(), UIUpdaterInterface {
 
 
     }
+
+
 
     private fun showNavDrawer() {
 
@@ -137,8 +112,8 @@ class EditActivity : AppCompatActivity(), UIUpdaterInterface {
             style = Paint.Style.FILL
         }
 
-        val circle = Circle(300f, 400f, 100f, paint,false)
         val switch = Switch(this,300f,400f,200f,paint)
+        val text = Text(this,200f,500f,400f,paint,content = "no content", status = false,vm = viewModel)
 
         binding.mode.setOnClickListener {
             binding.drawer.setMode(!binding.drawer.getMode())
@@ -151,6 +126,11 @@ class EditActivity : AppCompatActivity(), UIUpdaterInterface {
         dialogView.findViewById<ImageButton>(R.id.plus_siwtch).setOnClickListener {
 //            binding.drawer.addObject(circle)
             binding.drawer.addObject(switch)
+        }
+
+        dialogView.findViewById<ImageButton>(R.id.plus_text).setOnClickListener {
+//            binding.drawer.addObject(circle)
+            binding.drawer.addObject(text)
         }
 
 

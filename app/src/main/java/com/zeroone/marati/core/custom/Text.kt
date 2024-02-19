@@ -1,5 +1,8 @@
 package com.zeroone.marati.core.custom
 
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import com.zeroone.marati.utils.TextInterface
 
 import android.content.Context
@@ -7,28 +10,40 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
+import android.os.Build
+import android.util.AttributeSet
+import android.util.Log
+import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModel
+import com.zeroone.marati.R
+import com.zeroone.marati.ui.Edit.EditActivity
+import com.zeroone.marati.ui.Edit.EditViewModel
 import com.zeroone.marati.utils.ObjectInterface
 import com.zeroone.marati.utils.Utils
+import info.mqtt.android.service.MqttAndroidClient
+import org.eclipse.paho.client.mqttv3.IMqttActionListener
+import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken
+import org.eclipse.paho.client.mqttv3.IMqttToken
+import org.eclipse.paho.client.mqttv3.MqttCallback
+import org.eclipse.paho.client.mqttv3.MqttException
+import org.eclipse.paho.client.mqttv3.MqttMessage
+import org.eclipse.paho.client.mqttv3.MqttPersistenceException
 
 
 class Text(private val context: Context, private var x: Float, private var y: Float, private var width: Float, private var paint: Paint,
            override val id: String =  Utils.generateRandomString(5),
            override var content: String,
            override val status: Boolean,
-) :
-    ObjectInterface,TextInterface {
-    private val thumbPaint: Paint = Paint().apply {
-        color = Color.BLUE
-        isFakeBoldText = true
-    }
+    val vm: ViewModel,
 
-    private val textPaint: Paint = Paint().apply {
-        color = Color.BLACK
-        textSize = 40f
-    }
+) :
+    ObjectInterface,TextInterface{
 
     private lateinit var oval : RectF
     private lateinit var thumb : RectF
+
+
     override fun getObjX(): Float {
         return x
     }
@@ -60,9 +75,13 @@ class Text(private val context: Context, private var x: Float, private var y: Fl
         return width/2
     }
 
-
-    override fun draw(canvas: Canvas) {
+    override fun drawCustom(canvas: Canvas,content:String) {
+        Log.d("content",content)
+        paint.textSize = 60f
+        canvas.drawText(content, (x+width/2) - 10, y + 200, paint)
+        getData()
     }
+
 
     override fun getObjId(): String {
         return id
@@ -76,47 +95,44 @@ class Text(private val context: Context, private var x: Float, private var y: Fl
         return distanceSquared <= (oval.width() / 2f) * (oval.width() / 2f)
     }
 
-    override fun setX(input: Float): Float {
+    override fun pushData() {
+
+    }
+
+    override fun getData() {
+
+    }
+
+    private fun updateContent(it: String) {
+        content = it
+    }
+
+    fun handleReceivedData(data: String) {
+        // Here, you can do something with the received data
+        // For example, update UI, store in a database, etc.
+        println("Received data: $data")
+    }
+
+    override fun setTextX(input: Float): Float {
         thumb.left = input
         thumb.right = input
         return 0f
     }
 
-    override fun setY(input: Float): Float {
+    override fun setTextY(input: Float): Float {
         thumb.top = input
         thumb.bottom = input
         return 0f
     }
-    override fun getX(): Float {
+
+
+    override fun getTextX(): Float {
         return thumb.centerX() - (thumb.width()/2)
     }
 
-    override fun getY(): Float {
+    override fun getTextY(): Float {
         return thumb.centerY() - (thumb.height()/2)
     }
 
-    private fun drawOval(canvas: Canvas, mX:Float, mY:Float, height:Float, width:Float, mPaint : Paint){
-        val radius = height
-        oval = RectF(mX , mY  , mX + (width - radius), mY + radius*2)
-        canvas.drawRect(oval,mPaint)
 
-        canvas.drawCircle(mX, mY+radius, radius, mPaint)
-        canvas.drawCircle(mX + (width - radius), mY+radius, radius, mPaint)
-    }
-    private fun drawThumb(canvas: Canvas, mX:Float, mY:Float, height:Float, width:Float, mPaint : Paint){
-        val radius = height
-        thumb = RectF(mX , mY  , mX + (width - radius), mY + radius*2)
-        canvas.drawRect(thumb,mPaint)
-
-        canvas.drawCircle(mX, mY+radius, radius, mPaint)
-        canvas.drawCircle(mX + (width - radius), mY+radius, radius, mPaint)
-    }
-
-    private fun animateThumb(){
-        for (i in 1..10) {
-            thumb.left += 10f
-            thumb.right += 10f
-            this.draw(canvas = Canvas())
-        }
-    }
 }

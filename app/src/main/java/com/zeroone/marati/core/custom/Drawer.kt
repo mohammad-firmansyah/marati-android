@@ -15,11 +15,19 @@ import androidx.core.graphics.toRect
 import com.zeroone.marati.R
 import com.zeroone.marati.utils.ObjectInterface
 import com.zeroone.marati.utils.SwitchInterface
+import com.zeroone.marati.utils.Utils
+import info.mqtt.android.service.MqttAndroidClient
+import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken
+import org.eclipse.paho.client.mqttv3.MqttCallback
+import org.eclipse.paho.client.mqttv3.MqttMessage
 import kotlin.math.sqrt
 
 
 class Drawer(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
+
+    // mqtt setup
+    private var mqttAndroidClient = MqttAndroidClient(context,"tcp://broker.hivemq.com:1883", "client-101011-id")
 
     //    drawer
     private val objectsToDraw = mutableListOf<com.zeroone.marati.utils.ObjectInterface>()
@@ -28,7 +36,6 @@ class Drawer(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
     //transformer
     private var activeHandle: Handle? = null
-
     private var previousX: Float = 0f
     private var previousY: Float = 0f
     private val handleSize: Float = 50f
@@ -40,6 +47,8 @@ class Drawer(context: Context, attrs: AttributeSet) : View(context, attrs) {
     private val mPaint: Paint = Paint().apply {
         color = Color.BLUE
     }
+
+    var content = "no content"
     private var objActiveForTransfomer : String = ""
     var transformerStatus = false
 
@@ -273,7 +282,7 @@ class Drawer(context: Context, attrs: AttributeSet) : View(context, attrs) {
         super.onDraw(canvas)
 
         for (obj in objectsToDraw) {
-            obj.draw(canvas)
+            obj.drawCustom(canvas,content)
 
             if(transformerStatus){
                 if(obj.getObjId() == objActiveForTransfomer){
@@ -287,13 +296,17 @@ class Drawer(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
 
                 }
+            }else{
+                if(obj is Switch){
+                    obj.pushData()
+                }
             }
 
 //            canvas.drawRect(barRect,barPaint)
 //            drawBar(canvas)
         }
 //
-
+        getData()
 
     }
     sealed class Handle {
@@ -317,6 +330,49 @@ class Drawer(context: Context, attrs: AttributeSet) : View(context, attrs) {
     }
 
     companion object {
+    }
+
+
+    fun getData() {
+        try {
+            Utils.connect(mqttAndroidClient, listOf("stry"))
+            mqttAndroidClient.setCallback(object : MqttCallback {
+                override fun connectionLost(cause: Throwable) {
+                    // Handle connection loss if needed
+                }
+
+                override fun messageArrived(topic: String, message: MqttMessage) {
+                    // Handle incoming messages if needed
+                    try {
+                        // Extract data from the received message
+                        val data = String(message.payload, charset("UTF-8"))
+
+                        // Handle the received data as needed
+                        if(topic == "stry"){
+                            content = data
+                            invalidate()
+                        }
+
+
+                    } catch (e: Exception) {
+                        // Handle errors in extracting or processing the data
+                        e.printStackTrace()
+                    }
+                }
+
+                override fun deliveryComplete(token: IMqttDeliveryToken) {
+                    // Acknowledgement on delivery complete
+                    if (mqttAndroidClient.isConnected) {
+                        // Connection is established, start EditActivity
+
+                    } else {
+                        // Handle unsuccessful connection
+                    }
+                }
+            })
+        }catch (e:Exception){
+            e.printStackTrace()
+        }
     }
 
 
