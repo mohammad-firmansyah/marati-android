@@ -1,4 +1,4 @@
-package com.zeroone.marati.ui.Edit
+package com.zeroone.marati.Edit
 
 import android.app.Dialog
 import android.app.Notification
@@ -14,11 +14,16 @@ import android.util.AttributeSet
 import android.util.Log
 import android.util.Xml
 import android.view.Gravity
+import android.view.View
 import android.view.Window
+import android.widget.FrameLayout
 import android.widget.ImageButton
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.zeroone.marati.Home.BottomSheetAddNewProject
+import com.zeroone.marati.Home.BottomSheetDetailComponent
 import com.zeroone.marati.R
 import com.zeroone.marati.core.custom.Switch
 import com.zeroone.marati.core.custom.Text
@@ -89,6 +94,12 @@ class EditActivity : AppCompatActivity(), UIUpdaterInterface {
         )
 
         Utils.connect(mqttAndroidClient,list)
+
+        BottomSheetBehavior.from(binding.sheet).apply {
+            peekHeight = 100
+            state = BottomSheetBehavior.STATE_COLLAPSED
+        }
+
 //         Wait for the connection to be established before proceeding
 
 
@@ -184,6 +195,9 @@ class EditActivity : AppCompatActivity(), UIUpdaterInterface {
 //        messageHistoryView.setSelection(messageHistoryView.text.length)
     }
 
+    fun showBottomSheet() {
+        binding.sheet.visibility = View.VISIBLE
+    }
     companion object {
         val CHANNEL_ID = "mqtt_dashboard"
     }
