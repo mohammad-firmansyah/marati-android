@@ -1,4 +1,4 @@
-package com.zeroone.marati.ui.Home.Fragments
+package com.zeroone.marati.Home.Fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

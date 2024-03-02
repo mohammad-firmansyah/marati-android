@@ -1,4 +1,4 @@
-package com.zeroone.marati.ui.Onboarding
+package com.zeroone.marati.Onboarding
 
 import android.animation.ObjectAnimator
 import android.content.Intent
@@ -9,8 +9,8 @@ import android.view.View
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.zeroone.marati.databinding.ActivityOnboardingBinding
-import com.zeroone.marati.ui.Login.LoginActivity
-import com.zeroone.marati.ui.Register.RegisterActivity
+import com.zeroone.marati.Login.LoginActivity
+import com.zeroone.marati.Register.RegisterActivity
 
 
 class OnboardingActivity : AppCompatActivity() {
@@ -34,11 +34,11 @@ class OnboardingActivity : AppCompatActivity() {
 
 
         binding.loginBtn.setOnClickListener {
-            startActivity(Intent(this@OnboardingActivity,LoginActivity::class.java))
+            startActivity(Intent(this@OnboardingActivity, LoginActivity::class.java))
         }
 
         binding.registerBtn.setOnClickListener {
-            startActivity(Intent(this@OnboardingActivity,RegisterActivity::class.java))
+            startActivity(Intent(this@OnboardingActivity, RegisterActivity::class.java))
         }
 
     }

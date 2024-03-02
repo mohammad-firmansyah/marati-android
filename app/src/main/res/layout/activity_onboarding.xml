@@ -7,7 +7,7 @@
         android:layout_height="match_parent"
         android:background="@drawable/onboarding_background"
         android:scaleType="fitCenter"
-        tools:context=".ui.Onboarding.OnboardingActivity"
+        tools:context=".Onboarding.OnboardingActivity"
 
         >
 

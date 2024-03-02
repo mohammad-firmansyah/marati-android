@@ -1,4 +1,4 @@
-package com.zeroone.marati.ui.Home
+package com.zeroone.marati.Home
 
 import android.content.Intent
 import android.graphics.Color
@@ -14,7 +14,7 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.zeroone.marati.R
-import com.zeroone.marati.ui.Edit.EditActivity
+import com.zeroone.marati.Edit.EditActivity
 
 class BottomSheetAddNewProject : BottomSheetDialogFragment() {
 

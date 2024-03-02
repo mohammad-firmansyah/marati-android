@@ -12,6 +12,7 @@ import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import androidx.core.graphics.toRect
+import com.zeroone.marati.Edit.EditActivity
 import com.zeroone.marati.R
 import com.zeroone.marati.utils.ObjectInterface
 import com.zeroone.marati.utils.SwitchInterface
@@ -26,11 +27,14 @@ import kotlin.math.sqrt
 class Drawer(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
 
+
+    init{
+        getData()
+    }
     // mqtt setup
-    private var mqttAndroidClient = MqttAndroidClient(context,"tcp://broker.hivemq.com:1883", "client-101011-id")
 
     //    drawer
-    private val objectsToDraw = mutableListOf<com.zeroone.marati.utils.ObjectInterface>()
+    private val objectsToDraw = mutableListOf<ObjectInterface>()
     private var isDragging: Boolean = false
     private var mode : Boolean = false
 
@@ -64,6 +68,8 @@ class Drawer(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
+                val editActivity = context as EditActivity
+                editActivity.showBottomSheet()
                 val obj = getObjTouched(touchX, touchY)
                 Log.d("centerX-first", rect.centerX().toString())
                 activeHandle = getTouchedHandle( touchX, touchY)
@@ -306,7 +312,7 @@ class Drawer(context: Context, attrs: AttributeSet) : View(context, attrs) {
 //            drawBar(canvas)
         }
 //
-        getData()
+
 
     }
     sealed class Handle {
@@ -335,46 +341,11 @@ class Drawer(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
     fun getData() {
         try {
+            var mqttAndroidClient = MqttAndroidClient(context,"tcp://broker.hivemq.com:1883", "client-101011-id")
             Utils.connect(mqttAndroidClient, listOf("stry"))
-            mqttAndroidClient.setCallback(object : MqttCallback {
-                override fun connectionLost(cause: Throwable) {
-                    // Handle connection loss if needed
-                }
 
-                override fun messageArrived(topic: String, message: MqttMessage) {
-                    // Handle incoming messages if needed
-                    try {
-                        // Extract data from the received message
-                        val data = String(message.payload, charset("UTF-8"))
-
-                        // Handle the received data as needed
-                        if(topic == "stry"){
-                            content = data
-                            invalidate()
-                        }
-
-
-                    } catch (e: Exception) {
-                        // Handle errors in extracting or processing the data
-                        e.printStackTrace()
-                    }
-                }
-
-                override fun deliveryComplete(token: IMqttDeliveryToken) {
-                    // Acknowledgement on delivery complete
-                    if (mqttAndroidClient.isConnected) {
-                        // Connection is established, start EditActivity
-
-                    } else {
-                        // Handle unsuccessful connection
-                    }
-                }
-            })
         }catch (e:Exception){
             e.printStackTrace()
         }
     }
-
-
-
 }

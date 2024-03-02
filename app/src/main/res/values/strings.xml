@@ -17,4 +17,5 @@
     <string name="tipe">Type</string>
     <string name="output">Output</string>
     <string name="plusmodel">+ Model</string>
+    <string name="detail_component">Detail Component</string>
 </resources>

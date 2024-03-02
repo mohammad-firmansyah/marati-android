@@ -17,8 +17,8 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
 import com.zeroone.marati.R
-import com.zeroone.marati.ui.Edit.EditActivity
-import com.zeroone.marati.ui.Edit.EditViewModel
+import com.zeroone.marati.Edit.EditActivity
+import com.zeroone.marati.Edit.EditViewModel
 import com.zeroone.marati.utils.ObjectInterface
 import com.zeroone.marati.utils.Utils
 import info.mqtt.android.service.MqttAndroidClient

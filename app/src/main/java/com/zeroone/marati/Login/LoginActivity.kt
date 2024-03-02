@@ -1,11 +1,11 @@
-package com.zeroone.marati.ui.Login
+package com.zeroone.marati.Login
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.zeroone.marati.R
 import com.zeroone.marati.databinding.ActivityLoginBinding
-import com.zeroone.marati.ui.Home.HomeActivity
+import com.zeroone.marati.Home.HomeActivity
 
 class LoginActivity : AppCompatActivity() {
 
@@ -17,7 +17,7 @@ class LoginActivity : AppCompatActivity() {
         supportActionBar?.hide()
 
         binding.button.setOnClickListener{
-            startActivity(Intent(this@LoginActivity,HomeActivity::class.java))
+            startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
         }
     }
 }

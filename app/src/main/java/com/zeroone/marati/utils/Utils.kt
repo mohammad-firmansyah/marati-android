@@ -3,7 +3,7 @@ package com.zeroone.marati.utils
 import android.util.Log
 import android.view.View
 import androidx.lifecycle.ViewModel
-import com.zeroone.marati.ui.Edit.EditViewModel
+import com.zeroone.marati.Edit.EditViewModel
 import info.mqtt.android.service.BuildConfig
 import info.mqtt.android.service.MqttAndroidClient
 import org.eclipse.paho.client.mqttv3.IMqttActionListener

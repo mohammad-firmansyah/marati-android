@@ -1,4 +1,4 @@
-package com.zeroone.marati.ui.Register
+package com.zeroone.marati.Register
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

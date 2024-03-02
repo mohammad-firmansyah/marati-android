@@ -1,4 +1,4 @@
-package com.zeroone.marati.ui.Edit
+package com.zeroone.marati.Edit
 
 import android.content.Context
 import androidx.lifecycle.LiveData
