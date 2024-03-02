@@ -1,4 +1,4 @@
-package com.zeroone.marati.utils
+package com.zeroone.marati.core.utils
 
 interface SwitchInterface {
 

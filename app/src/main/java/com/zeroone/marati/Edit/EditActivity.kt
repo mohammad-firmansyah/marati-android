@@ -28,8 +28,8 @@ import com.zeroone.marati.R
 import com.zeroone.marati.core.custom.Switch
 import com.zeroone.marati.core.custom.Text
 import com.zeroone.marati.databinding.ActivityEditDashboardBinding
-import com.zeroone.marati.utils.UIUpdaterInterface
-import com.zeroone.marati.utils.Utils
+import com.zeroone.marati.core.utils.UIUpdaterInterface
+import com.zeroone.marati.core.utils.Utils
 import info.mqtt.android.service.MqttAndroidClient
 import org.xmlpull.v1.XmlPullParser
 

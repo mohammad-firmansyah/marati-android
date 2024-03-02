@@ -14,9 +14,9 @@ import android.view.View
 import androidx.core.graphics.toRect
 import com.zeroone.marati.Edit.EditActivity
 import com.zeroone.marati.R
-import com.zeroone.marati.utils.ObjectInterface
-import com.zeroone.marati.utils.SwitchInterface
-import com.zeroone.marati.utils.Utils
+import com.zeroone.marati.core.utils.ObjectInterface
+import com.zeroone.marati.core.utils.SwitchInterface
+import com.zeroone.marati.core.utils.Utils
 import info.mqtt.android.service.MqttAndroidClient
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken
 import org.eclipse.paho.client.mqttv3.MqttCallback
@@ -132,7 +132,7 @@ class Drawer(context: Context, attrs: AttributeSet) : View(context, attrs) {
         return true
     }
 
-    private fun getActiveObjectByHandle(x: Float, y: Float): com.zeroone.marati.utils.ObjectInterface? {
+    private fun getActiveObjectByHandle(x: Float, y: Float): ObjectInterface? {
         for (obj in objectsToDraw) {
 
             val activeHandle = getTouchedHandle(x, y)
@@ -154,14 +154,14 @@ class Drawer(context: Context, attrs: AttributeSet) : View(context, attrs) {
         return distanceSquared <= (rect.width() / 2f) * (rect.width() / 2f)
     }
 
-    private fun isTouchInsideObj(obj : com.zeroone.marati.utils.ObjectInterface, touchX: Float, touchY: Float): Boolean {
+    private fun isTouchInsideObj(obj : ObjectInterface, touchX: Float, touchY: Float): Boolean {
             val distanceX = touchX - ((obj.width()/2) + (obj.getObjX()-(obj.height()/2)))
             val distanceY = touchY - ((obj.height()/2) + (obj.getObjY()-(obj.height()/2)))
             val distanceSquared = distanceX * distanceX + distanceY * distanceY
             return distanceSquared <= (obj.width() / 2f) * (obj.width() / 2f)
     }
 
-    private fun getObjTouched(touchX: Float, touchY: Float): com.zeroone.marati.utils.ObjectInterface? {
+    private fun getObjTouched(touchX: Float, touchY: Float): ObjectInterface? {
         for (obj in objectsToDraw){
             if (isTouchInsideObj(obj,touchX,touchY)){
                 return obj
@@ -217,7 +217,7 @@ class Drawer(context: Context, attrs: AttributeSet) : View(context, attrs) {
         }
         return null
     }
-    private fun updateRectangle(obj: com.zeroone.marati.utils.ObjectInterface, handle: Handle, deltaX: Float, deltaY: Float) {
+    private fun updateRectangle(obj: ObjectInterface, handle: Handle, deltaX: Float, deltaY: Float) {
         val centerX = obj.getObjX()
         val centerY = obj.getObjY()
 

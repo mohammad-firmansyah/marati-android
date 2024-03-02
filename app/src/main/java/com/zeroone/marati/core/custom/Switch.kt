@@ -8,9 +8,9 @@ import android.graphics.RectF
 import android.util.Log
 import androidx.core.content.ContextCompat
 import com.zeroone.marati.R
-import com.zeroone.marati.utils.ObjectInterface
-import com.zeroone.marati.utils.SwitchInterface
-import com.zeroone.marati.utils.Utils
+import com.zeroone.marati.core.utils.ObjectInterface
+import com.zeroone.marati.core.utils.SwitchInterface
+import com.zeroone.marati.core.utils.Utils
 import info.mqtt.android.service.MqttAndroidClient
 import org.eclipse.paho.client.mqttv3.IMqttActionListener
 import org.eclipse.paho.client.mqttv3.IMqttToken
@@ -23,7 +23,7 @@ class Switch(private val context: Context, private var x: Float, private var y: 
              override var status: Boolean = false,
              override val id: String =  Utils.generateRandomString(5)
 ) :
-    ObjectInterface,SwitchInterface {
+    ObjectInterface, SwitchInterface {
 
     val mqttAndroidClient = MqttAndroidClient(context, "tcp://broker.hivemq.com:1883", "client-101010-id")
     private val thumbPaint: Paint = Paint().apply {

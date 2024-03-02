@@ -3,7 +3,7 @@ package com.zeroone.marati.core.custom
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import com.zeroone.marati.utils.TextInterface
+import com.zeroone.marati.core.utils.TextInterface
 
 import android.content.Context
 import android.graphics.Canvas
@@ -19,8 +19,8 @@ import androidx.lifecycle.ViewModel
 import com.zeroone.marati.R
 import com.zeroone.marati.Edit.EditActivity
 import com.zeroone.marati.Edit.EditViewModel
-import com.zeroone.marati.utils.ObjectInterface
-import com.zeroone.marati.utils.Utils
+import com.zeroone.marati.core.utils.ObjectInterface
+import com.zeroone.marati.core.utils.Utils
 import info.mqtt.android.service.MqttAndroidClient
 import org.eclipse.paho.client.mqttv3.IMqttActionListener
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken
@@ -35,10 +35,10 @@ class Text(private val context: Context, private var x: Float, private var y: Fl
            override val id: String =  Utils.generateRandomString(5),
            override var content: String,
            override val status: Boolean,
-    val vm: ViewModel,
+           val vm: ViewModel,
 
-) :
-    ObjectInterface,TextInterface{
+           ) :
+    ObjectInterface, TextInterface {
 
     private lateinit var oval : RectF
     private lateinit var thumb : RectF
