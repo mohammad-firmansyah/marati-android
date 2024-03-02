@@ -69,7 +69,7 @@ class Drawer(context: Context, attrs: AttributeSet) : View(context, attrs) {
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
                 val editActivity = context as EditActivity
-                editActivity.showBottomSheet()
+
                 val obj = getObjTouched(touchX, touchY)
                 Log.d("centerX-first", rect.centerX().toString())
                 activeHandle = getTouchedHandle( touchX, touchY)
@@ -207,7 +207,7 @@ class Drawer(context: Context, attrs: AttributeSet) : View(context, attrs) {
     }
 
 
-    private fun getTouchedHandle(x: Float, y: Float): Handle? {
+    private fun  getTouchedHandle(x: Float, y: Float): Handle? {
         val handles = getHandles()
         handles.forEach { handle ->
             val handleBounds = getHandleBounds(handle)
