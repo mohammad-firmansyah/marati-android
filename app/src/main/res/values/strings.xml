@@ -18,4 +18,8 @@
     <string name="output">Output</string>
     <string name="plusmodel">+ Model</string>
     <string name="detail_component">Detail Component</string>
+    <string name="oauth_google">1050834109037-h791htc98as3jdrc0u65cduikb3ueik4.apps.googleusercontent.com</string>
+    <string name="facebook_app_id">1097498414654485</string>
+    <string name="fb_login_protocol_scheme">fb1097498414654485</string>
+    <string name="facebook_client_token">d0dd646e61b12d87c215ebd576cfb2a9</string>
 </resources>
