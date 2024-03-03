@@ -2,25 +2,23 @@ package com.zeroone.marati.Login
 
 import android.content.Intent
 import android.content.IntentSender
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.util.Patterns
-import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.get
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.android.gms.common.api.ApiException
 import com.google.android.material.snackbar.Snackbar
-import com.zeroone.marati.R
-import com.zeroone.marati.databinding.ActivityLoginBinding
 import com.zeroone.marati.Home.HomeActivity
+import com.zeroone.marati.R
 import com.zeroone.marati.core.ui.PreferenceManager
 import com.zeroone.marati.core.ui.ViewModelFactory
 import com.zeroone.marati.dataStore
+import com.zeroone.marati.databinding.ActivityLoginBinding
 
 class LoginActivity : AppCompatActivity() {
 
@@ -130,8 +128,10 @@ class LoginActivity : AppCompatActivity() {
     private fun nextPage() {
         binding.button.text = "Login"
         binding.button.isEnabled = true
+        val intent = Intent(this@LoginActivity, HomeActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
         finish()
-        startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
     }
 
     private fun submitListener() {
