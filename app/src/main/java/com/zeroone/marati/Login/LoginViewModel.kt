@@ -53,7 +53,7 @@ class LoginViewModel(private val pref:PreferenceManager) : ViewModel() {
                         val errorBody = response.errorBody()?.string()
                         val errorResponse = Gson().fromJson(errorBody,LoginResponse::class.java)
                         val errorMessage = errorResponse.message
-                        _errorMessage.value = errorMessage
+                        _errorMessage.value = errorMessage!!
                     }
                 }catch (e:Exception){
                     _errorMessage.value = e.message
@@ -81,7 +81,10 @@ class LoginViewModel(private val pref:PreferenceManager) : ViewModel() {
                         _errorMessage.value = response.body()?.message!!
                     }
                 }catch (e:Exception){
-                    _errorMessage.value = e.message
+                    val errorBody = response.errorBody()?.string()
+                    val errorResponse = Gson().fromJson(errorBody,LoginResponse::class.java)
+                    val errorMessage = errorResponse.message
+                    _errorMessage.value = errorMessage!!
                 }
             }
 

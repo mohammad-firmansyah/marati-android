@@ -2,6 +2,7 @@ package com.zeroone.marati.Login
 
 import android.content.Intent
 import android.content.IntentSender
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.util.Patterns
@@ -19,6 +20,7 @@ import com.zeroone.marati.core.ui.PreferenceManager
 import com.zeroone.marati.core.ui.ViewModelFactory
 import com.zeroone.marati.dataStore
 import com.zeroone.marati.databinding.ActivityLoginBinding
+import maes.tech.intentanim.CustomIntent
 
 class LoginActivity : AppCompatActivity() {
 
@@ -38,9 +40,7 @@ class LoginActivity : AppCompatActivity() {
                     val password = credential.password
                     when {
                         idToken != null -> {
-                            // Got an ID token from Google. Use it to authenticate
-                            // with your backend.
-                            Log.d(TAG, idToken)
+                            viewModel.socialLogin(idToken)
                         }
                         password != null -> {
                             // Got a saved username and password. Use them to authenticate
@@ -131,6 +131,7 @@ class LoginActivity : AppCompatActivity() {
         val intent = Intent(this@LoginActivity, HomeActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
         startActivity(intent)
+        CustomIntent.customType(this,"left-to-right")
         finish()
     }
 
