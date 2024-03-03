@@ -24,4 +24,11 @@
     <string name="facebook_client_token">d0dd646e61b12d87c215ebd576cfb2a9</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
+    <string name="project_s_name">Project\'s name</string>
+    <string name="mqtt_server">MQTT Server</string>
+    <string name="port">Port</string>
+    <string name="description">Description</string>
+    <string name="username_password">username &amp; password</string>
+    <string name="project">+ Project</string>
+    <string name="username">Username</string>
 </resources>
