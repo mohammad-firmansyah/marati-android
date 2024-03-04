@@ -3,6 +3,7 @@ package com.zeroone.marati.core.ui
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.zeroone.marati.Home.HomeViewModel
 import com.zeroone.marati.Login.LoginViewModel
 
 
@@ -12,6 +13,10 @@ class ViewModelFactory(private val context: Context,private val pref: Preference
         return when {
             modelClass.isAssignableFrom(LoginViewModel::class.java) -> {
                 LoginViewModel(pref) as T
+            }
+
+            modelClass.isAssignableFrom(HomeViewModel::class.java) -> {
+                HomeViewModel(pref) as T
             }
 
 
