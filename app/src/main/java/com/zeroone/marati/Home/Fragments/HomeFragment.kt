@@ -5,8 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.zeroone.marati.databinding.FragmentHomeBinding
 import com.zeroone.marati.Home.BottomSheetAddNewProject
+import com.zeroone.marati.Home.HomeActivity
+import com.zeroone.marati.core.data.source.remote.response.DataItem
+import com.zeroone.marati.core.ui.DashboardAdapter
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -23,6 +28,8 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
 
     private val binding get() = _binding!!
+    private var dashboards : List<DataItem>? = null
+    private lateinit var parent : HomeActivity
 
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -48,12 +55,27 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        parent = requireActivity() as HomeActivity
+
+        binding.rvDashboard.layoutManager = LinearLayoutManager(requireActivity())
+        binding.rvDashboard.adapter = DashboardAdapter(dashboards)
         binding.addProject.setOnClickListener {
 
             showBottomSheet()
         }
 
+        viewModelListener()
+    }
 
+    private fun viewModelListener() {
+        parent.viewModel.dashboards.observe(viewLifecycleOwner){
+            dashboards = it
+            binding.rvDashboard.adapter = DashboardAdapter(dashboards)
+        }
+
+        parent.viewModel.errorMessage.observe(viewLifecycleOwner){
+            Snackbar.make(parent.binding.root,it,Snackbar.LENGTH_LONG).show()
+        }
     }
 
 
