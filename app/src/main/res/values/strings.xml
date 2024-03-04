@@ -31,4 +31,5 @@
     <string name="username_password">username &amp; password</string>
     <string name="project">+ Project</string>
     <string name="username">Username</string>
+    <string name="dashboard">Dashboard</string>
 </resources>
