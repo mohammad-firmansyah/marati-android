@@ -3,20 +3,28 @@ package com.zeroone.marati.Home
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.zeroone.marati.R
 import com.zeroone.marati.databinding.ActivityHomeBinding
 import com.zeroone.marati.Home.Fragments.HomeFragment
 import com.zeroone.marati.Home.Fragments.ModelFragment
 import com.zeroone.marati.Home.Fragments.ProfilFragment
 import com.zeroone.marati.Home.Fragments.SettingFragment
+import com.zeroone.marati.core.ui.PreferenceManager
+import com.zeroone.marati.core.ui.ViewModelFactory
+import com.zeroone.marati.dataStore
 
 class HomeActivity : AppCompatActivity() {
 
-    private lateinit var binding : ActivityHomeBinding
+    lateinit var binding : ActivityHomeBinding
+    lateinit var viewModel: HomeViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        val pref = PreferenceManager.getInstance(dataStore)
+        val factory = ViewModelFactory.getInstance(this,pref)
+        viewModel = ViewModelProvider(this,factory).get(HomeViewModel::class.java)
 //        supportActionBar?.hide()
         replaceFragment(HomeFragment())
 
