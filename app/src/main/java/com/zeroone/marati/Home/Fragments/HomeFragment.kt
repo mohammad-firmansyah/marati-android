@@ -1,5 +1,6 @@
 package com.zeroone.marati.Home.Fragments
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,6 +11,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.zeroone.marati.databinding.FragmentHomeBinding
 import com.zeroone.marati.Home.BottomSheetAddNewProject
 import com.zeroone.marati.Home.HomeActivity
+import com.zeroone.marati.Login.LoginActivity
 import com.zeroone.marati.core.data.source.remote.response.DataItem
 import com.zeroone.marati.core.ui.DashboardAdapter
 
@@ -58,7 +60,7 @@ class HomeFragment : Fragment() {
         parent = requireActivity() as HomeActivity
 
         binding.rvDashboard.layoutManager = LinearLayoutManager(requireActivity())
-        binding.rvDashboard.adapter = DashboardAdapter(dashboards)
+        binding.rvDashboard.adapter = DashboardAdapter(requireContext(),dashboards, parent.viewModel)
         binding.addProject.setOnClickListener {
 
             showBottomSheet()
@@ -70,11 +72,18 @@ class HomeFragment : Fragment() {
     private fun viewModelListener() {
         parent.viewModel.dashboards.observe(viewLifecycleOwner){
             dashboards = it
-            binding.rvDashboard.adapter = DashboardAdapter(dashboards)
+            binding.rvDashboard.adapter = DashboardAdapter(requireContext(),dashboards,parent.viewModel)
         }
 
         parent.viewModel.errorMessage.observe(viewLifecycleOwner){
-            Snackbar.make(parent.binding.root,it,Snackbar.LENGTH_LONG).show()
+            if(it == "unauthorized"){
+                startActivity(Intent(requireActivity(),LoginActivity::class.java)
+                    .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or
+                            Intent.FLAG_ACTIVITY_CLEAR_TASK or
+                            Intent.FLAG_ACTIVITY_NEW_TASK))
+            }else{
+                Snackbar.make(parent.binding.root,it,Snackbar.LENGTH_LONG).show()
+            }
         }
     }
 
