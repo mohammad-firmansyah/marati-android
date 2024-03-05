@@ -66,6 +66,11 @@ class HomeFragment : Fragment() {
             showBottomSheet()
         }
 
+        binding.container.setOnRefreshListener {
+            parent.viewModel.getDashboards()
+
+            binding.container.isRefreshing = false
+        }
         viewModelListener()
     }
 
