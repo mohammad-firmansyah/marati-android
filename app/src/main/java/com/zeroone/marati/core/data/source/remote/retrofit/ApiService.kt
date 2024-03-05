@@ -5,10 +5,13 @@ import com.zeroone.marati.core.data.source.remote.response.LoginResponse
 import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.HTTP
 import retrofit2.http.Header
 import retrofit2.http.HeaderMap
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface ApiService {
 
@@ -25,6 +28,12 @@ interface ApiService {
     fun getAllDashboard(
         @HeaderMap headers: Map<String, String>
 
+    ) : Call<DashboardResponse>
+
+    @DELETE("/dashboard/{id}")
+    fun deleteDashboard(
+        @HeaderMap headers: Map<String, String>,
+        @Path("id") id:String,
     ) : Call<DashboardResponse>
 
 }
