@@ -11,8 +11,12 @@ import android.view.WindowManager
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
+import com.zeroone.marati.Home.HomeActivity
 import com.zeroone.marati.Onboarding.OnboardingActivity
 import com.zeroone.marati.Splashscreen.SplashscreenActivity
+import com.zeroone.marati.core.ui.PreferenceManager
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "session")
@@ -29,11 +33,23 @@ class MainActivity : AppCompatActivity() {
             window.statusBarColor = Color.parseColor("#FFFFFF")
         }
 
+        val pref = PreferenceManager.getInstance(dataStore)
 
-        Handler().postDelayed({
-            finish()
-            startActivity(Intent(this@MainActivity, OnboardingActivity::class.java))
-        }, 2000)
+        runBlocking {
+            if(pref.getToken().first().isNotEmpty()){
+                Handler().postDelayed({
+                    finish()
+                    startActivity(Intent(this@MainActivity, HomeActivity::class.java))
+                }, 2000)
+
+            }else{
+                Handler().postDelayed({
+                    finish()
+                    startActivity(Intent(this@MainActivity, OnboardingActivity::class.java))
+                }, 2000)
+
+            }
+        }
 
     }
 }
