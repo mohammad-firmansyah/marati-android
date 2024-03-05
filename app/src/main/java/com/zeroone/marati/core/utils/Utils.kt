@@ -1,10 +1,10 @@
 package com.zeroone.marati.core.utils
 
+import android.app.AlertDialog
+import android.content.Context
 import android.util.Log
-import android.view.View
 import androidx.lifecycle.ViewModel
 import com.zeroone.marati.Edit.EditViewModel
-import info.mqtt.android.service.BuildConfig
 import info.mqtt.android.service.MqttAndroidClient
 import org.eclipse.paho.client.mqttv3.IMqttActionListener
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken
@@ -12,13 +12,16 @@ import org.eclipse.paho.client.mqttv3.IMqttToken
 import org.eclipse.paho.client.mqttv3.MqttCallback
 import org.eclipse.paho.client.mqttv3.MqttException
 import org.eclipse.paho.client.mqttv3.MqttMessage
+import java.text.SimpleDateFormat
+import java.util.Locale
+import java.util.TimeZone
 import kotlin.random.Random
-import android.content.Context
 
 
 class Utils {
 
     companion object {
+
         fun generateRandomString(length: Int): String {
             val charPool : List<Char> = ('a'..'z') + ('A'..'Z') + ('0'..'9')
             return (1..length)
@@ -27,6 +30,41 @@ class Utils {
                 .joinToString("")
         }
 
+        fun getLocalFormat(dateUtc: String): String? {
+            val parser = SimpleDateFormat(
+                "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
+                Locale.getDefault()
+            );
+            parser.timeZone = TimeZone.getTimeZone("UTC")
+            val date = parser.parse(dateUtc)
+
+            val formatter = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
+            formatter.timeZone = TimeZone.getDefault()
+            return date?.let { formatter.format(it) }
+        }
+
+        fun showDialogConfirmation(
+            context: Context,
+            title:String,
+            message: String,
+            onPositiveClick: () -> Unit,
+            onNegativeClick: () -> Unit
+            ){
+            val alertDialogBuilder = AlertDialog.Builder(context)
+
+            alertDialogBuilder.setTitle(title)
+            alertDialogBuilder.setMessage(message)
+            alertDialogBuilder.setPositiveButton("Yes"){ _ , _ ->
+                onPositiveClick.invoke()
+            }
+
+            alertDialogBuilder.setNegativeButton("No"){_,_ ->
+                onNegativeClick.invoke()
+            }
+
+            val alertDialog = alertDialogBuilder.create()
+            alertDialog.show()
+        }
         fun connect(mqttAndroidClient: MqttAndroidClient, topics:List<String>) {
 
             try {
