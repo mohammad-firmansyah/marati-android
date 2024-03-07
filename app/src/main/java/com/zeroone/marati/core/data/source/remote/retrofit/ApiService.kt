@@ -1,5 +1,6 @@
 package com.zeroone.marati.core.data.source.remote.retrofit
 
+import com.zeroone.marati.core.data.source.remote.response.AddDashboardResponse
 import com.zeroone.marati.core.data.source.remote.response.DashboardResponse
 import com.zeroone.marati.core.data.source.remote.response.LoginResponse
 import okhttp3.RequestBody
@@ -35,5 +36,11 @@ interface ApiService {
         @HeaderMap headers: Map<String, String>,
         @Path("id") id:String,
     ) : Call<DashboardResponse>
+
+    @POST("/dashboard/")
+    fun addDashboard(
+        @HeaderMap headers: Map<String, String>,
+        @Body() body: RequestBody,
+    ) : Call<AddDashboardResponse>
 
 }
