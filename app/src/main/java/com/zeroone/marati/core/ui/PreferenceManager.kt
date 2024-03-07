@@ -26,6 +26,18 @@ class PreferenceManager private constructor(private val dataStore: DataStore<Pre
         }
     }
 
+    fun getUserId(): kotlinx.coroutines.flow.Flow<String> {
+        return dataStore.data.map { preferences ->
+            preferences[USER_ID] ?: ""
+        }
+    }
+
+    suspend fun setUserId(token:String?) {
+        dataStore.edit { preference ->
+            preference[USER_ID] = token ?: ""
+        }
+    }
+
 
 
 
@@ -36,6 +48,7 @@ class PreferenceManager private constructor(private val dataStore: DataStore<Pre
         private var INSTANCE: PreferenceManager? = null
 
         private val ACCESS_TOKEN = stringPreferencesKey("access_token")
+        private val USER_ID = stringPreferencesKey("user_id")
 
 
         fun getInstance(dataStore: DataStore<Preferences>): PreferenceManager {
