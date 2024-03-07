@@ -32,9 +32,9 @@ class LoginViewModel(private val pref:PreferenceManager) : ViewModel() {
         }
     }
 
-    fun getToken():String{
-        return runBlocking {
-            pref.getToken().first()
+    fun setUserId(id: String?){
+        viewModelScope.launch {
+            pref.setUserId(id)
         }
     }
 
