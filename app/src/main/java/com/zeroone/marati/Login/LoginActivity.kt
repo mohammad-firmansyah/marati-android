@@ -109,10 +109,10 @@ class LoginActivity : AppCompatActivity() {
 
         authListener()
         submitListener()
-        liveDataListener()
+        viewModelListener()
     }
 
-    private fun liveDataListener() {
+    private fun viewModelListener() {
         viewModel.errorMessage.observe(this){
             binding.button.text = "Login"
             binding.button.isEnabled = true
@@ -121,6 +121,7 @@ class LoginActivity : AppCompatActivity() {
 
         viewModel.user.observe(this){
             viewModel.setToken(it.accessToken)
+            viewModel.setUserId(it.id)
             nextPage()
         }
     }
