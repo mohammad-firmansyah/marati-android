@@ -108,4 +108,24 @@ class HomeViewModel(val pref:PreferenceManager):ViewModel() {
             _errorMessage.value = "unauthorized"
         }
     }
+
+    fun createDashboard(data : DataItem) {
+        val token = getToken()
+        if (token.isNotEmpty()) {
+            val json = JSONObject()
+            json.put("name", data.name)
+            json.put("username", data.username)
+            json.put("password", data.password)
+            json.put("description", data.description)
+            json.put("server", data.server)
+            json.put("owner_id", data.ownerId)
+            val body = json.toString().toRequestBody("application/json".toMediaTypeOrNull())
+
+            val header = HashMap<String, String>()
+            header["authorization"] = token
+            val client = ApiConfig.provideApiServiceJs().addDashboard(header,body)
+        } else{
+            _errorMessage.value = "unauthorized"
+        }
+    }
 }
