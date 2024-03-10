@@ -4,12 +4,15 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
+import com.zeroone.marati.core.data.source.remote.response.AddDashboardResponse
 import com.zeroone.marati.core.data.source.remote.response.DashboardResponse
 import com.zeroone.marati.core.data.source.remote.response.DataItem
 import com.zeroone.marati.core.data.source.remote.retrofit.ApiConfig
 import com.zeroone.marati.core.ui.PreferenceManager
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -27,7 +30,6 @@ class HomeViewModel(val pref:PreferenceManager):ViewModel() {
     private val _errorMessage : MutableLiveData<String> = MutableLiveData()
     val errorMessage : LiveData<String> = _errorMessage
 
-
     fun getToken():String{
         return runBlocking {
             pref.getToken().first()
@@ -37,6 +39,13 @@ class HomeViewModel(val pref:PreferenceManager):ViewModel() {
     init {
         getDashboards()
     }
+
+    fun getUserId() : String {
+        return runBlocking {
+            pref.getUserId().first()
+        }
+    }
+
     fun getDashboards(){
         val token =getToken()
         if (token.isNotEmpty()){
@@ -124,6 +133,28 @@ class HomeViewModel(val pref:PreferenceManager):ViewModel() {
             val header = HashMap<String, String>()
             header["authorization"] = token
             val client = ApiConfig.provideApiServiceJs().addDashboard(header,body)
+            client.enqueue(object : Callback<AddDashboardResponse>{
+                override fun onResponse(
+                    call: Call<AddDashboardResponse>,
+                    response: Response<AddDashboardResponse>
+                ) {
+                    try {
+                        if(response.isSuccessful){
+                            _dashboards.value = response.body()?.data
+                        } else{
+                            val error = Gson().fromJson(response.errorBody()?.string(),DashboardResponse::class.java)
+                            _errorMessage.value =  error.message!!
+                        }
+                    } catch (e:Exception){
+                        _errorMessage.value = e.message.toString()
+                    }
+                }
+
+                override fun onFailure(call: Call<AddDashboardResponse>, t: Throwable) {
+                    _errorMessage.value = t.message.toString()
+                }
+
+            })
         } else{
             _errorMessage.value = "unauthorized"
         }
