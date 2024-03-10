@@ -12,20 +12,26 @@ import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.LinearLayout
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.zeroone.marati.R
 import com.zeroone.marati.Edit.EditActivity
+import com.zeroone.marati.core.data.source.remote.response.DataItem
+import com.zeroone.marati.databinding.BottomSheetBinding
 
 class BottomSheetAddNewProject : BottomSheetDialogFragment() {
 
+    private lateinit var parent : HomeActivity
+    private var _binding : BottomSheetBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.bottom_sheet,container,false)
-
+        _binding = BottomSheetBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,19 +50,33 @@ class BottomSheetAddNewProject : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
+        parent = requireActivity() as HomeActivity
 
-        view.findViewById<CheckBox>(R.id.cred_button).setOnCheckedChangeListener { buttonView, isChecked ->
+        binding.credButton.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
-                view.findViewById<EditText>(R.id.username).visibility = View.VISIBLE
-                view.findViewById<EditText>(R.id.password).visibility = View.VISIBLE
+                binding.username.visibility = View.VISIBLE
+                binding.password.visibility = View.VISIBLE
             } else {
-                view.findViewById<EditText>(R.id.username).visibility = View.GONE
-                view.findViewById<EditText>(R.id.password).visibility = View.GONE
+                binding.username.visibility = View.GONE
+                binding.password.visibility = View.GONE
             }
         }
 
         view.findViewById<Button>(R.id.addNewProject).setOnClickListener {
-            startActivity(Intent(requireActivity(), EditActivity::class.java))
+            val data = DataItem(
+                binding.server.text.toString(),
+                binding.password.text.toString(),
+                parent.viewModel.getUserId(),
+                binding.name.text.toString(),
+                binding.description.text.toString(),
+                null,
+                null,
+                binding.username.text.toString(),
+            )
+
+            parent.viewModel.createDashboard(data)
+            this.dismiss()
+
         }
 
     }
