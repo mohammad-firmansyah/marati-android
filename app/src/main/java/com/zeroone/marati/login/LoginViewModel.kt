@@ -1,15 +1,14 @@
-package com.zeroone.marati.Login
+package com.zeroone.marati.login
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
-import com.zeroone.marati.core.data.source.remote.response.Data
+import com.zeroone.marati.core.data.source.remote.response.User
 import com.zeroone.marati.core.data.source.remote.response.LoginResponse
 import com.zeroone.marati.core.data.source.remote.retrofit.ApiConfig
 import com.zeroone.marati.core.ui.PreferenceManager
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -20,20 +19,20 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class LoginViewModel(private val pref:PreferenceManager) : ViewModel() {
-    val _user : MutableLiveData<Data> = MutableLiveData<Data>()
-    val user : LiveData<Data> = _user
+    val _user : MutableLiveData<User> = MutableLiveData<User>()
+    val user : LiveData<User> = _user
 
     val _errorMessage : MutableLiveData<String> = MutableLiveData<String>()
     val errorMessage : LiveData<String> = _errorMessage
 
     fun setToken(token: String?){
-        viewModelScope.launch {
+        runBlocking {
             pref.setToken(token)
         }
     }
 
     fun setUserId(id: String?){
-        viewModelScope.launch {
+        runBlocking {
             pref.setUserId(id)
         }
     }
