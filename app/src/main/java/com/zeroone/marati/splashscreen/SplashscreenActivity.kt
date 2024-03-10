@@ -1,4 +1,4 @@
-package com.zeroone.marati.Splashscreen
+package com.zeroone.marati.splashscreen
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

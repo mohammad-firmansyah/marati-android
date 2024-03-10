@@ -1,4 +1,4 @@
-package com.zeroone.marati.Onboarding
+package com.zeroone.marati.onboarding
 
 import android.animation.ObjectAnimator
 import android.content.Intent
@@ -9,8 +9,8 @@ import android.view.View
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.zeroone.marati.databinding.ActivityOnboardingBinding
-import com.zeroone.marati.Login.LoginActivity
-import com.zeroone.marati.Register.RegisterActivity
+import com.zeroone.marati.login.LoginActivity
+import com.zeroone.marati.register.RegisterActivity
 
 
 class OnboardingActivity : AppCompatActivity() {

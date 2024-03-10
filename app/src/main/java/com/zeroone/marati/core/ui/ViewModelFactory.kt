@@ -3,8 +3,8 @@ package com.zeroone.marati.core.ui
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.zeroone.marati.Home.HomeViewModel
-import com.zeroone.marati.Login.LoginViewModel
+import com.zeroone.marati.home.HomeViewModel
+import com.zeroone.marati.login.LoginViewModel
 
 
 class ViewModelFactory(private val context: Context,private val pref: PreferenceManager) : ViewModelProvider.NewInstanceFactory() {

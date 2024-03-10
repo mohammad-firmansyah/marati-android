@@ -1,7 +1,6 @@
 package com.zeroone.marati.core.custom
 
 import android.content.Context
-import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
@@ -12,15 +11,12 @@ import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import androidx.core.graphics.toRect
-import com.zeroone.marati.Edit.EditActivity
+import com.zeroone.marati.edit.EditActivity
 import com.zeroone.marati.R
 import com.zeroone.marati.core.utils.ObjectInterface
 import com.zeroone.marati.core.utils.SwitchInterface
 import com.zeroone.marati.core.utils.Utils
 import info.mqtt.android.service.MqttAndroidClient
-import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken
-import org.eclipse.paho.client.mqttv3.MqttCallback
-import org.eclipse.paho.client.mqttv3.MqttMessage
 import kotlin.math.sqrt
 
 
@@ -325,6 +321,11 @@ class Drawer(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
     fun addObject(obj: ObjectInterface) {
         objectsToDraw.add(obj)
+        invalidate()
+    }
+
+    fun addObjects(objs: List<ObjectInterface>) {
+        objectsToDraw.addAll(objs)
         invalidate()
     }
     fun setMode(input: Boolean) {

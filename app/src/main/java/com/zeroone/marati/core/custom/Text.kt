@@ -1,34 +1,15 @@
 package com.zeroone.marati.core.custom
 
-import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import com.zeroone.marati.core.utils.TextInterface
 
 import android.content.Context
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
-import android.os.Build
-import android.util.AttributeSet
 import android.util.Log
-import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
-import com.zeroone.marati.R
-import com.zeroone.marati.Edit.EditActivity
-import com.zeroone.marati.Edit.EditViewModel
 import com.zeroone.marati.core.utils.ObjectInterface
 import com.zeroone.marati.core.utils.Utils
-import info.mqtt.android.service.MqttAndroidClient
-import org.eclipse.paho.client.mqttv3.IMqttActionListener
-import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken
-import org.eclipse.paho.client.mqttv3.IMqttToken
-import org.eclipse.paho.client.mqttv3.MqttCallback
-import org.eclipse.paho.client.mqttv3.MqttException
-import org.eclipse.paho.client.mqttv3.MqttMessage
-import org.eclipse.paho.client.mqttv3.MqttPersistenceException
 
 
 class Text(private val context: Context, private var x: Float, private var y: Float, private var width: Float, private var paint: Paint,

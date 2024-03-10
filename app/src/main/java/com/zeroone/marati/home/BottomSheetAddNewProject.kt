@@ -1,22 +1,16 @@
-package com.zeroone.marati.Home
+package com.zeroone.marati.home
 
-import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.CheckBox
-import android.widget.EditText
 import android.widget.LinearLayout
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.zeroone.marati.R
-import com.zeroone.marati.Edit.EditActivity
-import com.zeroone.marati.core.data.source.remote.response.DataItem
+import com.zeroone.marati.core.data.source.remote.response.DashboardItem
 import com.zeroone.marati.databinding.BottomSheetBinding
 
 class BottomSheetAddNewProject : BottomSheetDialogFragment() {
@@ -63,7 +57,7 @@ class BottomSheetAddNewProject : BottomSheetDialogFragment() {
         }
 
         view.findViewById<Button>(R.id.addNewProject).setOnClickListener {
-            val data = DataItem(
+            val data = DashboardItem(
                 binding.server.text.toString(),
                 binding.password.text.toString(),
                 parent.viewModel.getUserId(),

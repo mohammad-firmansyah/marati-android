@@ -1,4 +1,4 @@
-package com.zeroone.marati.Home.Fragments
+package com.zeroone.marati.home.Fragments
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,10 +9,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.zeroone.marati.databinding.FragmentHomeBinding
-import com.zeroone.marati.Home.BottomSheetAddNewProject
-import com.zeroone.marati.Home.HomeActivity
-import com.zeroone.marati.Login.LoginActivity
-import com.zeroone.marati.core.data.source.remote.response.DataItem
+import com.zeroone.marati.home.BottomSheetAddNewProject
+import com.zeroone.marati.home.HomeActivity
+import com.zeroone.marati.login.LoginActivity
+import com.zeroone.marati.core.data.source.remote.response.DashboardItem
 import com.zeroone.marati.core.ui.DashboardAdapter
 
 // TODO: Rename parameter arguments, choose names that match
@@ -30,7 +30,7 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
 
     private val binding get() = _binding!!
-    private var dashboards : List<DataItem>? = null
+    private var dashboards : List<DashboardItem>? = null
     private lateinit var parent : HomeActivity
 
     // TODO: Rename and change types of parameters
@@ -67,7 +67,7 @@ class HomeFragment : Fragment() {
         }
 
         binding.container.setOnRefreshListener {
-            parent.viewModel.getDashboards()
+            parent.viewModel.getDashboards(parent.viewModel.getUserId())
 
             binding.container.isRefreshing = false
         }

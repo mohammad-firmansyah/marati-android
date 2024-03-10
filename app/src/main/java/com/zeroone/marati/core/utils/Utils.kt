@@ -4,7 +4,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
-import com.zeroone.marati.Edit.EditViewModel
+import com.zeroone.marati.edit.EditViewModel
 import info.mqtt.android.service.MqttAndroidClient
 import org.eclipse.paho.client.mqttv3.IMqttActionListener
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken

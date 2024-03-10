@@ -1,18 +1,15 @@
-package com.zeroone.marati.Home
+package com.zeroone.marati.home
 
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
-import com.zeroone.marati.core.data.source.remote.response.AddDashboardResponse
+import com.zeroone.marati.core.data.source.remote.response.DashboardItem
 import com.zeroone.marati.core.data.source.remote.response.DashboardResponse
-import com.zeroone.marati.core.data.source.remote.response.DataItem
 import com.zeroone.marati.core.data.source.remote.retrofit.ApiConfig
 import com.zeroone.marati.core.ui.PreferenceManager
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -20,12 +17,11 @@ import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import kotlin.math.log
 
 class HomeViewModel(val pref:PreferenceManager):ViewModel() {
 
-    private val _dashboards : MutableLiveData<List<DataItem>?> = MutableLiveData()
-    val dashboards : LiveData<List<DataItem>?> = _dashboards
+    private val _dashboards : MutableLiveData<List<DashboardItem>?> = MutableLiveData()
+    val dashboards : LiveData<List<DashboardItem>?> = _dashboards
 
     private val _errorMessage : MutableLiveData<String> = MutableLiveData()
     val errorMessage : LiveData<String> = _errorMessage
@@ -37,7 +33,7 @@ class HomeViewModel(val pref:PreferenceManager):ViewModel() {
     }
 
     init {
-        getDashboards()
+        getDashboards(getUserId())
     }
 
     fun getUserId() : String {
@@ -46,17 +42,17 @@ class HomeViewModel(val pref:PreferenceManager):ViewModel() {
         }
     }
 
-    fun getDashboards(){
+    fun getDashboards(ownerId:String){
         val token =getToken()
         if (token.isNotEmpty()){
             val header = mutableMapOf<String,String>()
             header["authorization"] = token
-            val client = ApiConfig.provideApiServiceJs().getAllDashboard(header)
+            val client = ApiConfig.provideApiServiceJs().getAllDashboard(ownerId,header)
             client.enqueue(object : Callback<DashboardResponse>{
                 override fun onResponse(call: Call<DashboardResponse>, response: Response<DashboardResponse>) {
                     try {
                         if(response.isSuccessful){
-                            _dashboards.value = response.body()?.data as List<DataItem>?
+                            _dashboards.value = response.body()?.data as List<DashboardItem>?
                         } else{
                             if(response.code() == 401){
                                 _errorMessage.value = "unauthorized"
@@ -95,7 +91,7 @@ class HomeViewModel(val pref:PreferenceManager):ViewModel() {
                 override fun onResponse(call: Call<DashboardResponse>, response: Response<DashboardResponse>) {
                     try {
                         if(response.isSuccessful){
-                            _dashboards.value = response.body()?.data as List<DataItem>?
+                            _dashboards.value = response.body()?.data as List<DashboardItem>?
                         } else{
                             val error = Gson().fromJson(response.errorBody()?.string(),DashboardResponse::class.java)
                             _errorMessage.value =  error.message!!
@@ -118,7 +114,7 @@ class HomeViewModel(val pref:PreferenceManager):ViewModel() {
         }
     }
 
-    fun createDashboard(data : DataItem) {
+    fun createDashboard(data : DashboardItem) {
         val token = getToken()
         if (token.isNotEmpty()) {
             val json = JSONObject()
@@ -133,14 +129,14 @@ class HomeViewModel(val pref:PreferenceManager):ViewModel() {
             val header = HashMap<String, String>()
             header["authorization"] = token
             val client = ApiConfig.provideApiServiceJs().addDashboard(header,body)
-            client.enqueue(object : Callback<AddDashboardResponse>{
+            client.enqueue(object : Callback<DashboardResponse>{
                 override fun onResponse(
-                    call: Call<AddDashboardResponse>,
-                    response: Response<AddDashboardResponse>
+                    call: Call<DashboardResponse>,
+                    response: Response<DashboardResponse>
                 ) {
                     try {
                         if(response.isSuccessful){
-                            _dashboards.value = response.body()?.data
+                            _dashboards.value = response.body()?.data as List<DashboardItem>
                         } else{
                             val error = Gson().fromJson(response.errorBody()?.string(),DashboardResponse::class.java)
                             _errorMessage.value =  error.message!!
@@ -150,7 +146,7 @@ class HomeViewModel(val pref:PreferenceManager):ViewModel() {
                     }
                 }
 
-                override fun onFailure(call: Call<AddDashboardResponse>, t: Throwable) {
+                override fun onFailure(call: Call<DashboardResponse>, t: Throwable) {
                     _errorMessage.value = t.message.toString()
                 }
 

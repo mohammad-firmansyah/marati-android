@@ -1,4 +1,4 @@
-package com.zeroone.marati.Home
+package com.zeroone.marati.home
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -6,10 +6,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.zeroone.marati.R
 import com.zeroone.marati.databinding.ActivityHomeBinding
-import com.zeroone.marati.Home.Fragments.HomeFragment
-import com.zeroone.marati.Home.Fragments.ModelFragment
-import com.zeroone.marati.Home.Fragments.ProfilFragment
-import com.zeroone.marati.Home.Fragments.SettingFragment
+import com.zeroone.marati.home.Fragments.HomeFragment
+import com.zeroone.marati.home.Fragments.ModelFragment
+import com.zeroone.marati.home.Fragments.ProfilFragment
+import com.zeroone.marati.home.Fragments.SettingFragment
 import com.zeroone.marati.core.ui.PreferenceManager
 import com.zeroone.marati.core.ui.ViewModelFactory
 import com.zeroone.marati.dataStore

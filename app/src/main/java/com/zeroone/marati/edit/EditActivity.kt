@@ -1,4 +1,4 @@
-package com.zeroone.marati.Edit
+package com.zeroone.marati.edit
 
 import android.app.Dialog
 import android.app.Notification
@@ -10,35 +10,33 @@ import android.graphics.Paint
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
-import android.util.AttributeSet
 import android.util.Log
-import android.util.Xml
 import android.view.Gravity
 import android.view.View
 import android.view.Window
-import android.widget.FrameLayout
 import android.widget.ImageButton
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.zeroone.marati.Home.BottomSheetAddNewProject
-import com.zeroone.marati.Home.BottomSheetDetailComponent
 import com.zeroone.marati.R
 import com.zeroone.marati.core.custom.Switch
 import com.zeroone.marati.core.custom.Text
+import com.zeroone.marati.core.ui.PreferenceManager
 import com.zeroone.marati.databinding.ActivityEditDashboardBinding
 import com.zeroone.marati.core.utils.UIUpdaterInterface
 import com.zeroone.marati.core.utils.Utils
+import com.zeroone.marati.dataStore
 import info.mqtt.android.service.MqttAndroidClient
-import org.xmlpull.v1.XmlPullParser
 
 
 class EditActivity : AppCompatActivity(), UIUpdaterInterface {
 
     private lateinit var binding : ActivityEditDashboardBinding
     private lateinit var mqttAndroidClient : MqttAndroidClient
-    private val viewModel : EditViewModel by viewModels()
+    private lateinit var viewModel : EditViewModel
+    private var dashboardId  = ""
 
     private val requestPermissionLauncher =
         registerForActivityResult(
@@ -57,6 +55,9 @@ class EditActivity : AppCompatActivity(), UIUpdaterInterface {
         binding = ActivityEditDashboardBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        dashboardId = intent.getStringExtra("id").toString()
+        val pref = PreferenceManager.getInstance(dataStore)
+        viewModel = ViewModelProvider(this,ViewModelFactory(pref,dashboardId)).get(EditViewModel::class.java)
 
         if(Build.VERSION.SDK_INT >= 33) {
             requestPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
@@ -100,14 +101,40 @@ class EditActivity : AppCompatActivity(), UIUpdaterInterface {
             state = BottomSheetBehavior.STATE_COLLAPSED
         }
 
-//         Wait for the connection to be established before proceeding
 
+//         Wait for the connection to be established before proceeding
 
         binding.show.setOnClickListener {
             showNavDrawer()
         }
 
 
+        viewModel.components.observe(this){
+            try {
+
+                if (it != null) {
+                    for(i in it){
+                        when(i.type) {
+                            "SWITCH" -> {
+                                val paint = Paint().apply {
+                                    color = Color.RED
+                                    style = Paint.Style.FILL
+                                }
+                               val obj = Switch(this,
+                                    i.x!!.toFloat(),
+                                    i.y!!.toFloat(),
+                                    i.w!!.toFloat(),
+                                    paint)
+
+                                binding.drawer.addObject(obj)
+                            }
+                        }
+                    }
+                }
+            }catch (e:Exception){
+                e.printStackTrace()
+            }
+        }
     }
 
 

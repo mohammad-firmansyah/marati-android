@@ -1,9 +1,7 @@
-package com.zeroone.marati.Register
+package com.zeroone.marati.register
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.zeroone.marati.R
-import com.zeroone.marati.databinding.ActivityHomeBinding
 import com.zeroone.marati.databinding.ActivityRegisterBinding
 
 class RegisterActivity : AppCompatActivity() {

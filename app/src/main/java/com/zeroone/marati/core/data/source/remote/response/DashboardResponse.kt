@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 data class DashboardResponse(
 
 	@field:SerializedName("data")
-	val data: List<DataItem?>? = null,
+	val data: List<DashboardItem?>? = null,
 
 	@field:SerializedName("is_error")
 	val isError: Boolean? = null,
@@ -14,7 +14,7 @@ data class DashboardResponse(
 	val message: String? = null
 )
 
-data class DataItem(
+data class DashboardItem(
 
 	@field:SerializedName("server")
 	val server: String? = null,

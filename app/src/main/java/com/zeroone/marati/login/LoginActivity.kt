@@ -1,8 +1,7 @@
-package com.zeroone.marati.Login
+package com.zeroone.marati.login
 
 import android.content.Intent
 import android.content.IntentSender
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.util.Patterns
@@ -14,12 +13,13 @@ import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.android.gms.common.api.ApiException
 import com.google.android.material.snackbar.Snackbar
-import com.zeroone.marati.Home.HomeActivity
+import com.zeroone.marati.home.HomeActivity
 import com.zeroone.marati.R
 import com.zeroone.marati.core.ui.PreferenceManager
 import com.zeroone.marati.core.ui.ViewModelFactory
 import com.zeroone.marati.dataStore
 import com.zeroone.marati.databinding.ActivityLoginBinding
+import kotlinx.coroutines.runBlocking
 import maes.tech.intentanim.CustomIntent
 
 class LoginActivity : AppCompatActivity() {

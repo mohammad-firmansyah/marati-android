@@ -23,22 +23,22 @@
         android:theme="@style/Theme.Marati"
         tools:targetApi="31">
         <activity
-            android:name=".Edit.EditActivity"
+            android:name=".edit.EditActivity"
             android:exported="false" />
         <activity
-            android:name=".Home.HomeActivity"
+            android:name=".home.HomeActivity"
             android:exported="false" />
         <activity
-            android:name=".Splashscreen.SplashscreenActivity"
+            android:name=".splashscreen.SplashscreenActivity"
             android:exported="false" />
         <activity
-            android:name=".Register.RegisterActivity"
+            android:name=".register.RegisterActivity"
             android:exported="false" />
         <activity
-            android:name=".Login.LoginActivity"
+            android:name=".login.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".Onboarding.OnboardingActivity"
+            android:name=".onboarding.OnboardingActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
