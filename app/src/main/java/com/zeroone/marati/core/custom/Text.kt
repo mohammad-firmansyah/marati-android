@@ -21,6 +21,8 @@ class Text(private val context: Context, private var x: Float, private var y: Fl
            ) :
     ObjectInterface, TextInterface {
 
+    private var touchOffsetX: Float = 0f
+    private var touchOffsetY: Float = 0f
     private lateinit var oval : RectF
     private lateinit var thumb : RectF
 
@@ -31,6 +33,25 @@ class Text(private val context: Context, private var x: Float, private var y: Fl
 
     override fun getObjY(): Float {
         return y
+    }
+
+    override fun setTouchOffsetX(x: Float): ObjectInterface {
+        touchOffsetX = x
+        return this
+    }
+
+    override fun setTouchOffsetY(y: Float): ObjectInterface {
+        touchOffsetY = y
+        return this
+    }
+
+    override fun getTouchOffsetX(): Float {
+        return touchOffsetX
+
+    }
+
+    override fun getTouchOffsetY(): Float {
+        return touchOffsetY
     }
 
     override fun setObjX(input: Float): Float  {

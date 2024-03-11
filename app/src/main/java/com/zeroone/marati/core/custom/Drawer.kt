@@ -103,7 +103,13 @@ class Drawer(context: Context, attrs: AttributeSet) : View(context, attrs) {
                     invalidate()
                 }
 
-                return activeHandle != null
+                if (activeObj != null && isTouchInsideObj(activeObj, touchX, touchY)) {
+                    // Save the initial touch offset for smoother dragging
+                    activeObj.setTouchOffsetX(touchX - activeObj.getObjX())
+                        .setTouchOffsetY(touchY - activeObj.getObjY())
+                }
+                return activeObj != null
+
             }
             MotionEvent.ACTION_MOVE -> {
                 if (isDragging && activeHandle != null) {
@@ -118,6 +124,13 @@ class Drawer(context: Context, attrs: AttributeSet) : View(context, attrs) {
                         previousY = touchY
                         invalidate()
                     }
+                }
+
+                if (activeObj != null) {
+                    // Adjust the object's position based on the touch offset
+                    activeObj.setObjX(touchX - activeObj.getTouchOffsetX())
+                    activeObj.setObjY(touchY - activeObj.getTouchOffsetY())
+                    invalidate()
                 }
             }
             MotionEvent.ACTION_UP -> {
@@ -213,50 +226,76 @@ class Drawer(context: Context, attrs: AttributeSet) : View(context, attrs) {
         }
         return null
     }
-    private fun updateRectangle(obj: ObjectInterface, handle: Handle, deltaX: Float, deltaY: Float) {
-        val centerX = obj.getObjX()
-        val centerY = obj.getObjY()
 
-        when (handle) {
-            Handle.TopLeft -> {
+    private fun updateRectangle(obj: ObjectInterface, handle: Handle?, deltaX: Float, deltaY: Float) {
+        if (handle != null) {
+            when (handle) {
+                Handle.TopLeft ->{
+                    obj.setObjX(obj.getObjX() + deltaX)
+                    obj.setObjY(obj.getObjY() + deltaY)
+                }
 
-                if (deltaX <= 0){
-                    obj.setWidth(obj.width() - deltaX*2f)
-                } else if(deltaX > 0) {
-                    obj.setWidth(obj.width() - deltaX*2f)
+                Handle.TopRight -> obj.setObjY(obj.getObjY() + deltaY)
+                Handle.BottomRight -> {
+                    obj.setWidth(obj.width() + deltaX)
+                    obj.setObjY(obj.getObjY() + deltaY)
                 }
-            }
-            Handle.TopRight -> {
-                if (deltaX <= 0){
-                    obj.setWidth(obj.width() + deltaX*2f)
-                } else if(deltaX > 0) {
-                    obj.setWidth(obj.width() + deltaX*2f)
+                Handle.BottomLeft -> {
+                    obj.setWidth(obj.width() - deltaX)
+                    obj.setObjY(obj.getObjY() + deltaY)
                 }
+                Handle.TopCenter -> obj.setObjY(obj.getObjY() + deltaY)
             }
-            Handle.BottomRight -> {
-                if (deltaX <= 0){
-                    obj.setWidth(obj.width() + deltaX*2f)
-                } else if(deltaX > 0) {
-                    obj.setWidth(obj.width() + deltaX*2f)
-                }
-            }
-            Handle.BottomLeft -> {
-                if (deltaX <= 0){
-                    obj.setWidth(obj.width() - deltaX*2f)
-                } else if(deltaX > 0) {
-                    obj.setWidth(obj.width() - deltaX*2f)
-                }
-            }
-            Handle.TopCenter -> {
-                rect.left += deltaX
-                rect.right += deltaX
-                rect.top += deltaY
-                rect.bottom += deltaY
-                obj.setObjX(obj.getObjX() + ((deltaX)))
-                obj.setObjY(obj.getObjY() + ((deltaY)))
-            }
+        } else {
+            obj.setObjX(obj.getObjX() + deltaX)
+            obj.setObjY(obj.getObjY() + deltaY)
         }
     }
+
+//    private fun updateRectangle(obj: ObjectInterface, handle: Handle, deltaX: Float, deltaY: Float) {
+//        val centerX = obj.getObjX()
+//        val centerY = obj.getObjY()
+//
+//        when (handle) {
+//            Handle.TopLeft -> {
+//
+//                if (deltaX <= 0){
+//                    obj.setWidth(obj.width() - deltaX*2f)
+//                } else if(deltaX > 0) {
+//                    obj.setWidth(obj.width() - deltaX*2f)
+//                }
+//            }
+//            Handle.TopRight -> {
+//                if (deltaX <= 0){
+//                    obj.setWidth(obj.width() + deltaX*2f)
+//                } else if(deltaX > 0) {
+//                    obj.setWidth(obj.width() + deltaX*2f)
+//                }
+//            }
+//            Handle.BottomRight -> {
+//                if (deltaX <= 0){
+//                    obj.setWidth(obj.width() + deltaX*2f)
+//                } else if(deltaX > 0) {
+//                    obj.setWidth(obj.width() + deltaX*2f)
+//                }
+//            }
+//            Handle.BottomLeft -> {
+//                if (deltaX <= 0){
+//                    obj.setWidth(obj.width() - deltaX*2f)
+//                } else if(deltaX > 0) {
+//                    obj.setWidth(obj.width() - deltaX*2f)
+//                }
+//            }
+//            Handle.TopCenter -> {
+//                rect.left += deltaX
+//                rect.right += deltaX
+//                rect.top += deltaY
+//                rect.bottom += deltaY
+//                obj.setObjX(obj.getObjX() + ((deltaX)))
+//                obj.setObjY(obj.getObjY() + ((deltaY)))
+//            }
+//        }
+//    }
 
     private fun calculateNewRadius(currentRadius: Float, newX: Float, newY: Float, oldX: Float, oldY: Float): Float {
         val originalDistance = calculateDistance(oldX, oldY, newX, newY)

@@ -7,6 +7,11 @@ interface ObjectInterface {
     val status : Boolean;
     fun getObjX() : Float
     fun getObjY() : Float
+    fun setTouchOffsetX(x:Float) : ObjectInterface
+    fun setTouchOffsetY(y:Float) : ObjectInterface
+
+    fun getTouchOffsetX() : Float
+    fun getTouchOffsetY() : Float
 
     fun setObjX(x : Float) : Float
     fun setObjY(y: Float) : Float

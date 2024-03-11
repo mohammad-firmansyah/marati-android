@@ -25,6 +25,8 @@ class Switch(private val context: Context, private var x: Float, private var y: 
 ) :
     ObjectInterface, SwitchInterface {
 
+    private var touchOffsetX: Float = 0f
+    private var touchOffsetY: Float = 0f
     val mqttAndroidClient = MqttAndroidClient(context, "tcp://broker.hivemq.com:1883", "client-101010-id")
     private val thumbPaint: Paint = Paint().apply {
         color = Color.BLUE
@@ -45,6 +47,24 @@ class Switch(private val context: Context, private var x: Float, private var y: 
 
     override fun getObjY(): Float {
         return y
+    }
+
+    override fun setTouchOffsetX(x: Float): ObjectInterface {
+        touchOffsetX = x
+        return this
+    }
+
+    override fun setTouchOffsetY(y:Float): ObjectInterface {
+        touchOffsetY = y
+        return this
+    }
+
+    override fun getTouchOffsetX(): Float {
+        return touchOffsetX
+    }
+
+    override fun getTouchOffsetY(): Float {
+        return touchOffsetY
     }
 
     override fun setObjX(input: Float): Float  {
