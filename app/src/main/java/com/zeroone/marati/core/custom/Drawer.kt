@@ -114,6 +114,8 @@ class Drawer(context: Context, attrs: AttributeSet) : View(context, attrs) {
             MotionEvent.ACTION_MOVE -> {
                 if (isDragging && activeHandle != null) {
 
+
+
                     val obj = getActiveObjectByHandle(touchX,touchY)
                     Log.d("obj",obj.toString())
                     if (obj != null) {
@@ -124,14 +126,19 @@ class Drawer(context: Context, attrs: AttributeSet) : View(context, attrs) {
                         previousY = touchY
                         invalidate()
                     }
+
                 }
 
-                if (activeObj != null) {
-                    // Adjust the object's position based on the touch offset
-                    activeObj.setObjX(touchX - activeObj.getTouchOffsetX())
-                    activeObj.setObjY(touchY - activeObj.getTouchOffsetY())
-                    invalidate()
+                // object can move only when edit mode on
+                if(mode){
+                    if (activeObj != null) {
+                        // Adjust the object's position based on the touch offset
+                        activeObj.setObjX(touchX - activeObj.getTouchOffsetX())
+                        activeObj.setObjY(touchY - activeObj.getTouchOffsetY())
+                        invalidate()
+                    }
                 }
+
             }
             MotionEvent.ACTION_UP -> {
                 isDragging = false
