@@ -6,11 +6,6 @@
     android:layout_width="match_parent"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <ScrollView
-        android:id="@+id/scrollView2"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -66,7 +61,6 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    </ScrollView>
     <FrameLayout
         android:id="@+id/sheet"
         android:layout_width="match_parent"
