@@ -33,6 +33,8 @@ class Drawer(context: Context, attrs: AttributeSet) : View(context, attrs) {
     private val objectsToDraw = mutableListOf<ObjectInterface>()
     private var isDragging: Boolean = false
     private var mode : Boolean = false
+    private var touchOffsetX : Float = 0f
+    private var touchOffsetY : Float = 0f
 
     //transformer
     private var activeHandle: Handle? = null
@@ -64,17 +66,17 @@ class Drawer(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
+                previousX = touchX
+                previousY = touchY
+
                 val editActivity = context as EditActivity
 
                 val obj = getObjTouched(touchX, touchY)
-                Log.d("centerX-first", rect.centerX().toString())
                 activeHandle = getTouchedHandle( touchX, touchY)
                 if (obj != null) {
                     activeObj = obj
                     if(isTouchInsideObj(obj,touchX, touchY)){
                         if(mode){
-                            Log.d("centerX-touched", rect.centerX().toString())
-
                             objActiveForTransfomer = obj.getObjId()
                             transformerStatus = true
                             invalidate()
@@ -92,16 +94,19 @@ class Drawer(context: Context, attrs: AttributeSet) : View(context, attrs) {
                 }
                 else if (activeHandle != null) {
                     isDragging = true
-                    previousX = touchX
-                    previousY = touchY
-//                    touchOffsetX = touchX - obj.getObjX()
-//                    touchOffsetY = touchY - obj.getObjY()
+
+                    if (activeObj != null){
+                        touchOffsetX = touchX - activeObj.getObjX()
+                        touchOffsetY = touchY - activeObj.getObjY()
+                    }
                 }
                 else {
-
+                    isDragging = false
                     transformerStatus = false
                     invalidate()
                 }
+
+
 
                 if (activeObj != null && isTouchInsideObj(activeObj, touchX, touchY)) {
                     // Save the initial touch offset for smoother dragging
@@ -112,22 +117,8 @@ class Drawer(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
             }
             MotionEvent.ACTION_MOVE -> {
-                if (isDragging && activeHandle != null) {
-
-
-
-                    val obj = getActiveObjectByHandle(touchX,touchY)
-                    Log.d("obj",obj.toString())
-                    if (obj != null) {
-                        val deltaX = touchX - previousX
-                        val deltaY = touchY - previousY
-                        updateRectangle(obj, activeHandle!!, deltaX, deltaY)
-                        previousX = touchX
-                        previousY = touchY
-                        invalidate()
-                    }
-
-                }
+                val deltaX = touchX - previousX
+                val deltaY = touchY - previousY
 
                 // object can move only when edit mode on
                 if(mode){
@@ -137,6 +128,15 @@ class Drawer(context: Context, attrs: AttributeSet) : View(context, attrs) {
                         activeObj.setObjY(touchY - activeObj.getTouchOffsetY())
                         invalidate()
                     }
+
+
+                    if (activeObj != null  && isDragging) {
+                        updateRectangle(activeObj, activeHandle, deltaX, deltaY)
+                        previousX = touchX
+                        previousY = touchY
+                        invalidate()
+                    }
+
                 }
 
             }
@@ -210,14 +210,14 @@ class Drawer(context: Context, attrs: AttributeSet) : View(context, attrs) {
     private fun getHandleBounds(handle: Handle): RectF {
 
         val handleX = when (handle) {
-            Handle.TopCenter -> rect.centerX() - handleSize/2
             Handle.TopLeft, Handle.BottomLeft -> rect.left - handleSize / 2
             Handle.TopRight, Handle.BottomRight -> rect.right - handleSize / 2
+            Handle.TopCenter -> rect.centerX() - handleSize/2
         }
         val handleY = when (handle) {
             Handle.TopLeft, Handle.TopRight -> rect.top - handleSize / 2
-            Handle.TopCenter -> rect.top - handleSize
             Handle.BottomRight, Handle.BottomLeft -> rect.bottom - handleSize / 2
+            Handle.TopCenter -> rect.top - handleSize
         }
         return RectF(handleX, handleY, handleX + handleSize, handleY + handleSize)
     }
@@ -235,29 +235,39 @@ class Drawer(context: Context, attrs: AttributeSet) : View(context, attrs) {
     }
 
     private fun updateRectangle(obj: ObjectInterface, handle: Handle?, deltaX: Float, deltaY: Float) {
+        Log.d("resize",handle.toString())
         if (handle != null) {
             when (handle) {
-                Handle.TopLeft ->{
+                Handle.TopLeft -> {
                     obj.setObjX(obj.getObjX() + deltaX)
                     obj.setObjY(obj.getObjY() + deltaY)
+                    obj.setWidth(obj.width() - deltaX)
+                    obj.setObjY(obj.getObjY() - deltaY)
+                    obj.setHeight(obj.height() - deltaY)
                 }
-
-                Handle.TopRight -> obj.setObjY(obj.getObjY() + deltaY)
-                Handle.BottomRight -> {
+                Handle.TopRight -> {
                     obj.setWidth(obj.width() + deltaX)
                     obj.setObjY(obj.getObjY() + deltaY)
+                    obj.setHeight(obj.height() - deltaY)
+                }
+                Handle.BottomRight -> {
+                    obj.setWidth(obj.width() + deltaX)
+                    obj.setHeight(obj.height() + deltaY)
                 }
                 Handle.BottomLeft -> {
+                    obj.setObjX(obj.getObjX() + deltaX)
                     obj.setWidth(obj.width() - deltaX)
-                    obj.setObjY(obj.getObjY() + deltaY)
+                    obj.setHeight(obj.height() + deltaY)
                 }
-                Handle.TopCenter -> obj.setObjY(obj.getObjY() + deltaY)
+                Handle.TopCenter -> {
+                    obj.setObjY(obj.getObjY() + deltaY)
+                    obj.setHeight(obj.height() - deltaY)
+                }
             }
-        } else {
-            obj.setObjX(obj.getObjX() + deltaX)
-            obj.setObjY(obj.getObjY() + deltaY)
         }
     }
+
+
 
 //    private fun updateRectangle(obj: ObjectInterface, handle: Handle, deltaX: Float, deltaY: Float) {
 //        val centerX = obj.getObjX()
