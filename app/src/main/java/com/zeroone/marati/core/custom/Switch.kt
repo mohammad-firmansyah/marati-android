@@ -5,8 +5,10 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
+import android.graphics.Typeface
 import android.util.Log
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import com.zeroone.marati.R
 import com.zeroone.marati.core.utils.ObjectInterface
 import com.zeroone.marati.core.utils.SwitchInterface
@@ -27,15 +29,19 @@ class Switch(private val context: Context, private var x: Float, private var y: 
 
     private var touchOffsetX: Float = 0f
     private var touchOffsetY: Float = 0f
+    private var height: Float = 0f
     val mqttAndroidClient = MqttAndroidClient(context, "tcp://broker.hivemq.com:1883", "client-101010-id")
     private val thumbPaint: Paint = Paint().apply {
-        color = Color.BLUE
+        color = Color.WHITE
         isFakeBoldText = true
     }
 
     private val textPaint: Paint = Paint().apply {
         color = Color.BLACK
         textSize = 40f
+        isFakeBoldText = true
+
+        typeface = ResourcesCompat.getFont(context,R.font.poppins_bold)
     }
     private lateinit var oval : RectF
     private lateinit var thumb : RectF
@@ -90,15 +96,21 @@ class Switch(private val context: Context, private var x: Float, private var y: 
         return width/2
     }
 
+    override fun setHeight(r: Float): Float {
+        height = r
+        return height
+    }
+
 
     override fun drawCustom(canvas: Canvas,ci:String) {
 
-        drawOval(canvas,x,y,width/4,width,paint)
+        height = width/4
+        drawOval(canvas,x,y,height+10,width+10,paint)
 
         if(status){
 
             val text = "ON"
-            drawThumb(canvas,x+width/2,y ,width/4,width/2,thumbPaint)
+            drawThumb(canvas,x+width/2,y ,(width/4),width/2,thumbPaint)
             canvas.drawText(text, (x+width/2) - 10, y + 65, textPaint)
 
         } else {
@@ -219,11 +231,11 @@ class Switch(private val context: Context, private var x: Float, private var y: 
     }
     private fun drawThumb(canvas: Canvas, mX:Float, mY:Float, height:Float, width:Float, mPaint : Paint){
         val radius = height
-        thumb = RectF(mX , mY  , mX + (width - radius), mY + radius*2)
+        thumb = RectF(mX , mY+5  , mX + (width - radius), mY  + 5 + radius*2)
         canvas.drawRect(thumb,mPaint)
 
-        canvas.drawCircle(mX, mY+radius, radius, mPaint)
-        canvas.drawCircle(mX + (width - radius), mY+radius, radius, mPaint)
+        canvas.drawCircle(mX, mY+5+radius, radius, mPaint)
+        canvas.drawCircle(mX + (width - radius), mY+5+radius, radius, mPaint)
     }
 
 }

@@ -77,6 +77,10 @@ class Text(private val context: Context, private var x: Float, private var y: Fl
         return width/2
     }
 
+    override fun setHeight(r: Float): Float {
+        return 0f
+    }
+
     override fun drawCustom(canvas: Canvas,content:String) {
         Log.d("content",content)
         paint.textSize = 60f
