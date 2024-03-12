@@ -29,4 +29,6 @@
     <string name="project">+ Project</string>
     <string name="username">Username</string>
     <string name="dashboard">Dashboard</string>
+    <string name="unsaved">Unsaved</string>
+    <string name="saved">Saved</string>
 </resources>
