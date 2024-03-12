@@ -18,6 +18,7 @@ interface ObjectInterface {
     fun width() : Float
     fun setWidth(r : Float) : Float
     fun height() : Float
+    fun setHeight(r : Float) : Float
     fun drawCustom(canvas: Canvas,content:String)
     fun getObjId():String
     fun insideObject(x:Float,y:Float):Boolean
