@@ -20,9 +20,11 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.snackbar.Snackbar
 import com.zeroone.marati.R
 import com.zeroone.marati.core.custom.Switch
 import com.zeroone.marati.core.custom.Text
+import com.zeroone.marati.core.data.source.remote.response.ComponentItem
 import com.zeroone.marati.core.ui.PreferenceManager
 import com.zeroone.marati.databinding.ActivityEditDashboardBinding
 import com.zeroone.marati.core.utils.UIUpdaterInterface
@@ -108,7 +110,11 @@ class EditActivity : AppCompatActivity(), UIUpdaterInterface {
             showNavDrawer()
         }
 
+        viewModelListener()
 
+    }
+
+    private fun viewModelListener() {
         viewModel.components.observe(this){
             try {
 
@@ -117,10 +123,10 @@ class EditActivity : AppCompatActivity(), UIUpdaterInterface {
                         when(i.type) {
                             "SWITCH" -> {
                                 val paint = Paint().apply {
-                                    color = Color.RED
+                                    color = getColor(R.color.main)
                                     style = Paint.Style.FILL
                                 }
-                               val obj = Switch(this,
+                                val obj = Switch(this,
                                     i.x!!.toFloat(),
                                     i.y!!.toFloat(),
                                     i.w!!.toFloat(),
@@ -135,8 +141,24 @@ class EditActivity : AppCompatActivity(), UIUpdaterInterface {
                 e.printStackTrace()
             }
         }
-    }
 
+        viewModel.errorMessage.observe(this){
+            Snackbar.make(binding.root,it.toString(),Snackbar.LENGTH_LONG).show()
+        }
+
+        viewModel.isLoading.observe(this){
+            if(it){
+                binding.status.background = getDrawable(R.drawable.background_unsaved)
+                binding.status.text = "Unsaved"
+                binding.status.setTextColor(getColor(R.color.white))
+            }else{
+                binding.status.background = getDrawable(R.drawable.background_saved)
+                binding.status.text = "Saved"
+                binding.status.setTextColor(getColor(R.color.main))
+            }
+        }
+
+    }
 
 
     private fun showNavDrawer() {
@@ -146,7 +168,7 @@ class EditActivity : AppCompatActivity(), UIUpdaterInterface {
         val isDialog = Dialog(this)
 
         val paint = Paint().apply {
-            color = Color.RED
+            color = getColor(R.color.main)
             style = Paint.Style.FILL
         }
 
@@ -163,11 +185,35 @@ class EditActivity : AppCompatActivity(), UIUpdaterInterface {
 
         dialogView.findViewById<ImageButton>(R.id.plus_siwtch).setOnClickListener {
 //            binding.drawer.addObject(circle)
+            val dataItem = ComponentItem(
+                type = "SWITCH",
+                x=300,
+                y=400,
+                w=200,
+                h=200/4,
+                content = "",
+                topic = "",
+                rules = "{}",
+                dashboardId = dashboardId,
+            )
+            viewModel.addComponent(dataItem)
             binding.drawer.addObject(switch)
         }
 
         dialogView.findViewById<ImageButton>(R.id.plus_text).setOnClickListener {
 //            binding.drawer.addObject(circle)
+            val dataItem = ComponentItem(
+                type = "TEXT",
+                x=300,
+                y=400,
+                w=400,
+                h=400/4,
+                content = "no content",
+                topic = "",
+                rules = "{}",
+                dashboardId = dashboardId,
+            )
+            viewModel.addComponent(dataItem)
             binding.drawer.addObject(text)
         }
 
