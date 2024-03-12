@@ -48,4 +48,10 @@ interface ApiService {
         @Path("id") id : String
     ) : Call<ComponentResponse>
 
+    @POST("/component/")
+    fun addComponent(
+        @HeaderMap headers: Map<String, String>,
+        @Body() body : RequestBody
+    ) : Call<ComponentResponse>
+
 }
