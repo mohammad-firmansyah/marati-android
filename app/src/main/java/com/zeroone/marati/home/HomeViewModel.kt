@@ -80,13 +80,13 @@ class HomeViewModel(val pref:PreferenceManager):ViewModel() {
         }
     }
 
-    fun deleteDashboard(uid:String){
+    fun deleteDashboard(uid:String,ownerId: String){
         val token =getToken()
         if (token.isNotEmpty()){
             val header = mutableMapOf<String,String>()
             header["authorization"] = token
 
-            val client = ApiConfig.provideApiServiceJs().deleteDashboard(header,uid)
+            val client = ApiConfig.provideApiServiceJs().deleteDashboard(header,uid,ownerId)
             client.enqueue(object : Callback<DashboardResponse>{
                 override fun onResponse(call: Call<DashboardResponse>, response: Response<DashboardResponse>) {
                     try {

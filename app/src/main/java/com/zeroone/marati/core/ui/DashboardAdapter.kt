@@ -63,7 +63,9 @@ class DashboardAdapter(
         holder.deleteProject.setOnClickListener{
 
             Utils.showDialogConfirmation(context,"Delete dashboard","are you sure to delete this dashboard ?", onPositiveClick = {
-                itemViewPosition?.id?.let { it1 -> viewModel.deleteDashboard(it1) }
+                if(itemViewPosition?.id != null && itemViewPosition.ownerId != null){
+                    viewModel.deleteDashboard(itemViewPosition.id,itemViewPosition.ownerId)
+                }
             }, onNegativeClick = {
                 return@showDialogConfirmation
             })

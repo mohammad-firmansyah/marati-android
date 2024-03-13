@@ -30,10 +30,11 @@ interface ApiService {
 
     ) : Call<DashboardResponse>
 
-    @DELETE("/dashboard/{id}")
+    @DELETE("/dashboard/{id}/{ownerId}")
     fun deleteDashboard(
         @HeaderMap headers: Map<String, String>,
         @Path("id") id:String,
+        @Path("ownerId") ownerId: String,
     ) : Call<DashboardResponse>
 
     @POST("/dashboard/")
