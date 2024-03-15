@@ -5,6 +5,12 @@ import android.graphics.Canvas
 interface ObjectInterface {
     val id : String;
     val status : Boolean;
+    val type : String;
+    val topic : String;
+    val content : String;
+    val rules : String;
+    val model_id : String;
+
     fun getObjX() : Float
     fun getObjY() : Float
     fun setTouchOffsetX(x:Float) : ObjectInterface
