@@ -6,17 +6,18 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.RectF
-import android.util.Log
-import androidx.lifecycle.ViewModel
 import com.zeroone.marati.core.utils.ObjectInterface
 import com.zeroone.marati.core.utils.Utils
 
 
 class Text(private val context: Context, private var x: Float, private var y: Float, private var width: Float, private var paint: Paint,
-           override val id: String =  Utils.generateRandomString(5),
-           override var content: String,
+           override val id: String =  Utils.getUUID(),
+           override var content: String = "no content",
            override val status: Boolean,
-           val vm: ViewModel,
+           override val type: String = "TEXT",
+           override val topic: String = "",
+           override val rules: String = "{}",
+           override val model_id: String = "",
 
            ) :
     ObjectInterface, TextInterface {
@@ -54,37 +55,38 @@ class Text(private val context: Context, private var x: Float, private var y: Fl
         return touchOffsetY
     }
 
-    override fun setObjX(input: Float): Float  {
-        x = input
-        return x
+    override fun setObjX(x: Float): Float  {
+        this.x = x
+        return this.x
     }
 
-    override fun setObjY(input: Float): Float {
-        y = input
-        return y
+    override fun setObjY(y: Float): Float {
+        this.y = y
+        return this.y
     }
 
     override fun width(): Float {
-        return width
+        val textWidth = paint.measureText(content)
+        return textWidth
     }
 
-    override fun setWidth(input: Float): Float {
-        width = input
-        return width
+    override fun setWidth(r: Float): Float {
+        paint.textSize = r
+        return paint.measureText(content)
     }
 
     override fun height(): Float {
-        return width/2
+        return width/4
     }
 
     override fun setHeight(r: Float): Float {
-        return 0f
+        return r
     }
 
     override fun drawCustom(canvas: Canvas,content:String) {
-        Log.d("content",content)
-        paint.textSize = 60f
-        canvas.drawText(content, (x+width/2) - 10, y + 200, paint)
+
+        val textWidth = paint.measureText(content)
+        canvas.drawText(content, x, y+height()/2, paint)
         getData()
     }
 
@@ -120,14 +122,10 @@ class Text(private val context: Context, private var x: Float, private var y: Fl
     }
 
     override fun setTextX(input: Float): Float {
-        thumb.left = input
-        thumb.right = input
         return 0f
     }
 
     override fun setTextY(input: Float): Float {
-        thumb.top = input
-        thumb.bottom = input
         return 0f
     }
 
