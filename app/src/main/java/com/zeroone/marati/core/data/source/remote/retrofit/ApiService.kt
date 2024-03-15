@@ -9,6 +9,7 @@ import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.HeaderMap
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
 
@@ -53,6 +54,13 @@ interface ApiService {
     fun addComponent(
         @HeaderMap headers: Map<String, String>,
         @Body() body : RequestBody
+    ) : Call<ComponentResponse>
+
+    @PATCH("/component/{id}")
+    fun updateComponent(
+        @HeaderMap headers: Map<String, String>,
+        @Body() body : RequestBody,
+        @Path("id") id : String
     ) : Call<ComponentResponse>
 
 }
