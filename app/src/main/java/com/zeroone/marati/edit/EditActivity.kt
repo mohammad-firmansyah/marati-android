@@ -154,9 +154,10 @@ class EditActivity : AppCompatActivity(), UIUpdaterInterface {
                             }
                             "TEXT" -> {
                                 try {
-                                    val paint = Paint().apply {
+                                    val textPaint = Paint().apply {
                                         color = getColor(R.color.main)
                                         style = Paint.Style.FILL
+                                        textSize = 60f
                                     }
                                     val obj = i!!.id?.let { it1 ->
                                         Text(this,
@@ -164,7 +165,7 @@ class EditActivity : AppCompatActivity(), UIUpdaterInterface {
                                             x = i.x!!.toFloat(),
                                             y = i.y!!.toFloat(),
                                             width = i.w!!.toFloat(),
-                                            paint = paint,
+                                            paint = textPaint,
                                             status=false)
                                     }
 
@@ -214,8 +215,14 @@ class EditActivity : AppCompatActivity(), UIUpdaterInterface {
             style = Paint.Style.FILL
         }
 
+        val textPaint = Paint().apply {
+            color = getColor(R.color.main)
+            style = Paint.Style.FILL
+            textSize = 60f
+        }
+
         val switch = Switch(this,300f,400f,200f,paint)
-        val text = Text(this,200f,500f,400f,paint,content = "no content", status = false)
+        val text = Text(this,200f,500f,400f,textPaint,content = "no content", status = false)
 
         binding.mode.setOnCheckedChangeListener { _, isChecked ->
             Log.d("setMode", isChecked.toString())
