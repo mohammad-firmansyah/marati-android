@@ -26,10 +26,10 @@ import com.zeroone.marati.core.custom.Switch
 import com.zeroone.marati.core.custom.Text
 import com.zeroone.marati.core.data.source.remote.response.ComponentItem
 import com.zeroone.marati.core.ui.PreferenceManager
-import com.zeroone.marati.databinding.ActivityEditDashboardBinding
 import com.zeroone.marati.core.utils.UIUpdaterInterface
 import com.zeroone.marati.core.utils.Utils
 import com.zeroone.marati.dataStore
+import com.zeroone.marati.databinding.ActivityEditDashboardBinding
 import info.mqtt.android.service.MqttAndroidClient
 
 
@@ -37,7 +37,7 @@ class EditActivity : AppCompatActivity(), UIUpdaterInterface {
 
     private lateinit var binding : ActivityEditDashboardBinding
     private lateinit var mqttAndroidClient : MqttAndroidClient
-    private lateinit var viewModel : EditViewModel
+    lateinit var viewModel : EditViewModel
     private var dashboardId  = ""
 
     private val requestPermissionLauncher =
@@ -104,6 +104,15 @@ class EditActivity : AppCompatActivity(), UIUpdaterInterface {
         }
 
 
+        val switch  = findViewById<android.widget.Switch>(R.id.mode)
+        switch.setOnCheckedChangeListener{_,isChecked ->
+            Log.d("setMode",binding.drawer.getMode().toString())
+            if(isChecked){
+                binding.drawer.setMode(isChecked)
+            }else{
+                binding.drawer.setMode(isChecked)
+            }
+        }
 //         Wait for the connection to be established before proceeding
 
         binding.show.setOnClickListener {
@@ -122,17 +131,50 @@ class EditActivity : AppCompatActivity(), UIUpdaterInterface {
                     for(i in it){
                         when(i.type) {
                             "SWITCH" -> {
-                                val paint = Paint().apply {
-                                    color = getColor(R.color.main)
-                                    style = Paint.Style.FILL
-                                }
-                                val obj = Switch(this,
-                                    i.x!!.toFloat(),
-                                    i.y!!.toFloat(),
-                                    i.w!!.toFloat(),
-                                    paint)
+                                try {
+                                    val paint = Paint().apply {
+                                        color = getColor(R.color.main)
+                                        style = Paint.Style.FILL
+                                    }
+                                    val obj = i.id?.let { it1 ->
+                                        Switch(this,
+                                            id = it1,
+                                            x = i.x!!.toFloat(),
+                                            y = i.y!!.toFloat(),
+                                            width = i.w!!.toFloat(),
+                                            paint = paint)
+                                    }
 
-                                binding.drawer.addObject(obj)
+                                    if (obj != null) {
+                                        binding.drawer.addObject(obj)
+                                    }
+                                }catch (e:Exception){
+                                    e.printStackTrace()
+                                }
+                            }
+                            "TEXT" -> {
+                                try {
+                                    val paint = Paint().apply {
+                                        color = getColor(R.color.main)
+                                        style = Paint.Style.FILL
+                                    }
+                                    val obj = i!!.id?.let { it1 ->
+                                        Text(this,
+                                            id = it1,
+                                            x = i.x!!.toFloat(),
+                                            y = i.y!!.toFloat(),
+                                            width = i.w!!.toFloat(),
+                                            paint = paint,
+                                            status=false)
+                                    }
+
+                                    if (obj != null) {
+                                        binding.drawer.addObject(obj)
+                                    }
+                                } catch (e:Exception){
+                                    e.printStackTrace()
+                                }
+
                             }
                         }
                     }
@@ -173,10 +215,11 @@ class EditActivity : AppCompatActivity(), UIUpdaterInterface {
         }
 
         val switch = Switch(this,300f,400f,200f,paint)
-        val text = Text(this,200f,500f,400f,paint,content = "no content", status = false,vm = viewModel)
+        val text = Text(this,200f,500f,400f,paint,content = "no content", status = false)
 
-        binding.mode.setOnClickListener {
-            binding.drawer.setMode(!binding.drawer.getMode())
+        binding.mode.setOnCheckedChangeListener { _, isChecked ->
+            Log.d("setMode", isChecked.toString())
+
         }
 
         dialogView.findViewById<ImageButton>(R.id.close).setOnClickListener {
@@ -186,6 +229,7 @@ class EditActivity : AppCompatActivity(), UIUpdaterInterface {
         dialogView.findViewById<ImageButton>(R.id.plus_siwtch).setOnClickListener {
 //            binding.drawer.addObject(circle)
             val dataItem = ComponentItem(
+                id = switch.id,
                 type = "SWITCH",
                 x=300,
                 y=400,
@@ -204,6 +248,7 @@ class EditActivity : AppCompatActivity(), UIUpdaterInterface {
 //            binding.drawer.addObject(circle)
             val dataItem = ComponentItem(
                 type = "TEXT",
+                id = text.id,
                 x=300,
                 y=400,
                 w=400,
