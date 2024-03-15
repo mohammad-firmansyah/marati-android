@@ -91,6 +91,7 @@ class EditViewModel(val pref:PreferenceManager,val uid: String):ViewModel() {
         headers.put("authorization",token)
 
         val json = JSONObject()
+        json.put("id",data.id)
         json.put("type",data.type)
         json.put("x",data.x)
         json.put("y",data.y)
@@ -107,28 +108,90 @@ class EditViewModel(val pref:PreferenceManager,val uid: String):ViewModel() {
                 call: Call<ComponentResponse>,
                 response: Response<ComponentResponse>
             ) {
-                _isLoading.value = false
                 try {
 
+                    _isLoading.value = false
                     if(response.isSuccessful){
                         _components.value = response.body()?.data as List<ComponentItem>
                     }else{
                         val error = Gson().fromJson(response.errorBody()?.string(),ComponentResponse::class.java)
-                        _errorMessage.value = error.message.toString()
+//                        _errorMessage.value = error.message.toString()
                     }
                 } catch (e:Exception){
-                    _errorMessage.value = e.message.toString()
+//                    _errorMessage.value = e.message.toString()
                 }
 
             }
 
             override fun onFailure(call: Call<ComponentResponse>, t: Throwable) {
-                _isLoading.value = false
-                _errorMessage.value = t.message.toString()
+//                _isLoading.value = false
+//                _errorMessage.value = t.message.toString()
             }
         })
         }else{
             _errorMessage.value = "Unauthorized"
         }
+    }
+
+    fun updateComponent(data:ComponentItem){
+        try {
+            val token = getToken()
+            _isLoading.value = true
+            if(token.isNotEmpty()){
+
+                val headers = HashMap<String,String>()
+                headers.put("authorization",token)
+
+                val json = JSONObject()
+                json.put("id",data.id)
+                json.put("type",data.type)
+                json.put("x",data.x)
+                json.put("y",data.y)
+                json.put("w",data.w)
+                json.put("h",data.h)
+                json.put("content",data.content)
+                json.put("topic",data.topic)
+                json.put("rules",data.rules)
+                json.put("dashboard_id",uid)
+                json.put("model_id",null)
+                val body = json.toString().toRequestBody("application/json".toMediaTypeOrNull())
+                val client = data.id?.let {
+                    ApiConfig.provideApiServiceJs().updateComponent(headers,body,
+                        it
+                    )
+                }
+                client!!.enqueue(object: Callback<ComponentResponse>{
+                    override fun onResponse(
+                        call: Call<ComponentResponse>,
+                        response: Response<ComponentResponse>
+                    ) {
+                        try {
+
+                            _isLoading.value = false
+                            if(response.isSuccessful){
+                                _components.value = response.body()?.data as List<ComponentItem>
+                            }else{
+                                val error = Gson().fromJson(response.errorBody()?.string(),ComponentResponse::class.java)
+//                        _errorMessage.value = error.message.toString()
+                            }
+                        } catch (e:Exception){
+//                    _errorMessage.value = e.message.toString()
+                        }
+
+                    }
+
+                    override fun onFailure(call: Call<ComponentResponse>, t: Throwable) {
+//                _isLoading.value = false
+//                _errorMessage.value = t.message.toString()
+                    }
+                })
+
+            }else{
+                _errorMessage.value = "Unauthorized"
+            }
+        }catch (e:Exception){
+            e.printStackTrace()
+        }
+
     }
 }
