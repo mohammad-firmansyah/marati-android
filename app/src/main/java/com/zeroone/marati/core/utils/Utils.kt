@@ -15,6 +15,7 @@ import org.eclipse.paho.client.mqttv3.MqttMessage
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.TimeZone
+import java.util.UUID
 import kotlin.random.Random
 
 
@@ -164,6 +165,8 @@ class Utils {
                 }
             })
         }
+
+        fun getUUID() = UUID.randomUUID().toString()
 
         fun disconnect(mqttAndroidClient: MqttAndroidClient) {
             try {
