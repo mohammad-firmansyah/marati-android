@@ -23,7 +23,12 @@ import org.eclipse.paho.client.mqttv3.MqttPersistenceException
 
 class Switch(private val context: Context, private var x: Float, private var y: Float, private var width: Float, private var paint: Paint,
              override var status: Boolean = false,
-             override val id: String =  Utils.generateRandomString(5)
+             override val id: String =  Utils.getUUID(),
+             override val type: String = "SWITCH",
+             override val topic: String = "",
+             override val content: String = "",
+             override val rules: String = "{}",
+             override val model_id: String = ""
 ) :
     ObjectInterface, SwitchInterface {
 
