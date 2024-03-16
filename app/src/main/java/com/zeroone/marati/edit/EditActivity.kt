@@ -106,11 +106,11 @@ class EditActivity : AppCompatActivity(), UIUpdaterInterface {
 
         val switch  = findViewById<android.widget.Switch>(R.id.mode)
         switch.setOnCheckedChangeListener{_,isChecked ->
-            Log.d("setMode",binding.drawer.getMode().toString())
+            Log.d("setMode",viewModel.editMode.toString())
             if(isChecked){
-                binding.drawer.setMode(isChecked)
+                viewModel.setMode(true)
             }else{
-                binding.drawer.setMode(isChecked)
+                viewModel.setMode(false)
             }
         }
 //         Wait for the connection to be established before proceeding
@@ -224,17 +224,12 @@ class EditActivity : AppCompatActivity(), UIUpdaterInterface {
         val switch = Switch(this,300f,400f,200f,paint)
         val text = Text(this,200f,500f,400f,textPaint,content = "no content", status = false)
 
-        binding.mode.setOnCheckedChangeListener { _, isChecked ->
-            Log.d("setMode", isChecked.toString())
-
-        }
 
         dialogView.findViewById<ImageButton>(R.id.close).setOnClickListener {
             isDialog.dismiss()
         }
 
         dialogView.findViewById<ImageButton>(R.id.plus_siwtch).setOnClickListener {
-//            binding.drawer.addObject(circle)
             val dataItem = ComponentItem(
                 id = switch.id,
                 type = "SWITCH",
@@ -252,7 +247,6 @@ class EditActivity : AppCompatActivity(), UIUpdaterInterface {
         }
 
         dialogView.findViewById<ImageButton>(R.id.plus_text).setOnClickListener {
-//            binding.drawer.addObject(circle)
             val dataItem = ComponentItem(
                 type = "TEXT",
                 id = text.id,

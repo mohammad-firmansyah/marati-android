@@ -83,8 +83,8 @@ class Text(private val context: Context, private var x: Float, private var y: Fl
         return r
     }
 
-    override fun drawCustom(canvas: Canvas,content:String) {
-
+    override fun drawCustom(canvas: Canvas,r: String) {
+        paint.textSize = 60f
         val textWidth = paint.measureText(content)
         canvas.drawText(content, x, y+height()/2, paint)
         getData()

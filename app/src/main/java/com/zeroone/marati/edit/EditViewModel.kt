@@ -30,8 +30,14 @@ class EditViewModel(val pref:PreferenceManager,val uid: String):ViewModel() {
     private val _message: MutableLiveData<String> = MutableLiveData()
     val message : LiveData<String> = _message
 
+    var editMode : Boolean = false
+
     fun setMessage(msg:String){
         this._message.value = msg
+    }
+
+    fun setMode(mode:Boolean){
+        this.editMode  = mode
     }
 
     fun getToken() : String{

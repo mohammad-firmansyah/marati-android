@@ -32,13 +32,14 @@
 
         init{
             getData()
+
         }
         // mqtt setup
 
         //    drawer
+        val parent = context as EditActivity
         private val objectsToDraw = mutableListOf<ObjectInterface>()
         private var isDragging: Boolean = false
-        private var mode : Boolean = false
         private var touchOffsetX : Float = 0f
         private var touchOffsetY : Float = 0f
 
@@ -66,7 +67,7 @@
         val barRect: RectF = RectF(100f, 100f, 600f, 40f)
 
         override fun onTouchEvent(event: MotionEvent): Boolean {
-            val editActivity = context as EditActivity
+
 
             val touchX = event.x
             val touchY = event.y
@@ -80,7 +81,7 @@
                     val obj = getObjTouched(touchX, touchY)
                     activeHandle = getTouchedHandle( touchX, touchY)
 
-                    if(mode){
+                    if(parent.viewModel.editMode){
                         if (obj != null) {
                             activeObj = obj
                             objActiveForTransfomer = activeObj.getObjId()
@@ -133,7 +134,7 @@
                     val deltaY = touchY - previousY
 
                     // object can move only when edit mode on
-                    if(mode){
+                    if(parent.viewModel.editMode){
                         if (activeObj != null) {
                             // Adjust the object's position based on the touch offset
                             activeObj.setObjX(touchX - activeObj.getTouchOffsetX())
@@ -155,9 +156,9 @@
                 MotionEvent.ACTION_UP -> {
                     isDragging = false
 
-                    if(mode){
+                    if(parent.viewModel.editMode){
 
-                        editActivity.lifecycleScope.launch {
+                        parent.lifecycleScope.launch {
                             delay(3000)
                             val dataItem = ComponentItem(
                                 id = activeObj?.id,
@@ -172,7 +173,7 @@
                                 modelId = null
                             )
 
-                            editActivity.viewModel.updateComponent(dataItem)
+                            parent.viewModel.updateComponent(dataItem)
                         }
                     }
                 }
@@ -385,8 +386,6 @@
                         drawHandles(canvas)
                     }
                 }else{
-                    Log.d("ini masalah", (obj.getObjId() == objActiveForTransfomer).toString())
-                    Log.d("ini masalah", transformerStatus.toString())
                     if(obj is Switch){
                         obj.pushData()
                     }
@@ -415,13 +414,6 @@
         fun addObjects(objs: List<ObjectInterface>) {
             objectsToDraw.addAll(objs)
             invalidate()
-        }
-        fun setMode(input: Boolean) {
-            mode = input
-            invalidate()
-        }
-        fun getMode() : Boolean {
-            return mode
         }
 
         companion object {
