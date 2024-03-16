@@ -22,7 +22,6 @@
     import info.mqtt.android.service.MqttAndroidClient
     import kotlinx.coroutines.delay
     import kotlinx.coroutines.launch
-    import kotlinx.coroutines.runBlocking
     import kotlin.math.sqrt
 
 
@@ -83,6 +82,17 @@
 
                     if(parent.viewModel.editMode){
                         if (obj != null) {
+
+                            val dataItem = ComponentItem(
+                                id = obj.id,
+                                topic =  obj.topic,
+                                content = obj.contentObject,
+                                rules = obj.rules,
+                                modelId =  obj.model_id,
+                            )
+
+                            parent.viewModel.setActiveComponent(dataItem)
+
                             activeObj = obj
                             objActiveForTransfomer = activeObj.getObjId()
                             transformerStatus = true
@@ -97,7 +107,6 @@
                                 obj.swipeStatus(!obj.status)
                                 invalidate()
                             } else if (obj is TextInterface){
-                                obj.content = "tifa"
                                 invalidate()
                             }
 
@@ -166,7 +175,7 @@
                                 h = activeObj?.height()?.toInt(),
                                 x = activeObj?.getObjX()?.toInt(),
                                 y = activeObj?.getObjY()?.toInt(),
-                                content= activeObj?.content,
+                                content= activeObj?.contentObject,
                                 type=activeObj?.type,
                                 topic = activeObj?.topic,
                                 rules = "{}",
@@ -409,6 +418,19 @@
         fun addObject(obj: ObjectInterface) {
             objectsToDraw.add(obj)
             invalidate()
+        }
+
+        fun findObj(id: String) : ObjectInterface? {
+            return objectsToDraw.find { it -> it.id == id }
+        }
+        fun setContentById(id: String,content:String) {
+            val obj = objectsToDraw.filter { it.id == id}
+
+            Log.d("content-edited", obj[0].id.toString())
+
+            obj[0].setContent(content)
+            invalidate()
+
         }
 
         fun addObjects(objs: List<ObjectInterface>) {
