@@ -80,18 +80,14 @@
         android:id="@+id/sheet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_bottom_sheet"
+        android:background="@drawable/bg_bottom_sheet_border"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
         >
-
-
-
-
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_bottom_sheet"
+            android:background="@drawable/bg_bottom_sheet_border"
             >
 
             <ImageView
@@ -132,18 +128,41 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView6">
 
+
                     <EditText
-                        android:id="@+id/name"
+                        android:id="@+id/id_component_content"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="60dp"
                         android:layout_marginStart="24dp"
                         android:layout_marginTop="32dp"
+                        android:layout_marginEnd="24dp"
+                        android:background="@drawable/background_inp_disabled"
+                        android:fontFamily="@font/poppins_reg"
+                        android:hint="ID"
+                        android:maxLines="1"
+                        android:enabled="false"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:textColorHint="@color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+
+                    <EditText
+                        android:id="@+id/topic"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="16dp"
                         android:layout_marginEnd="24dp"
                         android:background="@drawable/background_inp"
                         android:fontFamily="@font/poppins_reg"
                         android:hint="Topic"
                         android:maxLines="1"
-                        android:paddingStart="32dp"
+                        android:paddingHorizontal="16dp"
                         android:textColor="@color/black"
                         android:textColorHint="@color/black"
                         android:textSize="17sp"
@@ -154,9 +173,9 @@
                         app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
                     <EditText
-                        android:id="@+id/server"
+                        android:id="@+id/content"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="60dp"
                         android:layout_marginStart="24dp"
                         android:layout_marginTop="16dp"
                         android:layout_marginEnd="24dp"
@@ -164,7 +183,7 @@
                         android:fontFamily="@font/poppins_reg"
                         android:hint="Content"
                         android:maxLines="1"
-                        android:paddingStart="32dp"
+                        android:paddingHorizontal="16dp"
                         android:textColor="@color/black"
                         android:textColorHint="@color/black"
                         android:textSize="17sp"
@@ -184,15 +203,15 @@
                         android:textColor="@color/black" />
 
                     <Spinner
-                        android:id="@+id/port"
+                        android:id="@+id/model"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="60dp"
                         android:layout_marginStart="24dp"
                         android:layout_marginTop="16dp"
                         android:layout_marginEnd="24dp"
                         android:background="@drawable/background_inp"
                         android:fontFamily="@font/poppins_reg"
-                        android:paddingStart="32dp"
+                        android:paddingHorizontal="16dp"
                         android:textColor="@color/black"
                         android:textColorHint="@color/black"
                         android:textSize="17sp"
@@ -202,25 +221,6 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/server" />
 
-
-                    <EditText
-                        android:id="@+id/port1"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="24dp"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginEnd="24dp"
-                        android:background="@drawable/background_inp"
-                        android:fontFamily="@font/poppins_reg"
-                        android:paddingStart="32dp"
-                        android:textColor="@color/black"
-                        android:textColorHint="@color/black"
-                        android:textSize="17sp"
-                        android:textStyle="bold"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/server" />
 
 
                     <EditText
@@ -269,7 +269,7 @@
 
 
                     <Button
-                        android:id="@+id/addNewProject"
+                        android:id="@+id/save"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="32dp"
