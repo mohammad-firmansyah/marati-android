@@ -7,7 +7,7 @@ interface ObjectInterface {
     val status : Boolean;
     val type : String;
     val topic : String;
-    val content : String;
+    val contentObject : String;
     val rules : String;
     val model_id : String;
 
@@ -30,5 +30,7 @@ interface ObjectInterface {
     fun insideObject(x:Float,y:Float):Boolean
     fun pushData()
     fun getData()
+
+    fun setContent(content: String)
 
 }
