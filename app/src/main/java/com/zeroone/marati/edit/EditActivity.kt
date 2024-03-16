@@ -16,7 +16,6 @@ import android.view.View
 import android.view.Window
 import android.widget.ImageButton
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -35,7 +34,7 @@ import info.mqtt.android.service.MqttAndroidClient
 
 class EditActivity : AppCompatActivity(), UIUpdaterInterface {
 
-    private lateinit var binding : ActivityEditDashboardBinding
+    lateinit var binding : ActivityEditDashboardBinding
     private lateinit var mqttAndroidClient : MqttAndroidClient
     lateinit var viewModel : EditViewModel
     private var dashboardId  = ""
@@ -119,6 +118,9 @@ class EditActivity : AppCompatActivity(), UIUpdaterInterface {
             showNavDrawer()
         }
 
+
+
+
         viewModelListener()
 
     }
@@ -166,7 +168,8 @@ class EditActivity : AppCompatActivity(), UIUpdaterInterface {
                                             y = i.y!!.toFloat(),
                                             width = i.w!!.toFloat(),
                                             paint = textPaint,
-                                            status=false)
+                                            status=false,
+                                            contentObject = i.content.toString())
                                     }
 
                                     if (obj != null) {
@@ -187,6 +190,17 @@ class EditActivity : AppCompatActivity(), UIUpdaterInterface {
 
         viewModel.errorMessage.observe(this){
             Snackbar.make(binding.root,it.toString(),Snackbar.LENGTH_LONG).show()
+        }
+
+        viewModel.activeComponent.observe(this){
+            binding.idComponentContent.setText(it.id)
+            binding.content.setText(it.content)
+            binding.topic.setText(it.topic)
+            binding.save.setOnClickListener{view ->
+                it.content = binding.content.text.toString()
+                viewModel.updateComponent(it)
+                binding.drawer.setContentById(it.id.toString(), binding.content.text.toString())
+            }
         }
 
         viewModel.isLoading.observe(this){
@@ -222,8 +236,7 @@ class EditActivity : AppCompatActivity(), UIUpdaterInterface {
         }
 
         val switch = Switch(this,300f,400f,200f,paint)
-        val text = Text(this,200f,500f,400f,textPaint,content = "no content", status = false)
-
+        val text = Text(this,200f,500f,400f,textPaint,contentObject = "no content", status = false)
 
         dialogView.findViewById<ImageButton>(R.id.close).setOnClickListener {
             isDialog.dismiss()
