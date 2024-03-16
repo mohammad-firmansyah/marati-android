@@ -12,12 +12,12 @@ import com.zeroone.marati.core.utils.Utils
 
 class Text(private val context: Context, private var x: Float, private var y: Float, private var width: Float, private var paint: Paint,
            override val id: String =  Utils.getUUID(),
-           override var content: String = "no content",
            override val status: Boolean,
            override val type: String = "TEXT",
            override val topic: String = "",
            override val rules: String = "{}",
            override val model_id: String = "",
+           override var contentObject: String = "no content",
 
            ) :
     ObjectInterface, TextInterface {
@@ -66,13 +66,13 @@ class Text(private val context: Context, private var x: Float, private var y: Fl
     }
 
     override fun width(): Float {
-        val textWidth = paint.measureText(content)
+        val textWidth = paint.measureText(contentObject)
         return textWidth
     }
 
     override fun setWidth(r: Float): Float {
         paint.textSize = r
-        return paint.measureText(content)
+        return paint.measureText(contentObject)
     }
 
     override fun height(): Float {
@@ -85,8 +85,8 @@ class Text(private val context: Context, private var x: Float, private var y: Fl
 
     override fun drawCustom(canvas: Canvas,r: String) {
         paint.textSize = 60f
-        val textWidth = paint.measureText(content)
-        canvas.drawText(content, x, y+height()/2, paint)
+        val textWidth = paint.measureText(contentObject)
+        canvas.drawText(contentObject, x, y+height()/2, paint)
         getData()
     }
 
@@ -111,9 +111,10 @@ class Text(private val context: Context, private var x: Float, private var y: Fl
 
     }
 
-    private fun updateContent(it: String) {
-        content = it
+    override fun setContent(content: String) {
+        this.contentObject = content
     }
+
 
     fun handleReceivedData(data: String) {
         // Here, you can do something with the received data
