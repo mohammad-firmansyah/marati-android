@@ -27,13 +27,19 @@ class EditViewModel(val pref:PreferenceManager,val uid: String):ViewModel() {
     private val _errorMessage: MutableLiveData<String> = MutableLiveData()
     val errorMessage : LiveData<String> = _errorMessage
 
-    private val _message: MutableLiveData<String> = MutableLiveData()
-    val message : LiveData<String> = _message
+    private val _activeComponent : MutableLiveData<ComponentItem> = MutableLiveData()
+    val activeComponent : LiveData<ComponentItem> = _activeComponent
 
     var editMode : Boolean = false
 
-    fun setMessage(msg:String){
-        this._message.value = msg
+    fun setActiveComponent(componentItem: ComponentItem){
+        this._activeComponent.value = componentItem
+    }
+
+    fun getActiveComponent() : ComponentItem? {
+        return runBlocking {
+            activeComponent.value
+        }
     }
 
     fun setMode(mode:Boolean){
