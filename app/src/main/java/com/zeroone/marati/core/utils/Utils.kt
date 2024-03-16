@@ -152,7 +152,7 @@ class Utils {
                             // data is the desired received message
                             // Give your callback on message received here
                             val editViewModel = vm as EditViewModel
-                            editViewModel.setMessage(data)
+//                            editViewModel.set(data)
 
                             Log.i("Message",data)
                         }
