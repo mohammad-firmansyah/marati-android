@@ -47,7 +47,7 @@ data class ComponentItem(
 	val type: String? = null,
 
 	@field:SerializedName("content")
-	val content: String? = null,
+	var content: String? = null,
 
 	@field:SerializedName("dashboard_id")
 	val dashboardId: String? = null
