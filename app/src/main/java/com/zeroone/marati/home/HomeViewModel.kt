@@ -26,6 +26,9 @@ class HomeViewModel(val pref:PreferenceManager):ViewModel() {
     private val _errorMessage : MutableLiveData<String> = MutableLiveData()
     val errorMessage : LiveData<String> = _errorMessage
 
+    private val _isLoading : MutableLiveData<Boolean> = MutableLiveData()
+    val isLoading : LiveData<Boolean> = _isLoading
+
     fun getToken():String{
         return runBlocking {
             pref.getToken().first()
@@ -43,6 +46,7 @@ class HomeViewModel(val pref:PreferenceManager):ViewModel() {
     }
 
     fun getDashboards(ownerId:String){
+        _isLoading.value = true
         val token =getToken()
         if (token.isNotEmpty()){
             val header = mutableMapOf<String,String>()
@@ -50,6 +54,7 @@ class HomeViewModel(val pref:PreferenceManager):ViewModel() {
             val client = ApiConfig.provideApiServiceJs().getAllDashboard(ownerId,header)
             client.enqueue(object : Callback<DashboardResponse>{
                 override fun onResponse(call: Call<DashboardResponse>, response: Response<DashboardResponse>) {
+                    _isLoading.value = false
                     try {
                         if(response.isSuccessful){
                             _dashboards.value = response.body()?.data as List<DashboardItem>?
@@ -69,18 +74,20 @@ class HomeViewModel(val pref:PreferenceManager):ViewModel() {
                 }
 
                 override fun onFailure(call: Call<DashboardResponse>, t: Throwable) {
+                    _isLoading.value = false
                     _errorMessage.value = t.message.toString()
-
                 }
 
             })
         }
         else{
+            _isLoading.value = false
             _errorMessage.value = "unauthorized"
         }
     }
 
     fun deleteDashboard(uid:String,ownerId: String){
+        _isLoading.value = true
         val token =getToken()
         if (token.isNotEmpty()){
             val header = mutableMapOf<String,String>()
@@ -89,6 +96,7 @@ class HomeViewModel(val pref:PreferenceManager):ViewModel() {
             val client = ApiConfig.provideApiServiceJs().deleteDashboard(header,uid,ownerId)
             client.enqueue(object : Callback<DashboardResponse>{
                 override fun onResponse(call: Call<DashboardResponse>, response: Response<DashboardResponse>) {
+                    _isLoading.value = false
                     try {
                         if(response.isSuccessful){
                             _dashboards.value = response.body()?.data as List<DashboardItem>?
@@ -102,6 +110,7 @@ class HomeViewModel(val pref:PreferenceManager):ViewModel() {
                 }
 
                 override fun onFailure(call: Call<DashboardResponse>, t: Throwable) {
+                    _isLoading.value = false
                     _errorMessage.value = t.message.toString()
 
                 }
@@ -110,11 +119,13 @@ class HomeViewModel(val pref:PreferenceManager):ViewModel() {
         }
 
         else{
+            _isLoading.value = false
             _errorMessage.value = "unauthorized"
         }
     }
 
     fun createDashboard(data : DashboardItem) {
+        _isLoading.value = false
         val token = getToken()
         if (token.isNotEmpty()) {
             val json = JSONObject()
@@ -134,6 +145,7 @@ class HomeViewModel(val pref:PreferenceManager):ViewModel() {
                     call: Call<DashboardResponse>,
                     response: Response<DashboardResponse>
                 ) {
+                    _isLoading.value = false
                     try {
                         if(response.isSuccessful){
                             _dashboards.value = response.body()?.data as List<DashboardItem>
@@ -147,11 +159,13 @@ class HomeViewModel(val pref:PreferenceManager):ViewModel() {
                 }
 
                 override fun onFailure(call: Call<DashboardResponse>, t: Throwable) {
+                    _isLoading.value = false
                     _errorMessage.value = t.message.toString()
                 }
 
             })
         } else{
+            _isLoading.value = false
             _errorMessage.value = "unauthorized"
         }
     }
