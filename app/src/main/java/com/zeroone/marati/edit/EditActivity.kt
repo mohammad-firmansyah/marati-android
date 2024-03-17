@@ -105,14 +105,15 @@ class EditActivity : AppCompatActivity(), UIUpdaterInterface {
 
         val switch  = findViewById<android.widget.Switch>(R.id.mode)
         switch.setOnCheckedChangeListener{_,isChecked ->
-            Log.d("setMode",viewModel.editMode.toString())
             if(isChecked){
                 viewModel.setMode(true)
+                showDetailComponent()
             }else{
                 viewModel.setMode(false)
+                hideDetailComponent()
             }
         }
-//         Wait for the connection to be established before proceeding
+
 
         binding.show.setOnClickListener {
             showNavDrawer()
@@ -121,8 +122,22 @@ class EditActivity : AppCompatActivity(), UIUpdaterInterface {
 
 
 
+
         viewModelListener()
 
+    }
+
+    private fun showDetailComponent(){
+        binding.sheet.visibility = View.VISIBLE
+    }
+    private fun hideDetailComponent(){
+        binding.sheet.visibility = View.INVISIBLE
+    }
+    private fun collapseDetailComponent(){
+        BottomSheetBehavior.from(binding.sheet).apply {
+            peekHeight = 100
+            state = BottomSheetBehavior.STATE_COLLAPSED
+        }
     }
 
     private fun viewModelListener() {
@@ -200,6 +215,7 @@ class EditActivity : AppCompatActivity(), UIUpdaterInterface {
                 it.content = binding.content.text.toString()
                 viewModel.updateComponent(it)
                 binding.drawer.setContentById(it.id.toString(), binding.content.text.toString())
+                collapseDetailComponent()
             }
         }
 
