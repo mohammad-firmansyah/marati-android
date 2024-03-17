@@ -2,18 +2,18 @@ package com.zeroone.marati.home.Fragments
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
+import com.zeroone.marati.core.data.source.remote.response.DashboardItem
+import com.zeroone.marati.core.ui.DashboardAdapter
 import com.zeroone.marati.databinding.FragmentHomeBinding
 import com.zeroone.marati.home.BottomSheetAddNewProject
 import com.zeroone.marati.home.HomeActivity
 import com.zeroone.marati.login.LoginActivity
-import com.zeroone.marati.core.data.source.remote.response.DashboardItem
-import com.zeroone.marati.core.ui.DashboardAdapter
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -59,6 +59,9 @@ class HomeFragment : Fragment() {
 
         parent = requireActivity() as HomeActivity
 
+        binding.shimmerProject.visibility = View.VISIBLE
+        binding.shimmerProject.startShimmer()
+
         binding.rvDashboard.layoutManager = LinearLayoutManager(requireActivity())
         binding.rvDashboard.adapter = DashboardAdapter(requireContext(),dashboards, parent.viewModel)
         binding.addProject.setOnClickListener {
@@ -67,16 +70,26 @@ class HomeFragment : Fragment() {
         }
 
         binding.container.setOnRefreshListener {
+
+            binding.rvDashboard.adapter = DashboardAdapter(requireContext(),null, parent.viewModel)
+            binding.shimmerProject.visibility = View.VISIBLE
+            binding.shimmerProject.startLayoutAnimation()
+
             parent.viewModel.getDashboards(parent.viewModel.getUserId())
 
             binding.container.isRefreshing = false
         }
+
         viewModelListener()
     }
 
     private fun viewModelListener() {
         parent.viewModel.dashboards.observe(viewLifecycleOwner){
+            binding.shimmerProject.stopShimmer()
+            binding.shimmerProject.setVisibility(View.GONE)
+
             dashboards = it
+
             binding.rvDashboard.adapter = DashboardAdapter(requireContext(),dashboards,parent.viewModel)
         }
 
@@ -90,6 +103,11 @@ class HomeFragment : Fragment() {
                 Snackbar.make(parent.binding.root,it,Snackbar.LENGTH_LONG).show()
             }
         }
+        parent.viewModel.isLoading.observe(viewLifecycleOwner){
+            if(it){
+            }else{
+            }
+        }
     }
 
 
@@ -101,6 +119,16 @@ class HomeFragment : Fragment() {
     private fun showBottomSheet() {
         val bottomSheetFragment = BottomSheetAddNewProject()
         bottomSheetFragment.show(parentFragmentManager,"BottomDialog")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        binding.shimmerProject.startShimmer()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        binding.shimmerProject.stopShimmer()
     }
 
     companion object {
