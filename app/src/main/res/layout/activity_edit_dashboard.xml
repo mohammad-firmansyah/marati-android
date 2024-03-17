@@ -86,6 +86,7 @@
         android:id="@+id/sheet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="invisible"
         android:background="@drawable/bg_bottom_sheet_border"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
         >
