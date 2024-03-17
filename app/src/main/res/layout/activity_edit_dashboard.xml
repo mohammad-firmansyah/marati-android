@@ -6,74 +6,80 @@
     android:layout_width="match_parent"
     xmlns:tools="http://schemas.android.com/tools">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/show"
+            style="@style/CardView.Light"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="32dp"
+            android:backgroundTint="@color/main"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/baseline_menu_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/white"
+            tools:targetApi="o" />
 
+        <Switch
+            android:id="@+id/mode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="35dp"
+            android:text="@string/edit_mode"
+            app:layout_constraintEnd_toStartOf="@+id/show"
+            app:layout_constraintTop_toTopOf="parent" />
 
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/show"
-                    style="@style/CardView.Light"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="32dp"
-                    android:backgroundTint="@color/main"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:src="@drawable/baseline_menu_24"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:tint="@color/white"
-                    tools:targetApi="o" />
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/status"
+            android:layout_width="80dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="25dp"
+            android:background="@drawable/background_unsaved"
+            android:fontFamily="@font/poppins_bold"
+            android:text="@string/unsaved"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toStartOf="@+id/mode"
+            app:layout_constraintTop_toTopOf="parent" />
 
-                <com.zeroone.marati.core.custom.Drawer
-                    android:id="@+id/drawer"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="100dp"
-                    android:minHeight="600dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/show" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="20dp"
+            app:layout_constraintGuide_percent="0.10" />
 
-                <Switch
-                    android:id="@+id/mode"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
-                    android:layout_marginEnd="35dp"
-                    android:text="@string/edit_mode"
-                    app:layout_constraintEnd_toStartOf="@+id/show"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/status"
-                    android:layout_width="80dp"
-                    android:layout_height="30dp"
-                    android:layout_marginTop="32dp"
-                    android:layout_marginEnd="25dp"
-                    android:background="@drawable/background_unsaved"
-                    android:text="@string/unsaved"
-                    android:textAllCaps="false"
-                    android:textSize="12sp"
-                    android:fontFamily="@font/poppins_bold"
-                    android:textColor="@color/white"
-                    app:layout_constraintEnd_toStartOf="@+id/mode"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="20dp"
+            app:layout_constraintGuide_percent="0.90"
+             />
 
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        <com.zeroone.marati.core.custom.Drawer
+            android:id="@+id/drawer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="50dp"
+            app:layout_constraintBottom_toBottomOf="@id/guideline2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/guideline1" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     <FrameLayout
@@ -291,4 +297,5 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </FrameLayout>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
