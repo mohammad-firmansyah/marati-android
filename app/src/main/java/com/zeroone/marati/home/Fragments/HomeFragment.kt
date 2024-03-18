@@ -103,11 +103,6 @@ class HomeFragment : Fragment() {
                 Snackbar.make(parent.binding.root,it,Snackbar.LENGTH_LONG).show()
             }
         }
-        parent.viewModel.isLoading.observe(viewLifecycleOwner){
-            if(it){
-            }else{
-            }
-        }
     }
 
 
