@@ -15,11 +15,11 @@
             style="@style/CardView.Light"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="32dp"
             android:backgroundTint="@color/main"
             android:clickable="true"
             android:focusable="true"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
             android:src="@drawable/baseline_menu_24"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -69,6 +69,18 @@
              />
 
 
+        <ImageButton
+            android:id="@+id/info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:backgroundTint="@color/main"
+            android:src="@drawable/baseline_info_outline_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
         <com.zeroone.marati.core.custom.Drawer
             android:id="@+id/drawer"
             android:layout_width="match_parent"
@@ -86,7 +98,6 @@
         android:id="@+id/sheet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="invisible"
         android:background="@drawable/bg_bottom_sheet_border"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
         >
@@ -114,10 +125,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:visibility="invisible"
                 android:fontFamily="@font/poppins_bold"
                 android:text="@string/detail_component"
                 android:textColor="@color/black"
                 android:textSize="16sp"
+                android:layout_marginBottom="32dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageView2" />
@@ -125,7 +138,8 @@
             <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="8dp"
+                android:layout_marginVertical="64dp"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/textView6">
 
                 <LinearLayout
@@ -136,18 +150,27 @@
                     app:layout_constraintTop_toBottomOf="@+id/textView6">
 
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:fontFamily="@font/poppins_reg"
+                        android:text="@string/id"
+                        android:textColor="@color/black" />
+
+
                     <EditText
                         android:id="@+id/id_component_content"
                         android:layout_width="match_parent"
                         android:layout_height="60dp"
                         android:layout_marginStart="24dp"
-                        android:layout_marginTop="32dp"
+                        android:layout_marginTop="8dp"
                         android:layout_marginEnd="24dp"
                         android:background="@drawable/background_inp_disabled"
+                        android:enabled="false"
                         android:fontFamily="@font/poppins_reg"
                         android:hint="ID"
                         android:maxLines="1"
-                        android:enabled="false"
                         android:paddingStart="16dp"
                         android:paddingEnd="16dp"
                         android:textColorHint="@color/black"
@@ -158,16 +181,25 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="16dp"
+                        android:fontFamily="@font/poppins_reg"
+                        android:text="@string/topic"
+                        android:textColor="@color/black" />
+
                     <EditText
                         android:id="@+id/topic"
                         android:layout_width="match_parent"
                         android:layout_height="60dp"
                         android:layout_marginStart="24dp"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="8dp"
                         android:layout_marginEnd="24dp"
                         android:background="@drawable/background_inp"
                         android:fontFamily="@font/poppins_reg"
-                        android:hint="Topic"
+                        android:hint="@string/topic"
                         android:maxLines="1"
                         android:paddingHorizontal="16dp"
                         android:textColor="@color/black"
@@ -179,16 +211,25 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="16dp"
+                        android:fontFamily="@font/poppins_reg"
+                        android:text="@string/content"
+                        android:textColor="@color/black" />
+
                     <EditText
                         android:id="@+id/content"
                         android:layout_width="match_parent"
                         android:layout_height="60dp"
                         android:layout_marginStart="24dp"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="8dp"
                         android:layout_marginEnd="24dp"
                         android:background="@drawable/background_inp"
                         android:fontFamily="@font/poppins_reg"
-                        android:hint="Content"
+                        android:hint="@string/content"
                         android:maxLines="1"
                         android:paddingHorizontal="16dp"
                         android:textColor="@color/black"
@@ -214,7 +255,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="60dp"
                         android:layout_marginStart="24dp"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="8dp"
                         android:layout_marginEnd="24dp"
                         android:background="@drawable/background_inp"
                         android:fontFamily="@font/poppins_reg"
@@ -229,60 +270,138 @@
                         app:layout_constraintTop_toBottomOf="@+id/server" />
 
 
-
-                    <EditText
-                        android:id="@+id/username"
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="24dp"
                         android:layout_marginTop="16dp"
-                        android:layout_marginEnd="24dp"
-                        android:background="@drawable/background_inp"
                         android:fontFamily="@font/poppins_reg"
-                        android:hint="Username"
-                        android:maxLines="1"
-                        android:paddingStart="32dp"
-                        android:textColor="@color/black"
-                        android:textColorHint="@color/black"
-                        android:textSize="17sp"
-                        android:textStyle="bold"
-                        android:visibility="gone"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/description" />
+                        android:text="@string/rules"
+                        android:textColor="@color/black" />
 
-                    <EditText
-                        android:id="@+id/password"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        >
+
+                        <EditText
+                            android:id="@+id/value"
+                            android:layout_width="100dp"
+                            android:layout_height="60dp"
+                            android:layout_marginStart="24dp"
+                            android:layout_marginVertical="8dp"
+                            android:background="@drawable/background_inp"
+                            android:fontFamily="@font/poppins_reg"
+                            android:maxLines="1"
+                            android:layout_marginEnd="16dp"
+                            android:hint="value"
+                            android:paddingHorizontal="16dp"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/black"
+                            android:textSize="14sp"
+                            />
+
+                        <Spinner
+                            android:id="@+id/operator"
+                            android:layout_width="100dp"
+                            android:layout_height="60dp"
+                            android:layout_marginVertical="8dp"
+                            android:background="@drawable/background_inp"
+                            android:fontFamily="@font/poppins_reg"
+                            android:maxLines="1"
+                            android:layout_marginEnd="16dp"
+                            android:paddingHorizontal="16dp"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/black"
+                            android:textSize="17sp"
+                            android:textStyle="bold"
+                            />
+
+                        <EditText
+                            android:id="@+id/condition"
+                            android:layout_width="100dp"
+                            android:layout_height="60dp"
+                            android:background="@drawable/background_inp"
+                            android:fontFamily="@font/poppins_reg"
+                            android:maxLines="1"
+                            android:layout_marginVertical="8dp"
+                            android:text="condition"
+                            android:paddingHorizontal="16dp"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/black"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            />
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_marginStart="24dp"
-                        android:layout_marginTop="22dp"
+                        android:layout_marginTop="16dp"
+                        android:fontFamily="@font/poppins_reg"
+                        android:text="True"
+                        android:textColor="@color/black" />
+
+                    <EditText
+                        android:id="@+id/true_condition"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="8dp"
                         android:layout_marginEnd="24dp"
                         android:background="@drawable/background_inp"
                         android:fontFamily="@font/poppins_reg"
-                        android:hint="Password"
+                        android:hint="True"
                         android:maxLines="1"
-                        android:paddingStart="32dp"
+                        android:paddingHorizontal="16dp"
                         android:textColor="@color/black"
                         android:textColorHint="@color/black"
                         android:textSize="17sp"
                         android:textStyle="bold"
-                        android:visibility="gone"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/username" />
+                        app:layout_constraintTop_toBottomOf="@+id/name" />
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="16dp"
+                        android:fontFamily="@font/poppins_reg"
+                        android:text="False"
+                        android:textColor="@color/black" />
+
+                    <EditText
+                        android:id="@+id/false_condition"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="24dp"
+                        android:background="@drawable/background_inp"
+                        android:fontFamily="@font/poppins_reg"
+                        android:hint="False"
+                        android:maxLines="1"
+                        android:paddingHorizontal="16dp"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/black"
+                        android:textSize="17sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/name" />
 
                     <Button
                         android:id="@+id/save"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="32dp"
+                        android:layout_marginStart="24dp"
                         android:layout_marginTop="32dp"
-                        android:layout_marginEnd="32dp"
-                        android:layout_marginBottom="24dp"
+                        android:layout_marginEnd="24dp"
                         android:backgroundTint="@color/main"
                         android:fontFamily="@font/poppins_bold"
                         android:paddingVertical="16dp"
@@ -293,6 +412,25 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/cred_button" />
+
+                    <Button
+                        android:id="@+id/delete"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="24dp"
+                        android:layout_marginBottom="24dp"
+                        android:backgroundTint="@color/secondary"
+                        android:fontFamily="@font/poppins_bold"
+                        android:paddingVertical="16dp"
+                        android:text="Delete"
+                        android:textSize="20sp"
+                        app:cornerRadius="12dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/save" />
                 </LinearLayout>
             </ScrollView>
         </androidx.constraintlayout.widget.ConstraintLayout>
