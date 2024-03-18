@@ -15,15 +15,20 @@ import android.view.Gravity
 import android.view.View
 import android.view.Window
 import android.widget.ImageButton
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.snackbar.Snackbar
+import com.tomergoldst.tooltips.ToolTip
+import com.tomergoldst.tooltips.ToolTipsManager
 import com.zeroone.marati.R
 import com.zeroone.marati.core.custom.Switch
 import com.zeroone.marati.core.custom.Text
 import com.zeroone.marati.core.data.source.remote.response.ComponentItem
+import com.zeroone.marati.core.data.source.remote.response.DashboardDetailItem
+import com.zeroone.marati.core.data.source.remote.response.DashboardItem
 import com.zeroone.marati.core.ui.PreferenceManager
 import com.zeroone.marati.core.utils.UIUpdaterInterface
 import com.zeroone.marati.core.utils.Utils
@@ -32,12 +37,15 @@ import com.zeroone.marati.databinding.ActivityEditDashboardBinding
 import info.mqtt.android.service.MqttAndroidClient
 
 
-class EditActivity : AppCompatActivity(), UIUpdaterInterface {
+class EditActivity : AppCompatActivity(),ToolTipsManager.TipListener {
 
     lateinit var binding : ActivityEditDashboardBinding
     private lateinit var mqttAndroidClient : MqttAndroidClient
     lateinit var viewModel : EditViewModel
     private var dashboardId  = ""
+    private var dashboard  : DashboardDetailItem? = null
+
+    var toolTipsManager: ToolTipsManager? = null
 
     private val requestPermissionLauncher =
         registerForActivityResult(
@@ -56,7 +64,12 @@ class EditActivity : AppCompatActivity(), UIUpdaterInterface {
         binding = ActivityEditDashboardBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // initialize tooltips manager
+        toolTipsManager= ToolTipsManager(this);
+
         dashboardId = intent.getStringExtra("id").toString()
+
+        // initilalize view model
         val pref = PreferenceManager.getInstance(dataStore)
         viewModel = ViewModelProvider(this,ViewModelFactory(pref,dashboardId)).get(EditViewModel::class.java)
 
@@ -120,6 +133,11 @@ class EditActivity : AppCompatActivity(), UIUpdaterInterface {
         }
 
 
+        binding.info.setOnClickListener{
+            val message = "Broker: ${dashboard?.server} \nName: ${dashboard?.name} \nUsername: ${dashboard?.username}\n" +
+                    "Password: ${dashboard?.password} "
+            displayToolTip(message,1,1)
+        }
 
 
 
@@ -207,6 +225,10 @@ class EditActivity : AppCompatActivity(), UIUpdaterInterface {
             Snackbar.make(binding.root,it.toString(),Snackbar.LENGTH_LONG).show()
         }
 
+        viewModel.dashboard.observe(this){
+            dashboard = it
+        }
+
         viewModel.activeComponent.observe(this){
             binding.idComponentContent.setText(it.id)
             binding.content.setText(it.content)
@@ -215,6 +237,12 @@ class EditActivity : AppCompatActivity(), UIUpdaterInterface {
                 it.content = binding.content.text.toString()
                 viewModel.updateComponent(it)
                 binding.drawer.setContentById(it.id.toString(), binding.content.text.toString())
+                binding.drawer.setTopicById(it.id.toString(), binding.topic.text.toString())
+                collapseDetailComponent()
+            }
+            binding.delete.setOnClickListener {view->
+                viewModel.deleteComponent(it.id.toString())
+                binding.drawer.deleteComponentById(it.id.toString())
                 collapseDetailComponent()
             }
         }
@@ -296,7 +324,6 @@ class EditActivity : AppCompatActivity(), UIUpdaterInterface {
 
 
         isDialog.show()
-//        isDialog.window?.setLayout(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT)
         isDialog.window?.setBackgroundDrawable(ColorDrawable(Color.BLACK))
         isDialog.window?.getAttributes()?.windowAnimations = R.style.NavDialogAnimation
         isDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -306,47 +333,37 @@ class EditActivity : AppCompatActivity(), UIUpdaterInterface {
 
     }
 
-    fun handleReceivedData(data: String) {
-        // Here, you can do something with the received data
-        // For example, update UI, store in a database, etc.
-        println("Received data: $data")
-    }
-
-    override fun resetUIWithConnection(status: Boolean) {
-//        ipAddressField.isEnabled  = !status
-//        topicField.isEnabled      = !status
-//        messageField.isEnabled    = status
-//        connectBtn.isEnabled      = !status
-//        sendBtn.isEnabled         = status
-
-        // Update the status label.
-        if (status){
-            updateStatusViewWith("Connected")
-        }else{
-            updateStatusViewWith("Disconnected")
-        }
-    }
-
-    override fun updateStatusViewWith(status: String) {
-//        binding.statusLabl.text = status
-    }
-
-    override fun update(message: String) {
-
-//        var text = messageHistoryView.text.toString()
-//        var newText = """
-//            $text
-//            $message
-//            """
-//        //var newText = text.toString() + "\n" + message +  "\n"
-//        messageHistoryView.setText(newText)
-//        messageHistoryView.setSelection(messageHistoryView.text.length)
-    }
-
     fun showBottomSheet() {
         binding.sheet.visibility = View.VISIBLE
     }
     companion object {
         val CHANNEL_ID = "mqtt_dashboard"
+    }
+
+    override fun onTipDismissed(view: View?, anchorViewId: Int, byUser: Boolean) {
+
+    }
+
+    private fun displayToolTip(message: String,position: Int, align: Int) {
+        // get message from edit text
+        // set tooltip on text view
+        toolTipsManager!!.findAndDismiss(binding.info)
+        // check condition
+        if (!message.isEmpty()) {
+            // when message is not equal to empty
+            // create tooltip
+            val builder = ToolTip.Builder(this, binding.info, binding.root, message, position)
+            // set align
+            builder.setAlign(align)
+            // set background color
+            builder.setBackgroundColor(R.color.main)
+
+            // show tooltip
+            toolTipsManager!!.show(builder.build())
+        } else {
+            // when message is empty
+            // display toast
+            Toast.makeText(applicationContext, "Type a Message", Toast.LENGTH_SHORT).show()
+        }
     }
 }
