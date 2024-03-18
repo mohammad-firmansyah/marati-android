@@ -6,7 +6,7 @@ interface ObjectInterface {
     val id : String;
     val status : Boolean;
     val type : String;
-    val topic : String;
+    val topicObject : String;
     val contentObject : String;
     val rules : String;
     val model_id : String;
@@ -32,5 +32,6 @@ interface ObjectInterface {
     fun getData()
 
     fun setContent(content: String)
+    fun setTopic(topic: String)
 
 }
