@@ -6,6 +6,10 @@ import androidx.lifecycle.ViewModel
 import com.google.gson.Gson
 import com.zeroone.marati.core.data.source.remote.response.ComponentItem
 import com.zeroone.marati.core.data.source.remote.response.ComponentResponse
+import com.zeroone.marati.core.data.source.remote.response.ComponentsItem
+import com.zeroone.marati.core.data.source.remote.response.DashboardDetailItem
+import com.zeroone.marati.core.data.source.remote.response.DashboardDetailResponse
+import com.zeroone.marati.core.data.source.remote.response.DashboardItem
 import com.zeroone.marati.core.data.source.remote.retrofit.ApiConfig
 import com.zeroone.marati.core.ui.PreferenceManager
 import kotlinx.coroutines.flow.first
@@ -20,6 +24,9 @@ import retrofit2.Response
 class EditViewModel(val pref:PreferenceManager,val uid: String):ViewModel() {
     private val _components: MutableLiveData<List<ComponentItem>?> = MutableLiveData()
     val components : LiveData<List<ComponentItem>?> = _components
+
+    private val _dashboard: MutableLiveData<DashboardDetailItem?> = MutableLiveData()
+    val dashboard : LiveData<DashboardDetailItem?> = _dashboard
 
     private val _isLoading: MutableLiveData<Boolean> = MutableLiveData()
     val isLoading : LiveData<Boolean> = _isLoading
@@ -63,19 +70,20 @@ class EditViewModel(val pref:PreferenceManager,val uid: String):ViewModel() {
         val headers = HashMap<String,String>()
         headers.put("authorization",token)
 
-        val client = ApiConfig.provideApiServiceJs().getComponents(headers,uid)
-        client.enqueue(object: Callback<ComponentResponse>{
+        val client = ApiConfig.provideApiServiceJs().getDashboardDetail(headers,uid)
+        client.enqueue(object: Callback<DashboardDetailResponse>{
             override fun onResponse(
-                call: Call<ComponentResponse>,
-                response: Response<ComponentResponse>
+                call: Call<DashboardDetailResponse>,
+                response: Response<DashboardDetailResponse>
             ) {
                 _isLoading.value = false
                 try {
 
                     if(response.isSuccessful){
-                        _components.value = response.body()?.data as List<ComponentItem>
+                        _dashboard.value = response.body()!!.data?.get(0) as DashboardDetailItem
+                        _components.value = _dashboard.value!!.components as List<ComponentItem>
                     }else{
-                        val error = Gson().fromJson(response.errorBody()?.string(),ComponentResponse::class.java)
+                        val error = Gson().fromJson(response.errorBody()?.string(),DashboardDetailResponse::class.java)
                         _errorMessage.value = error.message.toString()
                     }
                 } catch (e:Exception){
@@ -84,7 +92,7 @@ class EditViewModel(val pref:PreferenceManager,val uid: String):ViewModel() {
 
             }
 
-            override fun onFailure(call: Call<ComponentResponse>, t: Throwable) {
+            override fun onFailure(call: Call<DashboardDetailResponse>, t: Throwable) {
                 _isLoading.value = false
                 _errorMessage.value = t.message.toString()
             }
@@ -136,7 +144,7 @@ class EditViewModel(val pref:PreferenceManager,val uid: String):ViewModel() {
             }
 
             override fun onFailure(call: Call<ComponentResponse>, t: Throwable) {
-//                _isLoading.value = false
+                _isLoading.value = false
 //                _errorMessage.value = t.message.toString()
             }
         })
@@ -180,6 +188,7 @@ class EditViewModel(val pref:PreferenceManager,val uid: String):ViewModel() {
                         try {
 
                             _isLoading.value = false
+
                             if(response.isSuccessful){
                                 _components.value = response.body()?.data as List<ComponentItem>
                             }else{
@@ -193,12 +202,63 @@ class EditViewModel(val pref:PreferenceManager,val uid: String):ViewModel() {
                     }
 
                     override fun onFailure(call: Call<ComponentResponse>, t: Throwable) {
-//                _isLoading.value = false
-//                _errorMessage.value = t.message.toString()
+                        _isLoading.value = false
+//                        _errorMessage.value = t.message.toString()
+
                     }
                 })
 
             }else{
+                _isLoading.value = false
+                _errorMessage.value = "Unauthorized"
+            }
+        }catch (e:Exception){
+            e.printStackTrace()
+        }
+
+    }
+
+    fun deleteComponent(id:String){
+        try {
+            val token = getToken()
+            _isLoading.value = true
+            if(token.isNotEmpty()){
+
+                val headers = HashMap<String,String>()
+                headers.put("authorization",token)
+
+                val client = ApiConfig.provideApiServiceJs().deleteComponent(headers,id,uid)
+
+                client!!.enqueue(object: Callback<ComponentResponse>{
+                    override fun onResponse(
+                        call: Call<ComponentResponse>,
+                        response: Response<ComponentResponse>
+                    ) {
+                        try {
+
+                            _isLoading.value = false
+
+                            if(response.isSuccessful){
+                                _components.value = response.body()?.data as List<ComponentItem>
+                            }else{
+                                val error = Gson().fromJson(response.errorBody()?.string(),ComponentResponse::class.java)
+//                        _errorMessage.value = error.message.toString()
+                            }
+                        } catch (e:Exception){
+//                    _errorMessage.value = e.message.toString()
+                        }
+
+                    }
+
+                    override fun onFailure(call: Call<ComponentResponse>, t: Throwable) {
+                        _isLoading.value = false
+//                        _errorMessage.value = t.message.toString()
+
+                    }
+                })
+
+            }else{
+                _isLoading.value = false
                 _errorMessage.value = "Unauthorized"
             }
         }catch (e:Exception){
