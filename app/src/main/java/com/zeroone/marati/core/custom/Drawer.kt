@@ -85,7 +85,7 @@
 
                             val dataItem = ComponentItem(
                                 id = obj.id,
-                                topic =  obj.topic,
+                                topic =  obj.topicObject,
                                 content = obj.contentObject,
                                 rules = obj.rules,
                                 modelId =  obj.model_id,
@@ -177,7 +177,7 @@
                                 y = activeObj?.getObjY()?.toInt(),
                                 content= activeObj?.contentObject,
                                 type=activeObj?.type,
-                                topic = activeObj?.topic,
+                                topic = activeObj?.topicObject,
                                 rules = "{}",
                                 modelId = null
                             )
@@ -426,9 +426,16 @@
         fun setContentById(id: String,content:String) {
             val obj = objectsToDraw.filter { it.id == id}
 
-            Log.d("content-edited", obj[0].id.toString())
-
             obj[0].setContent(content)
+            invalidate()
+
+        }
+
+        fun setTopicById(id: String,topic:String) {
+            val obj = objectsToDraw.filter { it.id == id}
+
+
+            obj[0].setTopic(topic)
             invalidate()
 
         }
@@ -450,5 +457,18 @@
             }catch (e:Exception){
                 e.printStackTrace()
             }
+        }
+
+        fun deleteComponentById(objID: String) {
+            var index = 0
+            objectsToDraw.forEach {
+                if(it.id == objID){
+                    objectsToDraw.removeAt(index)
+                    invalidate()
+                    return
+                }
+                index++
+            }
+
         }
     }
