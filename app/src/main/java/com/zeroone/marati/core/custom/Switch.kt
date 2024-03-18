@@ -25,7 +25,7 @@ class Switch(private val context: Context, private var x: Float, private var y: 
              override var status: Boolean = false,
              override val id: String =  Utils.getUUID(),
              override val type: String = "SWITCH",
-             override val topic: String = "",
+             override var topicObject: String = "",
              override var contentObject: String = "",
              override val rules: String = "{}",
              override val model_id: String = ""
@@ -197,6 +197,10 @@ class Switch(private val context: Context, private var x: Float, private var y: 
 
     override fun setContent(content: String) {
 
+    }
+
+    override fun setTopic(topic: String) {
+        this.topicObject = topic
     }
 
     override fun insideObject(touchX: Float, touchY: Float): Boolean {

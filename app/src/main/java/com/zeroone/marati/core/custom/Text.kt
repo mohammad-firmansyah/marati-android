@@ -14,7 +14,7 @@ class Text(private val context: Context, private var x: Float, private var y: Fl
            override val id: String =  Utils.getUUID(),
            override val status: Boolean,
            override val type: String = "TEXT",
-           override val topic: String = "",
+           override var topicObject: String = "",
            override val rules: String = "{}",
            override val model_id: String = "",
            override var contentObject: String = "no content",
@@ -113,6 +113,10 @@ class Text(private val context: Context, private var x: Float, private var y: Fl
 
     override fun setContent(content: String) {
         this.contentObject = content
+    }
+
+    override fun setTopic(topic: String) {
+        this.topicObject = topic
     }
 
 
