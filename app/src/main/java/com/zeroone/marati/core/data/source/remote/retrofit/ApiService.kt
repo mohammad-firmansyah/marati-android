@@ -1,6 +1,7 @@
 package com.zeroone.marati.core.data.source.remote.retrofit
 
 import com.zeroone.marati.core.data.source.remote.response.ComponentResponse
+import com.zeroone.marati.core.data.source.remote.response.DashboardDetailResponse
 import com.zeroone.marati.core.data.source.remote.response.DashboardResponse
 import com.zeroone.marati.core.data.source.remote.response.LoginResponse
 import okhttp3.RequestBody
@@ -50,6 +51,12 @@ interface ApiService {
         @Path("id") id : String
     ) : Call<ComponentResponse>
 
+    @GET("/dashboard/{id}/detail")
+    fun getDashboardDetail(
+        @HeaderMap headers: Map<String, String>,
+        @Path("id") id : String
+    ) : Call<DashboardDetailResponse>
+
     @POST("/component/")
     fun addComponent(
         @HeaderMap headers: Map<String, String>,
@@ -61,6 +68,13 @@ interface ApiService {
         @HeaderMap headers: Map<String, String>,
         @Body() body : RequestBody,
         @Path("id") id : String
+    ) : Call<ComponentResponse>
+
+    @DELETE("/component/{id}/{owner_id}")
+    fun deleteComponent(
+        @HeaderMap headers: Map<String, String>,
+        @Path("id") id : String,
+        @Path("owner_id") owner_id : String
     ) : Call<ComponentResponse>
 
 }
