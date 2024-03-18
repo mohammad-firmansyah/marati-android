@@ -31,4 +31,8 @@
     <string name="dashboard">Dashboard</string>
     <string name="unsaved">Unsaved</string>
     <string name="saved">Saved</string>
+    <string name="content">Content</string>
+    <string name="topic">Topic</string>
+    <string name="id">Id</string>
+    <string name="rules">Rules</string>
 </resources>
