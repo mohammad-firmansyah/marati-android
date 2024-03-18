@@ -70,11 +70,10 @@ interface ApiService {
         @Path("id") id : String
     ) : Call<ComponentResponse>
 
-    @DELETE("/component/{id}/{owner_id}")
+    @DELETE("/component/{id}/")
     fun deleteComponent(
         @HeaderMap headers: Map<String, String>,
         @Path("id") id : String,
-        @Path("owner_id") owner_id : String
     ) : Call<ComponentResponse>
 
 }

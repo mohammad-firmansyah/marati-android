@@ -227,7 +227,7 @@ class EditViewModel(val pref:PreferenceManager,val uid: String):ViewModel() {
                 val headers = HashMap<String,String>()
                 headers.put("authorization",token)
 
-                val client = ApiConfig.provideApiServiceJs().deleteComponent(headers,id,uid)
+                val client = ApiConfig.provideApiServiceJs().deleteComponent(headers,id)
 
                 client!!.enqueue(object: Callback<ComponentResponse>{
                     override fun onResponse(
