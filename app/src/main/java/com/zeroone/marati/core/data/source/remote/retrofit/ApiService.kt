@@ -4,20 +4,28 @@ import com.zeroone.marati.core.data.source.remote.response.ComponentResponse
 import com.zeroone.marati.core.data.source.remote.response.DashboardDetailResponse
 import com.zeroone.marati.core.data.source.remote.response.DashboardResponse
 import com.zeroone.marati.core.data.source.remote.response.LoginResponse
+import com.zeroone.marati.core.data.source.remote.response.ModelResponse
+import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.HeaderMap
+import retrofit2.http.Multipart
 import retrofit2.http.PATCH
 import retrofit2.http.POST
+import retrofit2.http.Part
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface ApiService {
 
     @POST("/user/login/")
     fun login(@Body() body : RequestBody) : Call<LoginResponse>
+
+    @POST("/user/register/")
+    fun register(@Body() body : RequestBody) : Call<LoginResponse>
 
     @POST("/user/register/")
     fun register() : Call<LoginResponse>
@@ -75,5 +83,23 @@ interface ApiService {
         @HeaderMap headers: Map<String, String>,
         @Path("id") id : String,
     ) : Call<ComponentResponse>
+
+
+    // model
+    @GET("/models/")
+    fun getModels(
+        @HeaderMap headers: Map<String, String>,
+    ) : Call<ModelResponse>
+
+    @Multipart
+    @POST("/models/")
+    fun addModel(
+        @Query("name") name:String,
+        @Query("input") input :String,
+        @Query("output") output:String,
+        @Query("owner_id") owner_id:String,
+        @Part file:MultipartBody.Part
+    ) : Call<ModelResponse>
+
 
 }
