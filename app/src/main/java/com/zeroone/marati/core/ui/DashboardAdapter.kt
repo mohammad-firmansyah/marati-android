@@ -44,10 +44,26 @@ class DashboardAdapter(
 
         val itemViewPosition = list?.get(position)
         try {
-            holder.title.text = itemViewPosition?.name?.substring(0,10) + "..."
+            if(itemViewPosition?.name?.length!! >= 15){
+                holder.title.text = itemViewPosition?.name?.substring(0,15) + "..."
+            } else{
+                holder.title.text = itemViewPosition?.name
+            }
+
+            if (itemViewPosition?.server?.length!! >= 15){
+                holder.server.text = itemViewPosition?.server?.substring(6,19) + "..."
+            }else{
+                holder.server.text = itemViewPosition?.server
+            }
+
+            if(itemViewPosition?.description?.length!! >= 50){
+                holder.description.text = itemViewPosition?.description?.substring(0,50) + "..."
+            }else{
+                holder.description.text = itemViewPosition?.description
+            }
+
             holder.created_date.text = Utils.getLocalFormat(itemViewPosition?.createdAt.toString())
-            holder.server.text = itemViewPosition?.server?.substring(6,19) + "..."
-            holder.description.text = itemViewPosition?.description?.substring(0,50) + "..."
+
         } catch (e:Exception){
             e.printStackTrace()
         }
