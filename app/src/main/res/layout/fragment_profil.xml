@@ -4,19 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".home.Fragments.ProfilFragment">
+    tools:context=".home.fragments.ProfilFragment">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="120dp"
+        android:background="@drawable/bg_main"
         >
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/bg_main">
+        android:layout_height="wrap_content"
+        >
 
         <TextView
             android:id="@+id/textView8"
@@ -48,7 +48,7 @@
             <EditText
                 android:id="@+id/email_profil"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
                 android:background="@drawable/background_inp"
                 android:fontFamily="@font/poppins_reg"
                 android:hint="Email"
@@ -67,13 +67,13 @@
                 android:layout_marginTop="32dp"
                 android:background="@drawable/background_inp"
                 android:fontFamily="@font/poppins_bold"
-                android:text="Verifikasi"
+                android:text="@string/verifikasi"
                 android:textSize="20sp" />
 
             <EditText
                 android:id="@+id/name"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
                 android:layout_marginStart="0dp"
                 android:layout_marginTop="32dp"
                 android:layout_marginEnd="0dp"
@@ -91,7 +91,7 @@
             <EditText
                 android:id="@+id/password"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
                 android:layout_marginStart="0dp"
                 android:layout_marginTop="32dp"
                 android:layout_marginEnd="0dp"
@@ -115,7 +115,7 @@
                 android:layout_marginBottom="100dp"
                 android:background="@drawable/background_inp"
                 android:fontFamily="@font/poppins_bold"
-                android:text="Reset Password"
+                android:text="@string/reset_password"
                 android:textSize="20sp" />
 
             <Button
@@ -125,7 +125,7 @@
                 android:layout_gravity="center"
                 android:backgroundTint="@color/secondary"
                 android:fontFamily="@font/poppins_bold"
-                android:text="Logout"
+                android:text="@string/logout"
                 android:textSize="20sp"
                 app:cornerRadius="12dp" />
 
