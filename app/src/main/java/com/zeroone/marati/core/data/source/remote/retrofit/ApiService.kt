@@ -18,6 +18,7 @@ import retrofit2.http.POST
 import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
+import java.util.Locale.Category
 
 interface ApiService {
 
@@ -91,6 +92,18 @@ interface ApiService {
         @HeaderMap headers: Map<String, String>,
     ) : Call<ModelResponse>
 
+    @GET("/models/user/")
+    fun getModelByUser(
+        @HeaderMap headers: Map<String, String>,
+        @Query("owner_id") ownerId: String
+    ) : Call<ModelResponse>
+
+    @GET("/models/category/")
+    fun getModelByCategory(
+        @HeaderMap headers: Map<String, String>,
+        @Query("category") category: String
+    ) : Call<ModelResponse>
+
     @Multipart
     @POST("/models/")
     fun addModel(
@@ -98,6 +111,8 @@ interface ApiService {
         @Query("input") input :String,
         @Query("output") output:String,
         @Query("owner_id") owner_id:String,
+        @Query("desc") description :String,
+        @Query("category") category :String,
         @Part file:MultipartBody.Part
     ) : Call<ModelResponse>
 
