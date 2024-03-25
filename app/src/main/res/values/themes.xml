@@ -4,13 +4,18 @@
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
         <item name="colorPrimary">#5D49E2</item>
-        <item name="android:statusBarColor">@color/status_bar_default</item>
 
 
     </style>
 
     <style name="Theme.Marati" parent="Base.Theme.Marati" >
 
+    </style>
+
+    <style name="CustomChipStyle" parent="Widget.MaterialComponents.Chip.Filter">
+            <item name="chipBackgroundColor">@color/chip_background_color</item>
+            <item name="android:textColor">@color/chip_text_color</item>
+            <item name="checkedIcon">@null</item>
     </style>
 
     <style name="CustomBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
@@ -29,4 +34,6 @@
     <style name="textColorDynamic">
         <item name="android:textColor">@color/black</item>
     </style>
+
+
 </resources>
