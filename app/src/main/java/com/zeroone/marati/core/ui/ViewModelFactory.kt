@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.zeroone.marati.home.HomeViewModel
 import com.zeroone.marati.login.LoginViewModel
+import com.zeroone.marati.register.RegisterViewModel
 
 
 class ViewModelFactory(private val context: Context,private val pref: PreferenceManager) : ViewModelProvider.NewInstanceFactory() {
@@ -13,6 +14,10 @@ class ViewModelFactory(private val context: Context,private val pref: Preference
         return when {
             modelClass.isAssignableFrom(LoginViewModel::class.java) -> {
                 LoginViewModel(pref) as T
+            }
+
+            modelClass.isAssignableFrom(RegisterViewModel::class.java) -> {
+                RegisterViewModel(pref) as T
             }
 
             modelClass.isAssignableFrom(HomeViewModel::class.java) -> {
