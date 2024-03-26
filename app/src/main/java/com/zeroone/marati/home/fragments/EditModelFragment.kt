@@ -9,9 +9,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.Spinner
 import androidx.core.app.ActivityCompat
+import com.google.gson.Gson
 import com.zeroone.marati.R
 import com.zeroone.marati.core.data.source.remote.response.Input
 import com.zeroone.marati.core.data.source.remote.response.ModelItem
@@ -37,8 +39,8 @@ class EditModelFragment : Fragment() {
     private var description: String? = null
     private var category: String? = null
     private var filename: String? = null
-    private var input: String? = null
-    private var output: String? = null
+    private var input: Input? = null
+    private var output: Output? = null
     private var id: String? = null
 
     private var _binding : FragmentEditModelBinding? = null
@@ -55,8 +57,8 @@ class EditModelFragment : Fragment() {
             description = it.getString("description")
             category = it.getString("category")
             filename = it.getString("file")
-            input = it.getString("input")
-            output = it.getString("output")
+            input = it.getParcelable("input")
+            output = it.getParcelable("output")
             id = it.getString("id")
         }
     }
@@ -105,13 +107,9 @@ class EditModelFragment : Fragment() {
                 model.description = binding.description.text.toString()
                 model.category = binding.category.selectedItem.toString()
                 val inputItem = Input()
-                inputItem.name = input["name"].toString()
-                inputItem.type = input["type"].toString()
                 model.input = inputItem
 
                 val outputItem = Output()
-                outputItem.name = output["name"].toString()
-                outputItem.type = output["type"].toString()
                 model.output = outputItem
 
                 parent.viewModel.addModel(model,file)
@@ -141,10 +139,12 @@ class EditModelFragment : Fragment() {
         binding.description.setText(description)
         binding.textView13.text = filename
 
-//        val obj = Json.decodeFromString<Input>(Inputinput)
-//        addInputN(inputJSONObject.names())
-
+//        val obj = Gson().fromJson(input.toString(),Input::class.java)
+        addInputN(input?.name?.size!!-1)
+        addOutputN(output?.name?.size!!-1)
+//
     }
+
 
     private fun pickFile() {
         val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
@@ -171,7 +171,6 @@ class EditModelFragment : Fragment() {
     private fun getDataFromViews(linearLayout: LinearLayout) : HashMap<String,List<String>> {
         val name = mutableListOf<String>()
         val type = mutableListOf<String>()
-
 
         val map = HashMap<String,List<String>>()
 
@@ -223,12 +222,62 @@ class EditModelFragment : Fragment() {
         return null
     }
 
+    private fun findImageButton(linearLayout: LinearLayout): ImageButton? {
+        for (i in 0 until linearLayout.childCount) {
+            val view = linearLayout.getChildAt(i)
+            if (view is ImageButton) {
+                return view
+            }
+        }
+        return null
+    }
+
     private fun addInputN(n:Int){
         for (i in 0..n){
+            // create linear layout
             val newView = layoutInflater.inflate(R.layout.input_item,null)
             newView.id = generateViewId()
             binding.inputWrapper.addView(newView)
+            // find spinner and edit text
+            val spinner = findSpinner(newView as LinearLayout)
+            val editText = findEditText(newView as LinearLayout)
+            val imageBtn = findImageButton(newView as LinearLayout)
+            editText?.setText(input?.name?.get(i))
+            imageBtn?.setOnClickListener {
+                deleteChild(binding.inputWrapper,newView)
+            }
+            // loop over typed array to get selected item id
+            val typeArray = parent.resources.getStringArray(R.array.type)
+            typeArray.forEachIndexed {index,e ->
+                if(input?.type?.get(i) == e){
+                    spinner?.setSelection(index)
+                }
+            }
+
         }
+    }
+    private fun deleteChild(linearLayout: LinearLayout,child : View){
+        linearLayout.removeView(child)
+    }
+    private fun addOutputN(n:Int){
+        for (i in 0..n){
+            // create linear layout
+            val newView = layoutInflater.inflate(R.layout.input_item,null)
+            newView.id = generateViewId()
+            binding.outputWrapper.addView(newView)
+            // find spinner and edit text
+            val spinner = findSpinner(newView as LinearLayout)
+            val editText = findEditText(newView as LinearLayout)
+            editText?.setText(output?.name?.get(i))
+            // loop over typed array to get selected item id
+            val typeArray = parent.resources.getStringArray(R.array.type)
+            typeArray.forEachIndexed {index,e ->
+                if(output?.type?.get(i) == e){
+                    spinner?.setSelection(index)
+                }
+            }
+        }
+
     }
 
 
@@ -243,7 +292,7 @@ class EditModelFragment : Fragment() {
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(id:String?,name: String?,owner_id:String?, description: String?,category:String?,file:String?,input:String?,output:String?) =
+        fun newInstance(id:String?,name: String?,owner_id:String?, description: String?,category:String?,file:String?,input:Input?,output:Output?) =
             EditModelFragment().apply {
                 arguments = Bundle().apply {
                     putString("name", name)
@@ -251,8 +300,8 @@ class EditModelFragment : Fragment() {
                     putString("owner_id", owner_id)
                     putString("category", category)
                     putString("file", file)
-                    putString("input", input)
-                    putString("output", output)
+                    putParcelable("input", input)
+                    putParcelable("output", output)
                     putString("id", id)
                 }
             }
