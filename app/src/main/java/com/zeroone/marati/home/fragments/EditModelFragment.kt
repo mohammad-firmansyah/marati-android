@@ -20,6 +20,7 @@ import com.zeroone.marati.core.data.source.remote.response.ModelItem
 import com.zeroone.marati.core.data.source.remote.response.Output
 import com.zeroone.marati.databinding.FragmentEditModelBinding
 import com.zeroone.marati.home.HomeActivity
+import okhttp3.internal.notifyAll
 
 import java.io.File
 
@@ -46,12 +47,13 @@ class EditModelFragment : Fragment() {
     private var _binding : FragmentEditModelBinding? = null
     private val binding get() = _binding!!
     private var viewCounter = 0
-    private lateinit var file : File
+    private var file : File? = null
     private lateinit var activeModel : ModelItem
     private lateinit var parent : HomeActivity
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         arguments?.let {
             name = it.getString("name")
             description = it.getString("description")
@@ -97,22 +99,27 @@ class EditModelFragment : Fragment() {
             pickFile()
         }
 
-        binding.addNewModel.setOnClickListener {
+        binding.updateModel.setOnClickListener {
+            // get input and output newest data from view
+            val newestInput = getDataFromViews(binding.inputWrapper)
+            val newestOutput = getDataFromViews(binding.outputWrapper)
+
+            input?.name = newestInput["name"]
+            input?.type = newestInput["type"]
+
+            output?.name = newestOutput["name"]
+            output?.type = newestOutput["type"]
+
+
             try {
-                val input = getDataFromViews(binding.inputWrapper)
-                val output = getDataFromViews(binding.outputWrapper)
-                Log.d("input",input["name"].toString())
                 val model = ModelItem()
+                model.id = id
                 model.name = binding.name.text.toString()
                 model.description = binding.description.text.toString()
                 model.category = binding.category.selectedItem.toString()
-                val inputItem = Input()
-                model.input = inputItem
-
-                val outputItem = Output()
-                model.output = outputItem
-
-                parent.viewModel.addModel(model,file)
+                model.input = input
+                model.output = output
+                parent.viewModel.updateModel(model,file)
                 parent.deleteFragment(this)
             }catch (e:Exception){
                 e.printStackTrace()
@@ -244,7 +251,7 @@ class EditModelFragment : Fragment() {
             val imageBtn = findImageButton(newView as LinearLayout)
             editText?.setText(input?.name?.get(i))
             imageBtn?.setOnClickListener {
-                deleteChild(binding.inputWrapper,newView)
+                deleteChild(binding.inputWrapper,newView,i,true)
             }
             // loop over typed array to get selected item id
             val typeArray = parent.resources.getStringArray(R.array.type)
@@ -256,8 +263,27 @@ class EditModelFragment : Fragment() {
 
         }
     }
-    private fun deleteChild(linearLayout: LinearLayout,child : View){
+    private fun deleteChild(linearLayout: LinearLayout,child : View,id:Int,type: Boolean){
         linearLayout.removeView(child)
+        if(type){
+            val mutableInputName = input?.name?.toMutableList()
+            val mutableInputType = input?.type?.toMutableList()
+            mutableInputName?.removeAt(id)
+            mutableInputType?.removeAt(id)
+
+            input = Input()
+            input?.name = mutableInputName
+            input?.type = mutableInputType
+        }else{
+            val mutableOutputName = input?.name?.toMutableList()
+            val mutableOutputType = input?.type?.toMutableList()
+            mutableOutputName?.removeAt(id)
+            mutableOutputType?.removeAt(id)
+
+            input = Input()
+            input?.name = mutableOutputName
+            input?.type = mutableOutputType
+        }
     }
     private fun addOutputN(n:Int){
         for (i in 0..n){
@@ -268,8 +294,14 @@ class EditModelFragment : Fragment() {
             // find spinner and edit text
             val spinner = findSpinner(newView as LinearLayout)
             val editText = findEditText(newView as LinearLayout)
+            val imageBtn = findImageButton(newView as LinearLayout)
             editText?.setText(output?.name?.get(i))
             // loop over typed array to get selected item id
+
+            imageBtn?.setOnClickListener {
+                deleteChild(binding.outputWrapper,newView,i,false)
+            }
+
             val typeArray = parent.resources.getStringArray(R.array.type)
             typeArray.forEachIndexed {index,e ->
                 if(output?.type?.get(i) == e){
